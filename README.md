@@ -1,2 +1,3 @@
-# project-scrapyard
+# Project Scrapyard
+
 Analyzing UFC fight data
