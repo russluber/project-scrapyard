@@ -1,0 +1,15 @@
+# Folders
+cache/
+data/
+scripts/
+scripts/archive/
+
+# R stuff
+.RData
+.Rhistory
+project-scrapyard.Rproj
+
+# Include
+!data/fight_data_raw_enriched.csv
+!scripts/data_cleaning.R
+!scripts/eda.Rmd
