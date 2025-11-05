@@ -16,7 +16,127 @@ Let's load in the data.
 d <- read_csv(here("data/fight_data.csv"))
 ```
 
-## Subsetting the Data
+
+# Data Validation
+
+Snapshot of the columns, col types, and values
+```{r}
+glimpse(d)
+```
+
+## Duplicate Rows
+
+I built a fighter-centric dataset, which means the key is `(fighter_id, fight_id)`: one row per fighter per fight. Let's verify that.
+
+Any duplicate rows?
+
+```{r}
+d %>% count(fighter_id, fight_id) %>% filter(n > 1)
+```
+
+No duplicate rows. Good.
+
+## Check the Dates
+
+According to [Wikipedia] (https://en.wikipedia.org/wiki/Ultimate_Fighting_Championship), the UFC was founded on November 12, 1993. Sanity check: there should be no fights in the dataset before that!
+
+```{r}
+d %>%
+  summarise(
+    earliest_fight = min(date),
+    latest_fight = max(date)
+  )
+```
+
+The earliest fight in the dataset happened on March 11, 1994. Great.
+
+
+Just in case `summarise()` somehow missed anything:
+```{r}
+d %>%
+  filter(date < as.Date("1993-11-12") | date > Sys.Date()) %>%
+  arrange(date)
+```
+
+Good. No fight data before the UFC was founded and no future fight data that hasn't happened yet.
+
+
+How many unique fights are there (that we have data on)?
+
+```{r}
+d %>%
+  summarise(n_unique_fights = n_distinct(fight_id))
+```
+
+8407 fights. Since there are two fighters involved in every match, we have 16814 rows in our `d` dataframe in total.
+
+Let's investigate if there are missing values in the data.
+
+```{r}
+d %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "column",
+    values_to = "na_count"
+  ) %>%
+  arrange(desc(na_count))
+```
+
+No missing data across all entries of the 47 columns.
+- Need to review fetching and parsing scripts to ensure no missing data at this stage is a good thing.
+- For each of the columns, did I replace `NANs` with something else? Like a 0 maybe?
+
+## Verify Results
+
+There are four outcomes in a fight: Win (W), Loss (L), Draw (D), or No Contest (NC). Let's verify this.
+
+```{r}
+d %>%
+  distinct(res) %>%
+  arrange(desc(res))
+```
+
+Good. There are only four outcomes, as expected.
+
+In a fight, there are only 3 possible combinations of outcomes:
+
+1. One fighter wins, the other loses.
+2. The fight is a draw, in which case both fighters get a "D" on their record.
+3. The fight is a No Contest, in which case both fighters get an "NC" on their record.
+
+```{r}
+res_patterns <- d %>%
+  count(fight_id, res) %>%
+  arrange(fight_id, res) %>%
+  group_by(fight_id) %>%
+  summarise(
+    n_rows  = sum(n),
+    pattern = paste0(res, ":", n, collapse = ","),
+    .groups = "drop"
+  ) %>%
+  mutate(is_valid = n_rows == 2 & pattern %in% c("D:2", "NC:2", "L:1,W:1", "W:1,L:1"))
+
+invalid_ids <- res_patterns %>% filter(!is_valid) %>% pull(fight_id)
+
+offenders   <- d %>% filter(fight_id %in% invalid_ids)
+```
+
+
+```{r}
+summarise(offenders)
+```
+
+```{r}
+d %>% distinct(fight_id) %>% count() %>% pull(n) %>% as.integer() == sum(res_patterns$is_valid)
+```
+
+No fight had two winners or two losers or only one no contest (or draw). Every fight has a valid `res` column.
+
+
+> More data validation to do!
+
+# Subsetting the Data
 
 The [Unified Rules of Mixed Martial Arts](https://www.ufc.com/unified-rules-mixed-martial-arts) was adopted November 2000. So let's start from there. Our data will include fights starting from UFC 28: High Stakes.
 
