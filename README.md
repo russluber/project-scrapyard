@@ -1,3 +1,3 @@
 # Project Scrapyard
 
-Analyzing UFC fight data
+Analyzing [UFC](http://www.ufcstats.com/) fight data.
