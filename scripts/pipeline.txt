@@ -1,0 +1,18 @@
+Order in which to run the scripts:
+1. fetch_event_cards
+2. parse_event_cards
+3. fetch_fight_pages_sequential -> fetch_fight_pages (renamed)
+4. parse_fight_pages
+5. join_event_metadata_v2 -> join_event_metadata (renamed)
+6. data_cleaning
+7. eda.rmd
+
+
+Patchwork done to fix fight_data_raw_enriched
+- one_of_fetch_event_cards
+- diagnostic
+- backfill_event_map
+
+
+Separate thing for doing networked (instead of cached) fighters static (height, weight, reach, dob) and dynamic (W/L record, etc.) metadata
+- data_scraping_fighters_metadata3.R -> scrape_fighters_metadata

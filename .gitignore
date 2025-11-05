@@ -10,5 +10,7 @@
 
 # Whitelist exactly these files
 !data/fight_data_raw_enriched.csv
+!data/fight_data.csv
 !scripts/data_cleaning.R
 !scripts/eda.Rmd
+.Rproj.user
