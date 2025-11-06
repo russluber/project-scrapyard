@@ -134,7 +134,22 @@ d %>% distinct(fight_id) %>% count() %>% pull(n) %>% as.integer() == sum(res_pat
 No fight had two winners or two losers or only one no contest (or draw). Every fight has a valid `res` column.
 
 
-> More data validation to do!
+## Count Variables Cannot Be Negative
+
+Variables like `strikes_landed`, `ctrl_time_s`, `td_stuffed`, and many (in fact most) of the variables in the dataset can be 0 but can't be negative.
+
+```{r}
+summary_nonneg <- d %>%
+  summarise(across(where(is.numeric), ~ sum(. < 0, na.rm = TRUE))) %>%
+  tidyr::pivot_longer(everything(), names_to = "column", values_to = "n_negatives") %>%
+  mutate(nonneg_ok = n_negatives == 0) %>%
+  arrange(nonneg_ok, desc(n_negatives))
+
+summary_nonneg
+```
+
+Great. No negative counts slipped their way into the dataset somehow.
+
 
 # Subsetting the Data
 
@@ -188,7 +203,7 @@ Import caveat: What counts as a strike and how does the UFC count a strike?
 
 ```{r}
 data <- data %>%
-  # Retain striking and striking-relevant variables only + contextual variables
+  # Retain striking and striking-relevant variables only + contextual variables for now
   select(
     -any_of(
       c("tds_landed", "tds_attempted", "tds_stuffed", "subs_attempted", "reversals", "ctrl_time_s",
@@ -215,8 +230,6 @@ data <- data %>%
                                            volume_strikes_landed_by_opp / volume_strikes_thrown_by_opp, 0)
   )
 ```
-
-
 
 
 
