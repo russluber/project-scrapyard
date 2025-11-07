@@ -10,8 +10,8 @@ figs/*
 data/raw/**
 data/clean/**
 data/model/**
-!data/fight_data.csv
-!data/fight_data_raw_enriched.csv
+!data/clean/fight_data.csv
+!data/raw/fight_data_raw_enriched.csv
 
 # === Quarto / Rmd caches ===
 **/_files/
