@@ -1,22 +1,40 @@
-# Ignore everything by default
-/*
+# .gitignore
 
-# Keep this .gitignore itself
-!.gitignore
+# === Heavy, ephemeral stuff ===
+cache/
+models/
+figs/*
+!figs/final/**
 
-# Allow these dirs
-!data/
-!scripts/
-
-# Ignore their contents by default
-data/**
-scripts/**
-
-# Whitelist exactly these files
-!data/fight_data_raw_enriched.csv
+# === Data: ignore intermediates; whitelist curated CSVs ===
+data/raw/**
+data/clean/**
+data/model/**
 !data/fight_data.csv
-!scripts/data_cleaning.R
-!scripts/eda.Rmd
+!data/fight_data_raw_enriched.csv
 
-# RStudio noise
+# === Quarto / Rmd caches ===
+**/_files/
+**/_cache/
+**/.quarto/
+**/_freeze/
+
+# === R / RStudio noise ===
 .Rproj.user/
+.Rhistory
+.RData
+
+# === Toolchains (cmdstanr) ===
+.cmdstanr/
+cmdstan-*/
+*.hpp
+
+# === OS/editor junk ===
+.DS_Store
+Thumbs.db
+
+# === Reports: keep only finals ===
+reports/**
+!reports/final/**
+!analysis/model_accuracy_final.qmd
+
