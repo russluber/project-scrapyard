@@ -87,10 +87,13 @@ df <- df %>%
   ) %>%
   # Split "Men_Heavyweight" into gender + weight_class and factor
   mutate(
-    gender = if_else(stringr::str_starts(weight_class, "Women"), "Women", "Men"),
-    weight_class = stringr::str_extract(
-      weight_class, classes_re),
-    weight_class = if_else(is.na(weight_class), "Catchweight", stringr::str_to_title(weight_class))
+    wc_raw = stringr::str_squish(weight_class),
+    wc_raw = stringr::str_replace_all(wc_raw, "’", "'"),   # normalize curly apostrophe
+    gender = if_else(stringr::str_detect(wc_raw, regex("^women'?s", ignore_case = TRUE)),
+                     "Women", "Men"),
+    weight_class = stringr::str_extract(weight_class, classes_re),
+    weight_class = if_else(is.na(weight_class), "Catchweight", stringr::str_to_title(weight_class)), 
+    gender = if_else(weight_class == "Strawweight", "Women", gender) # Strawweight is women-only in UFC
   ) %>%
   mutate(
     gender = factor(gender, levels = c("Men", "Women")),
@@ -102,6 +105,7 @@ df <- df %>%
       )
     )
   ) %>%
+  select(-wc_raw) %>%
   # Convert referee
   mutate(
     referee = if_else(is.na(referee), "Missing", referee),
