@@ -10,10 +10,10 @@ library(tidyverse)
 library(here)
 ```
 
-Let's load in the data.
+Load in the data
 
 ```{r}
-d <- read_csv(here("data/fight_data.csv"))
+d <- read_csv(here("data/clean/fight_data.csv"))
 ```
 
 
@@ -23,6 +23,16 @@ Snapshot of the columns, col types, and values
 ```{r}
 glimpse(d)
 ```
+
+## String Clean Up
+
+Remove leading and trailing whitespace in entries from columns that are strings (characters).
+
+```{r}
+d <- d %>%
+  mutate(across(where(is.character), ~ str_trim(.x, side="both")))
+```
+
 
 ## Duplicate Rows
 
@@ -70,7 +80,7 @@ d %>%
 
 8407 fights. Since there are two fighters involved in every match, we have 16814 rows in our `d` dataframe in total.
 
-Let's investigate if there are missing values in the data.
+Are there missing values (`NANs`) in the data?
 
 ```{r}
 d %>%
@@ -89,7 +99,7 @@ No missing data across all entries of the 47 columns.
 
 ## Verify Results
 
-There are four outcomes in a fight: Win (W), Loss (L), Draw (D), or No Contest (NC). Let's verify this.
+Check that there are only four outcomes in each row of the `res` (result) column: Win (W), Loss (L), Draw (D), or No Contest (NC). 
 
 ```{r}
 d %>%
@@ -102,8 +112,8 @@ Good. There are only four outcomes, as expected.
 In a fight, there are only 3 possible combinations of outcomes:
 
 1. One fighter wins, the other loses.
-2. The fight is a draw, in which case both fighters get a "D" on their record.
-3. The fight is a No Contest, in which case both fighters get an "NC" on their record.
+2. The fight is ruled a draw, in which case both fighters get a "D" on their record.
+3. The fight is a no contest, in which case both fighters get an "NC" on their record.
 
 ```{r}
 res_patterns <- d %>%
@@ -128,10 +138,68 @@ summarise(offenders)
 ```
 
 ```{r}
+# Check that ALL fights (unique fight_id) have valid entries for the res column
 d %>% distinct(fight_id) %>% count() %>% pull(n) %>% as.integer() == sum(res_patterns$is_valid)
 ```
 
-No fight had two winners or two losers or only one no contest (or draw). Every fight has a valid `res` column.
+No fight had two winners or two losers or only one no contest (or draw). Every fight has a valid entry for the `res` column.
+
+## Weight Classes
+
+The UFC has 8 official weight classes for men: 
+
+1. Flyweight
+2. Bantamweight
+3. Featherweight
+4. Lightweight
+5. Welterweight
+6. Middleweight
+7. Light Heavyweight
+8. Heavyweight
+
+
+For women, the UFC has 4 official weight classes:
+1. Strawweight
+2. Flyweight
+3. Bantamweight
+4. Featherweight
+
+
+And there's an additional weight class called "Catchweight", which is an agreed-upon weight limit for a fight that falls outside of the standard, officially-recognized weight classes.
+- A fight is usually in catchweight if one or both of the fighters "missed weight."
+
+```{r}
+d %>%
+  distinct(gender, weight_class) %>%
+  arrange(gender, weight_class)
+```
+
+
+```{r}
+# In the UFC, the Strawweight division has only ever been for women. No men's strawweight division. 
+d %>% filter(gender == "Men" & weight_class == "Strawweight")
+```
+
+How many unique fights are there across `(gender, weight_class)` combinations?
+
+```{r}
+d %>% 
+  distinct(fight_id, gender, weight_class) %>% 
+  count(gender, weight_class, sort = TRUE)
+```
+
+Set weight classes for men and women as factors.
+
+```{r}
+levels_all <- c("Strawweight", "Flyweight","Bantamweight","Featherweight","Lightweight",
+  "Welterweight","Middleweight","Light Heavyweight","Heavyweight","Catchweight")
+```
+
+```{r}
+d <- d %>%
+  mutate(weight_class = factor(weight_class, levels = levels_all))
+```
+
 
 
 ## Count Variables Cannot Be Negative
@@ -156,7 +224,7 @@ Great. No negative counts slipped their way into the dataset somehow.
 The [Unified Rules of Mixed Martial Arts](https://www.ufc.com/unified-rules-mixed-martial-arts) was adopted November 2000. So let's start from there. Our data will include fights starting from UFC 28: High Stakes.
 
 ```{r}
-unified_rules_adopted = "2000-11-01"
+unified_rules_adopted = "2000-11-01" # YYYY-MM-DD
 ```
 
 
@@ -166,13 +234,148 @@ d <- d %>%
 ```
 
 
+
+```{r}
+sum(d$sig_strikes_thrown < 5, na.rm = TRUE)
+```
+
+```{r}
+mean(d$sig_strikes_thrown < 5, na.rm = TRUE)
+```
+
+4% of fights have fighters who threw less than 5 significant strikes.
+
+```{r}
+sum(d$strikes_thrown < 5, na.rm = TRUE)
+```
+
+
+```{r}
+mean(d$strikes_thrown < 5, na.rm = TRUE)
+```
+
+Around 3% of fights have fighters who threw less than 5 total strikes.
+
+
+Good to know.
+
+```{r}
+# Strikes landed vs. strikes thrown - all fighters across all their fights
+ggplot(d, aes(x = strikes_thrown, y = strikes_landed)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0, linetype="dashed") +
+  coord_equal() +
+  labs(
+    x = "Strikes Thrown",
+    y = "Strikes Landed",
+    title = "Strikes Landed vs. Strikes Thrown"
+  )
+```
+
+
+
+```{r}
+# Strikes landed vs. strikes thrown
+ggplot(d, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0, linetype="dashed") +
+  coord_equal() +
+  labs(
+    x = "Significant Strikes Thrown",
+    y = "Significant Strikes Landed",
+    title = "Significant Strikes Landed vs. Significant Strikes Thrown"
+  )
+```
+
+
+
+
+
+```{r}
+# Include only fights where the fighter (pertaining to the row) threw more than 5 significant strikes
+MIN_SIG_STRIKES_THROWN = 5
+
+d %>%
+  filter(sig_strikes_thrown >= MIN_SIG_STRIKES_THROWN) %>%
+  mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown) %>%
+  ggplot(aes(x = sig_strike_acc)) +
+  geom_histogram(binwidth = 0.05, fill = "firebrick", color = "white") +
+  labs(
+    title = "Distribution of Signficant Strike Accuracy",
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+```
+
+```{r}
+# Include only fights where the fighter (pertaining to the row) threw more than 5 significant strikes
+MIN_SIG_STRIKES_THROWN = 5
+
+d2 <- d %>% 
+  filter(sig_strikes_thrown > MIN_SIG_STRIKES_THROWN) %>%
+  mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown)
+```
+
+
+```{r}
+levels_men <- c(
+  "Flyweight","Bantamweight","Featherweight","Lightweight",
+  "Welterweight","Middleweight","Light Heavyweight","Heavyweight","Catchweight"
+)
+```
+
+
+```{r}
+d2 %>%
+  filter(gender == "Men") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_men)) %>%
+  ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
+  geom_histogram(binwidth = 0.05, color = "white", show.legend = FALSE) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  facet_wrap(~ weight_class, ncol = 3, drop = TRUE) +
+  labs(
+    title = "Men's Distribution of Signficant Strike Accuracy Across Weight Classes",
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+```
+
+```{r}
+levels_women <- c(
+  "Strawweight", "Flyweight", "Bantamweight", "Middleweight"
+)
+```
+
+
+```{r}
+d2 %>%
+  filter(gender == "Women") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_women)) %>%
+  ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
+  geom_histogram(binwidth = 0.05, color = "white", show.legend = FALSE) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  facet_wrap(~ weight_class, ncol = 2, drop = TRUE) +
+  labs(
+    title = "Women's Distribution of Signficant Strike Accuracy Across Weight Classes",
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+```
+
+
+
+
+> Stopped here. Anything below is not good.
+
 Let's exclude fighters who've only fought once or twice.
 
 ```{r}
+MIN_NUM_FIGHTS = 3
+
 data <- d %>%
   distinct(fighter_id, fight_id, .keep_all = TRUE) %>%
   group_by(fighter_id) %>%
-  filter(n_distinct(fight_id) >= 3) %>%
+  filter(n_distinct(fight_id) >= MIN_NUM_FIGHTS) %>%
   ungroup()
 ```
 
@@ -183,7 +386,7 @@ Let's inspect fighters who have only fought once or twice.
 newbs <- d %>%
   distinct(fighter_id, fight_id, .keep_all = TRUE) %>%
   group_by(fighter_id) %>%
-  filter(n_distinct(fight_id) < 3) %>%
+  filter(n_distinct(fight_id) < MIN_NUM_FIGHTS) %>%
   ungroup()
 ```
 
@@ -243,7 +446,7 @@ data %>%
 ```
 
 
-Let's look at some simple lots.
+## Preliminary Plots
 
 ```{r}
 library(ggplot2)
@@ -259,7 +462,7 @@ ggplot(data, aes(x = strikes_thrown, y = strikes_landed)) +
   labs(
     x = "Strikes Thrown",
     y = "Strikes Landed",
-    title = "Strikes Landed vs. Thrown"
+    title = "Strikes Landed vs. Strikes Thrown"
   )
 ```
 
@@ -292,6 +495,20 @@ ggplot(data, aes(striking_accuracy)) +
 Need to fix the 0.0 and 1.0 accuracies. 0 fights or 1 fight Andys.
 
 
+```{r}
+ggplot(data, aes(sig_strikes_accuracy)) +
+  geom_histogram(bins = 30)
+```
+
+
+
+
+```{r}
+sum(isna(data$sig_strikes_accuracy))
+```
+
+
+
 Do fighters tend to land more than their opponent?
 
 ```{r}
@@ -309,28 +526,21 @@ ggplot(data, aes(sig_strikes_accuracy)) +
 
 
 
+# Model-Ready Data
+
+
+Since we're building a model to estimate the striking ability of fighters, we need to drop rows where there were no significant strikes thrown. We use significant strikes thrown and landed as noisy-but-good-enough measures of each fighter's offensive ability in a fight. Defensive ability is 
 
 ```{r}
-# library(tidyverse)
-# library(brms)
-# library(cmdstanr)
-# library(posterior)
-# library(loo)
-# library(bayesplot)
-# library(tidybayes)
+sum(d$sig_strikes_thrown == 0)
 ```
 
 
 
-
-
-
-
-
-
-
-
-
+```{r}
+d %>%
+  filter(sig_strikes_thrown == 0)
+```
 
 
 
