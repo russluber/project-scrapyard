@@ -214,15 +214,6 @@ if (file.exists(OUT_CSV) && nrow(parsed) > 0) {
 }
 write_csv(out, OUT_CSV)
 
-# # Write error log (only rows with errors)
-# if (length(err_list) > 0) {
-#   err_tbl <- tibble(
-#     path = todo$path,
-#     fight_id = todo$fight_id,
-#     error_msg = map_chr(err_list, ~ if (is.null(.x)) NA_character_ else conditionMessage(.x))
-#   ) %>% filter(!is.na(error_msg))
-#   if (nrow(err_tbl) > 0) write_csv(err_tbl, ERR_CSV)
-# }
 
 message("Parsed new fights : ", nrow(parsed))
 message("Output written to: ", OUT_CSV)
