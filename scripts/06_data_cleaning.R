@@ -25,6 +25,12 @@ parse_mmss <- function(x) {
   out
 }
 
+# --- Weight class & gender ---
+classes_re <- regex(
+  "Strawweight|Flyweight|Bantamweight|Featherweight|Lightweight|Welterweight|Middleweight|Light Heavyweight|Heavyweight|Catchweight",
+  ignore_case = TRUE
+)
+
 
 # ------------------------------------------------------------------------------
 # Base df creation
@@ -83,9 +89,7 @@ df <- df %>%
   mutate(
     gender = if_else(stringr::str_starts(weight_class, "Women"), "Women", "Men"),
     weight_class = stringr::str_extract(
-      weight_class,
-      regex("Strawweight|Flyweight|Bantamweight|Featherweight|Lightweight|Welterweight|Middleweight|Heavyweight|Catchweight", ignore_case = TRUE)
-    ),
+      weight_class, classes_re),
     weight_class = if_else(is.na(weight_class), "Catchweight", stringr::str_to_title(weight_class))
   ) %>%
   mutate(
@@ -93,8 +97,8 @@ df <- df %>%
     weight_class = factor(
       weight_class,
       levels = c(
-        "Strawweight", "Flyweight", "Bantamweight", "Featherweight",
-        "Lightweight", "Welterweight", "Middleweight", "Heavyweight", "Catchweight"
+        "Strawweight", "Flyweight", "Bantamweight", "Featherweight", "Lightweight",
+        "Welterweight", "Middleweight", "Light Heavyweight", "Heavyweight", "Catchweight"
       )
     )
   ) %>%
