@@ -19,7 +19,9 @@ root/
 │   ├── 03_fetch_fight_pages.R
 │   ├── 04_parse_fight_pages.R
 │   ├── 05_join_event_metadata.R
-│   └── 06_data_cleaning.R
+│   ├── 06_data_cleaning.R
+│   ├── 07_fetch_fighter_pages.R
+│   └── 08_parse_fighter_pages.R
 │
 ├── R/                          # Helper R scripts for modeling & visualization
 │   ├── prep_accuracy_data.R    # Builds y/n + factor IDs for modeling
