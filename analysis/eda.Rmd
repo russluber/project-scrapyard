@@ -13,15 +13,60 @@ library(here)
 Load in the data.
 
 ```{r}
-d <- read_csv(here("data/clean/fight_data.csv"))
+fights <- read_csv(here("data/clean/fight_data.csv"))
+```
+
+
+```{r}
+fighters <- read_csv(here("data/raw/fighters_data_raw.csv"))
 ```
 
 
 # Data Validation
 
+```{r}
+glimpse(fighters)
+```
+
+```{r}
+fighters %>%
+  summarise(across(everything(), ~ sum(is.na(.)))) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "column",
+    values_to = "na_count"
+  ) %>%
+  arrange(desc(na_count))
+```
+
+```{r}
+unique(fighters$stance)
+```
+
+```{r}
+fighters %>%
+  select(where(is.numeric)) %>%
+  pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
+  group_by(variable) %>%
+  summarise(
+    n = sum(!is.na(value)),
+    missing = sum(is.na(value)),
+    mean = mean(value, na.rm = TRUE),
+    sd = sd(value, na.rm = TRUE),
+    min = min(value, na.rm = TRUE),
+    q25 = quantile(value, 0.25, na.rm = TRUE),
+    median = median(value, na.rm = TRUE),
+    q75 = quantile(value, 0.75, na.rm = TRUE),
+    max = max(value, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+
+
 Snapshot of the columns, col types, and values.
 ```{r}
-glimpse(d)
+glimpse(fights)
 ```
 
 ## String Clean Up
@@ -29,7 +74,7 @@ glimpse(d)
 Remove leading and trailing whitespace in entries from columns that are strings (characters).
 
 ```{r}
-d <- d %>%
+fights <- fights %>%
   mutate(across(where(is.character), ~ str_trim(.x, side="both")))
 ```
 
@@ -41,17 +86,17 @@ I built a fighter-centric dataset, which means the key is `(fighter_id, fight_id
 Any duplicate rows?
 
 ```{r}
-d %>% count(fighter_id, fight_id) %>% filter(n > 1)
+fights %>% count(fighter_id, fight_id) %>% filter(n > 1)
 ```
 
 No duplicate rows. Good.
 
 ## Check the Dates
 
-According to [Wikipedia] (https://en.wikipedia.org/wiki/Ultimate_Fighting_Championship), the UFC was founded on November 12, 1993. Sanity check: there should be no fights in the dataset before that!
+According to [Wikipedia] (https://en.wikipedia.org/wiki/Ultimate_Fighting_Championship), the UFC debuted its first event on November 12, 1993. Sanity check: there should be no fights in the dataset before that!
 
 ```{r}
-d %>%
+fights %>%
   summarise(
     earliest_fight = min(date),
     latest_fight = max(date)
@@ -63,7 +108,7 @@ The earliest fight in the dataset happened on March 11, 1994. Great.
 
 Just in case `summarise()` somehow missed anything:
 ```{r}
-d %>%
+fights %>%
   filter(date < as.Date("1993-11-12") | date > Sys.Date()) %>%
   arrange(date)
 ```
@@ -74,7 +119,7 @@ Good. No fight data before the UFC was founded and no future fight data that has
 How many unique fights are there (that we have data on)?
 
 ```{r}
-d %>%
+fights %>%
   summarise(n_unique_fights = n_distinct(fight_id))
 ```
 
@@ -83,7 +128,7 @@ d %>%
 Are there missing values (`NANs`) in the data?
 
 ```{r}
-d %>%
+fights %>%
   summarise(across(everything(), ~ sum(is.na(.)))) %>%
   pivot_longer(
     cols = everything(),
@@ -102,7 +147,7 @@ No missing data across all entries of the 47 columns.
 Check that there are only four outcomes in each row of the `res` (result) column: Win (W), Loss (L), Draw (D), or No Contest (NC). 
 
 ```{r}
-d %>%
+fights %>%
   distinct(res) %>%
   arrange(desc(res))
 ```
@@ -116,7 +161,7 @@ In a fight, there are only 3 possible combinations of outcomes:
 3. The fight is a no contest, in which case both fighters get an "NC" on their record.
 
 ```{r}
-res_patterns <- d %>%
+res_patterns <- fights %>%
   count(fight_id, res) %>%
   arrange(fight_id, res) %>%
   group_by(fight_id) %>%
@@ -129,7 +174,7 @@ res_patterns <- d %>%
 
 invalid_ids <- res_patterns %>% filter(!is_valid) %>% pull(fight_id)
 
-offenders   <- d %>% filter(fight_id %in% invalid_ids)
+offenders   <- fights %>% filter(fight_id %in% invalid_ids)
 ```
 
 
@@ -139,7 +184,7 @@ summarise(offenders)
 
 ```{r}
 # Check that ALL fights (unique fight_id) have valid entries for the res column
-d %>% distinct(fight_id) %>% count() %>% pull(n) %>% as.integer() == sum(res_patterns$is_valid)
+fights %>% distinct(fight_id) %>% count() %>% pull(n) %>% as.integer() == sum(res_patterns$is_valid)
 ```
 
 No fight had two winners or two losers or only one no contest (or draw). Every fight has a valid entry for the `res` column.
@@ -169,7 +214,7 @@ And there's an additional weight class called "Catchweight", which is an agreed-
 - A fight is usually in catchweight if one or both of the fighters "missed weight."
 
 ```{r}
-d %>%
+fights %>%
   distinct(gender, weight_class) %>%
   arrange(gender, weight_class)
 ```
@@ -177,13 +222,13 @@ d %>%
 
 ```{r}
 # In the UFC, the Strawweight division has only ever been for women. No men's strawweight division. Verify that
-d %>% filter(gender == "Men" & weight_class == "Strawweight")
+fights %>% filter(gender == "Men" & weight_class == "Strawweight")
 ```
 
 How many unique fights are there across `(gender, weight_class)` combinations?
 
 ```{r}
-d %>% 
+fights %>% 
   distinct(fight_id, gender, weight_class) %>% 
   count(gender, weight_class, sort = TRUE)
 ```
@@ -196,7 +241,7 @@ levels_all <- c("Strawweight", "Flyweight","Bantamweight","Featherweight","Light
 ```
 
 ```{r}
-d <- d %>%
+fights <- fights %>%
   mutate(weight_class = factor(weight_class, levels = levels_all))
 ```
 
@@ -209,7 +254,7 @@ gender_levels = c("Men", "Women")
 
 
 ```{r}
-d <- d %>%
+fights <- fights %>%
   mutate(gender = factor(gender, levels = gender_levels))
 ```
 
@@ -219,7 +264,7 @@ d <- d %>%
 Variables like `strikes_landed`, `ctrl_time_s`, `td_stuffed`, and many (in fact most) of the variables in the dataset can be 0 but can't be negative.
 
 ```{r}
-summary_nonneg <- d %>%
+summary_nonneg <- fights %>%
   summarise(across(where(is.numeric), ~ sum(. < 0, na.rm = TRUE))) %>%
   tidyr::pivot_longer(everything(), names_to = "column", values_to = "n_negatives") %>%
   mutate(nonneg_ok = n_negatives == 0) %>%
@@ -241,7 +286,7 @@ unified_rules_adopted = "2000-11-01" # YYYY-MM-DD
 
 
 ```{r}
-d <- d %>%
+fights <- fights %>%
   filter(date >= as.Date(unified_rules_adopted))
 ```
 
@@ -249,13 +294,13 @@ d <- d %>%
 How many rows have less than 5 significant strikes thrown?
 
 ```{r}
-sum(d$sig_strikes_thrown < 5, na.rm = TRUE)
+sum(fights$sig_strikes_thrown < 5, na.rm = TRUE)
 ```
 
 What percent of the data is that?
 
 ```{r}
-mean(d$sig_strikes_thrown < 5, na.rm = TRUE)
+mean(fights$sig_strikes_thrown < 5, na.rm = TRUE)
 ```
 
 4% of fights have fighters who threw less than 5 significant strikes.
@@ -264,12 +309,12 @@ mean(d$sig_strikes_thrown < 5, na.rm = TRUE)
 What about just the plain old strikes thrown?
 
 ```{r}
-sum(d$strikes_thrown < 5, na.rm = TRUE)
+sum(fights$strikes_thrown < 5, na.rm = TRUE)
 ```
 
 
 ```{r}
-mean(d$strikes_thrown < 5, na.rm = TRUE)
+mean(fights$strikes_thrown < 5, na.rm = TRUE)
 ```
 
 Around 3% of fights have fighters who threw less than 5 total strikes.
@@ -282,7 +327,7 @@ Good to know.
 Get an overall feel for the numeric data columns.
 
 ```{r}
-d %>%
+fights %>%
   select(where(is.numeric)) %>%
   pivot_longer(everything(), names_to = "variable", values_to = "value") %>%
   group_by(variable) %>%
@@ -307,7 +352,7 @@ Many of these columns have the same distributions due to correlations and the re
 
 ```{r}
 # Strikes landed vs. strikes thrown - all fighters across all their fights
-ggplot(d, aes(x = strikes_thrown, y = strikes_landed)) +
+ggplot(fights, aes(x = strikes_thrown, y = strikes_landed)) +
   geom_point(alpha = 0.5) +
   geom_abline(slope = 1, intercept = 0, linetype="dashed") +
   coord_equal() +
@@ -322,7 +367,7 @@ ggplot(d, aes(x = strikes_thrown, y = strikes_landed)) +
 
 ```{r}
 # Strikes landed vs. strikes thrown
-ggplot(d, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
+ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
   geom_point(alpha = 0.5) +
   geom_abline(slope = 1, intercept = 0, linetype="dashed") +
   coord_equal() +
@@ -343,7 +388,7 @@ These definitions are inherently subjective.
 
 ```{r}
 # Strikes landed vs. strikes thrown
-ggplot(d, aes(x = sig_strikes_thrown, y = sig_strikes_landed, color = weight_class)) +
+ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed, color = weight_class)) +
   geom_point(alpha = 0.5) +
   geom_abline(slope = 1, intercept = 0, linetype="dashed") +
   coord_equal() +
@@ -363,7 +408,7 @@ Visualize distribution of significant strike accuracy (for fights with more than
 # Include only fights where the fighter (pertaining to the row) threw more than 5 significant strikes
 MIN_SIG_STRIKES_THROWN = 5
 
-d %>%
+fights %>%
   filter(sig_strikes_thrown >= MIN_SIG_STRIKES_THROWN) %>%
   mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown) %>%
   ggplot(aes(x = sig_strike_acc)) +
@@ -380,7 +425,7 @@ d %>%
 # Include only fights where the fighter (pertaining to the row) threw more than 5 significant strikes
 MIN_SIG_STRIKES_THROWN = 5
 
-d2 <- d %>% 
+fights_2 <- fights %>% 
   filter(sig_strikes_thrown > MIN_SIG_STRIKES_THROWN) %>%
   mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown)
 ```
@@ -395,7 +440,7 @@ levels_men <- c(
 
 
 ```{r}
-d2 %>%
+fights_2 %>%
   filter(gender == "Men") %>%
   mutate(weight_class = forcats::fct_relevel(weight_class, levels_men)) %>%
   ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
@@ -417,7 +462,7 @@ levels_women <- c(
 
 
 ```{r}
-d2 %>%
+fights_2 %>%
   filter(gender == "Women") %>%
   mutate(weight_class = forcats::fct_relevel(weight_class, levels_women)) %>%
   ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
@@ -435,7 +480,7 @@ d2 %>%
 Distribution of significant strikes landed vs. significant strikes avoided.
 
 ```{r}
-d2 %>%
+fights_2 %>%
   ggplot(aes(x = sig_strikes_landed, y = sig_strikes_avoided)) +
   geom_point(alpha = 0.2, size = 1) +
   geom_abline(slope = 1, intercept = 0, linetype="dashed", color = "red") +
@@ -458,16 +503,16 @@ How does significant strike accuracy vary across fighters? What is the mean sign
 ```{r}
 MIN_NUM_FIGHTS = 3
 
-per_fighter <- d2 %>%
+per_fighter <- fights_2 %>%
   group_by(fighter_id, fighter) %>%
   summarize(
     mean_sig_acc = mean(sig_strike_acc, na.rm = TRUE),
-    fights = n(),
+    num_fights = n(),
     .groups = "drop"
   )
 
 per_fighter %>%
-  filter(fights >= MIN_NUM_FIGHTS) %>%
+  filter(num_fights >= MIN_NUM_FIGHTS) %>%
   filter(is.finite(mean_sig_acc), between(mean_sig_acc, 0, 1)) %>%
   ggplot(aes(x = mean_sig_acc)) +
   geom_histogram(binwidth = 0.05, color = "white") +
@@ -483,18 +528,18 @@ This is the average of fight significant strike accuracies.
 
 
 ```{r}
-per_fighter_weighted <- d2 %>%
+per_fighter_weighted <- fights_2 %>%
   group_by(fighter_id, fighter) %>%
   summarize(
     total_landed = sum(sig_strikes_landed, na.rm = TRUE),
     total_thrown = sum(sig_strikes_thrown, na.rm = TRUE),
     overall_sig_acc = if_else(total_thrown > 0, total_landed / total_thrown, NA_real_),
-    fights = n(),
+    num_fights = n(),
     .groups = "drop"
   )
 
 per_fighter_weighted %>%
-  filter(fights >= MIN_NUM_FIGHTS) %>%
+  filter(num_fights >= MIN_NUM_FIGHTS) %>%
   filter(is.finite(overall_sig_acc), between(overall_sig_acc, 0, 1)) %>%
   ggplot(aes(x = overall_sig_acc)) +
   geom_histogram(binwidth = 0.05, color = "white") +
@@ -509,39 +554,6 @@ This is overall accuracy. The number of significant strikes landed across all fi
 - This number is weighted by the number of significant strikes thrown.
 
 
-
-> Stopped here. Anything below is not good.
-
-Let's exclude fighters who've only fought once or twice.
-
-```{r}
-MIN_NUM_FIGHTS = 3
-
-data <- d %>%
-  distinct(fighter_id, fight_id, .keep_all = TRUE) %>%
-  group_by(fighter_id) %>%
-  filter(n_distinct(fight_id) >= MIN_NUM_FIGHTS) %>%
-  ungroup()
-```
-
-
-Let's inspect fighters who have only fought once or twice.
-
-```{r}
-newbs <- d %>%
-  distinct(fighter_id, fight_id, .keep_all = TRUE) %>%
-  group_by(fighter_id) %>%
-  filter(n_distinct(fight_id) < MIN_NUM_FIGHTS) %>%
-  ungroup()
-```
-
-There are 1069 rows for newbies (fighter-centric). 
-
-
-## Defining New Variables
-
-Transform some variables to get striking accuracy measures.
-
 The basic accuracy metric of each fighter, for each fight, will be the ratio between the amount of strikes (punches, kicks, knees, elbows) that hit the opponent and the total number of strikes they threw.
 
 $$\text{striking accuracy} = \frac{\text{strikes landed}}{\text{strikes thrown}}$$
@@ -551,142 +563,14 @@ Import caveat: What counts as a strike and how does the UFC count a strike?
 - What is the difference between a strike and a significant strike? What makes a strike significant? Need to understand that distinction.
 
 
-```{r}
-data <- data %>%
-  # Retain striking and striking-relevant variables only + contextual variables for now
-  select(
-    -any_of(
-      c("tds_landed", "tds_attempted", "tds_stuffed", "subs_attempted", "reversals", "ctrl_time_s",
-        "tds_landed_by_opp", "subs_attempted_by_opp", "reversals_by_opp", "ctrl_time_s_for_opp")
-      )
-  ) %>%
-  # Create striking metrics
-  mutate(
-    # Offensive strike metrics against opponent
-    striking_accuracy = if_else(strikes_thrown > 0, strikes_landed / strikes_thrown, 0),
-    sig_strikes_accuracy = if_else(sig_strikes_thrown > 0, sig_strikes_landed / sig_strikes_thrown, 0),
-    sig_strikes_prop = if_else(sig_strikes_thrown > 0, sig_strikes_thrown / strikes_thrown, 0),
-    volume_strikes_accuracy = if_else(volume_strikes_thrown > 0, volume_strikes_landed / volume_strikes_thrown, 0),
-    # Defensive strike metrics for fighter
-    strikes_avoided_prop = if_else(strikes_thrown_by_opp > 0, strikes_avoided / strikes_thrown_by_opp, 0),
-    sig_strikes_avoided_prop = if_else(sig_strikes_thrown_by_opp > 0, sig_strikes_avoided / sig_strikes_thrown_by_opp, 0),
-    volume_strikes_avoided_prop = if_else(volume_strikes_thrown_by_opp > 0,
-                                          volume_strikes_avoided / volume_strikes_thrown_by_opp, 0),
-    # Striking damage metrics against fighter
-    strikes_absorbed_prop = if_else(strikes_thrown_by_opp > 0, strikes_landed_by_opp / strikes_thrown_by_opp, 0),
-    sig_strikes_absorbed_prop = if_else(sig_strikes_thrown_by_opp > 0, 
-                                        sig_strikes_landed_by_opp/ sig_strikes_thrown_by_opp, 0),
-    volume_strikes_absorbed_prop = if_else(volume_strikes_thrown_by_opp > 0,
-                                           volume_strikes_landed_by_opp / volume_strikes_thrown_by_opp, 0)
-  )
-```
-
-
-
-```{r}
-data %>%
-  summarise(mean_sig_strike_acc = mean(sig_strikes_accuracy, na.rm = TRUE),
-            .by = fighter) %>%
-  arrange(desc(mean_sig_strike_acc))
-```
-
-
-## Preliminary Plots
-
-```{r}
-library(ggplot2)
-```
-
-
-```{r}
-# Strikes landed vs. strikes thrown - all fighters across all their fights
-ggplot(data, aes(x = strikes_thrown, y = strikes_landed)) +
-  geom_point(alpha = 0.5) +
-  geom_abline(slope = 1, intercept = 0, linetype="dashed") +
-  coord_equal() +
-  labs(
-    x = "Strikes Thrown",
-    y = "Strikes Landed",
-    title = "Strikes Landed vs. Strikes Thrown"
-  )
-```
 
 All fighters, across all their fights, are never 100% accurate with their strikes. They always throw more strikes than they land. Captain Obvious over here, but good to know we can see it in the data.
-
-
-
-```{r}
-# Significant strikes landed vs strikes thrown
-ggplot(data, aes(x = strikes_thrown, y = sig_strikes_landed)) +
-  geom_point()
-```
-
-
-```{r}
-# Strikes landed vs. strikes thrown by weight class
-ggplot(data, aes(x = strikes_thrown, y = sig_strikes_landed)) +
-  geom_point(alpha = 0.6) +
-  facet_wrap(~ weight_class, ncol = 3)
-```
-
-Basic finding: Fighters thrown more than they land (obviously). 
-
-
-```{r}
-ggplot(data, aes(striking_accuracy)) +
-  geom_histogram(bins = 30)
-```
-
-Need to fix the 0.0 and 1.0 accuracies. 0 fights or 1 fight Andys.
-
-
-```{r}
-ggplot(data, aes(sig_strikes_accuracy)) +
-  geom_histogram(bins = 30)
-```
-
-
-
-
-```{r}
-sum(isna(data$sig_strikes_accuracy))
-```
-
-
-
-Do fighters tend to land more than their opponent?
-
-```{r}
-ggplot(data, aes(x = strikes_thrown, y = strikes_thrown_by_opp)) +
-  geom_point()
-```
-
-
-```{r}
-ggplot(data, aes(sig_strikes_accuracy)) +
-  geom_histogram(bins = 30) +
-  facet_wrap(~ method)
-```
-
-
 
 
 # Model-Ready Data
 
 
-Since we're building a model to estimate the striking ability of fighters, we need to drop rows where there were no significant strikes thrown. We use significant strikes thrown and landed as noisy-but-good-enough measures of each fighter's offensive ability in a fight. Defensive ability is 
-
-```{r}
-sum(d$sig_strikes_thrown == 0)
-```
-
-
-
-```{r}
-d %>%
-  filter(sig_strikes_thrown == 0)
-```
-
+Since we're building a model to estimate the striking ability of fighters, we need to drop rows where there were no significant strikes thrown. We use the ratio between the significant strikes landed and thrown as noisy-but-good-enough measures of each fighter's offensive ability in a fight. Similarly, we use the ratio between the significant strikes landed and thrown by the opponent as a measure of each fighter's defensive ability.
 
 
 
