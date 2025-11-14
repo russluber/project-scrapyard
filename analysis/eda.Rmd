@@ -351,6 +351,75 @@ Many of these columns have the same distributions due to correlations and the re
 # Preliminary Plots
 
 ```{r}
+library(ggplot2)
+
+theme_striking <- function(base_size = 11, base_family = "sans") {
+  theme_minimal(base_size = base_size, base_family = base_family) +
+    theme(
+      # Titles
+      plot.title = element_text(
+        face = "bold",
+        hjust = 0,
+        size = base_size + 2
+      ),
+      plot.subtitle = element_text(
+        hjust = 0,
+        size = base_size
+      ),
+      plot.caption = element_text(
+        hjust = 1,
+        size  = base_size - 2,
+        color = "grey40"
+      ),
+      
+      # Axes
+      axis.title.x = element_text(
+        margin = margin(t = 8),
+        face   = "bold"
+      ),
+      axis.title.y = element_text(
+        margin = margin(r = 8),
+        face   = "bold"
+      ),
+      axis.text.x = element_text(
+        size  = base_size - 1,
+        angle = 0,
+        vjust = 1
+      ),
+      axis.text.y = element_text(
+        size = base_size - 1
+      ),
+      
+      # Grid lines: a bit lighter since striking plots can be busy
+      panel.grid.major.x = element_line(linewidth = 0.25),
+      panel.grid.major.y = element_line(linewidth = 0.25),
+      panel.grid.minor   = element_blank(),
+      
+      # Facet strips
+      strip.background = element_rect(
+        fill  = "grey90",
+        color = "grey70",
+        linewidth = 0.5
+      ),
+      strip.text = element_text(
+        face = "bold",
+        size = base_size - 1
+      ),
+      
+      # Legend
+      legend.position = "right",
+      legend.title    = element_text(face = "bold"),
+      legend.text     = element_text(size = base_size - 1),
+      
+      # Margins
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+    )
+}
+```
+
+
+
+```{r}
 # Strikes landed vs. strikes thrown - all fighters across all their fights
 ggplot(fights, aes(x = strikes_thrown, y = strikes_landed)) +
   geom_point(alpha = 0.5) +
@@ -360,23 +429,39 @@ ggplot(fights, aes(x = strikes_thrown, y = strikes_landed)) +
     x = "Strikes Thrown",
     y = "Strikes Landed",
     title = "Strikes Landed vs. Strikes Thrown"
-  )
+  ) +
+  theme_striking()
 ```
 
 
 
 ```{r}
 # Strikes landed vs. strikes thrown
-ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
+sig_strikes_landed_vs_thrown_scatter <- ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
   geom_point(alpha = 0.5) +
-  geom_abline(slope = 1, intercept = 0, linetype="dashed") +
+  geom_abline(slope = 1, intercept = 0, linetype="dashed", color = "chartreuse4", linewidth = 0.7) +
   coord_equal() +
   labs(
     x = "Significant Strikes Thrown",
     y = "Significant Strikes Landed",
     title = "Significant Strikes Landed vs. Significant Strikes Thrown"
-  )
+  ) +
+  theme_striking()
+
+sig_strikes_landed_vs_thrown_scatter
 ```
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "sig_strikes_landed_vs_thrown_scatter.png"),
+  plot     = sig_strikes_landed_vs_thrown_scatter,
+  width    = 6,
+  height   = 4,
+  dpi      = 300,
+  bg       = "white"
+)
+```
+
 
 
 Strikes and significant strikes are correlated for sure. In particular, *significant* strikes are a subset of strikes. 
@@ -391,12 +476,12 @@ These definitions are inherently subjective.
 ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed, color = weight_class)) +
   geom_point(alpha = 0.5) +
   geom_abline(slope = 1, intercept = 0, linetype="dashed") +
-  coord_equal() +
   labs(
     x = "Significant Strikes Thrown",
     y = "Significant Strikes Landed",
     title = "Significant Strikes: Landed vs. Thrown by Weight Class"
-  )
+  ) +
+  theme_striking()
 ```
 
 Looks like a mess. Too many colors.
@@ -408,7 +493,7 @@ Visualize distribution of significant strike accuracy (for fights with more than
 # Include only fights where the fighter (pertaining to the row) threw more than 5 significant strikes
 MIN_SIG_STRIKES_THROWN = 5
 
-fights %>%
+sig_strike_acc_hist <- fights %>%
   filter(sig_strikes_thrown >= MIN_SIG_STRIKES_THROWN) %>%
   mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown) %>%
   ggplot(aes(x = sig_strike_acc)) +
@@ -417,8 +502,23 @@ fights %>%
     title = "Distribution of Signficant Strike Accuracy",
     x = "Significant Strike Accuracy",
     y = "Count"
-  )
+  ) +
+  theme_striking()
+
+sig_strike_acc_hist
 ```
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "sig_strike_acc_hist.png"),
+  plot     = sig_strike_acc_hist,
+  width    = 6,
+  height   = 4,
+  dpi      = 300,
+  bg       = "white"
+)
+```
+
 
 
 ```{r}
@@ -440,7 +540,7 @@ levels_men <- c(
 
 
 ```{r}
-fights_2 %>%
+sig_strike_acc_by_weight_men <- fights_2 %>%
   filter(gender == "Men") %>%
   mutate(weight_class = forcats::fct_relevel(weight_class, levels_men)) %>%
   ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
@@ -451,8 +551,25 @@ fights_2 %>%
     title = "Men's Distribution of Signficant Strike Accuracy Across Weight Classes",
     x = "Significant Strike Accuracy",
     y = "Count"
-  )
+  ) +
+  theme_striking()
+
+sig_strike_acc_by_weight_men
 ```
+
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "sig_strike_acc_by_weight_men.png"),
+  plot     = sig_strike_acc_by_weight_men,
+  width    = 8,
+  height   = 5,
+  dpi      = 300,
+  bg       = "white"
+)
+```
+
+
 
 ```{r}
 levels_women <- c(
@@ -462,7 +579,7 @@ levels_women <- c(
 
 
 ```{r}
-fights_2 %>%
+sig_strike_acc_by_weight_women <- fights_2 %>%
   filter(gender == "Women") %>%
   mutate(weight_class = forcats::fct_relevel(weight_class, levels_women)) %>%
   ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
@@ -473,23 +590,53 @@ fights_2 %>%
     title = "Women's Distribution of Signficant Strike Accuracy Across Weight Classes",
     x = "Significant Strike Accuracy",
     y = "Count"
-  )
+  ) +
+  theme_striking()
+
+sig_strike_acc_by_weight_women
+```
+
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "sig_strike_acc_by_weight_women.png"),
+  plot     = sig_strike_acc_by_weight_women,
+  width    = 8,
+  height   = 5,
+  dpi      = 300,
+  bg       = "white"
+)
 ```
 
 
 Distribution of significant strikes landed vs. significant strikes avoided.
 
 ```{r}
-fights_2 %>%
+sig_strikes_landed_vs_avoided_scatter <- fights_2 %>%
   ggplot(aes(x = sig_strikes_landed, y = sig_strikes_avoided)) +
   geom_point(alpha = 0.2, size = 1) +
-  geom_abline(slope = 1, intercept = 0, linetype="dashed", color = "red") +
+  geom_abline(slope = 1, intercept = 0, linetype="dashed", color = "chartreuse4", linewidth = 0.7) +
   coord_equal() +
   labs(
     x = "Significant Strikes Landed",
     y = "Significant Strikes Avoided",
     title = "Significant Strikes: Landed vs. Avoided"
-  )
+  ) +
+  theme_striking()
+
+sig_strikes_landed_vs_avoided_scatter
+```
+
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "sig_strikes_landed_vs_avoided_scatter.png"),
+  plot     = sig_strikes_landed_vs_avoided_scatter,
+  width    = 8,
+  height   = 5,
+  dpi      = 300,
+  bg       = "white"
+)
 ```
 
 
@@ -518,7 +665,8 @@ per_fighter %>%
   geom_histogram(binwidth = 0.05, color = "white") +
   scale_x_continuous(labels = scales::percent_format(1)) +
   labs(title = "Per-Fighter Mean Significant Strike Accuracy",
-       x = "Mean Accuracy", y = "Count")
+       x = "Mean Accuracy", y = "Count") +
+  theme_striking()
 ```
 
 This is the average of fight significant strike accuracies.
@@ -545,7 +693,8 @@ per_fighter_weighted %>%
   geom_histogram(binwidth = 0.05, color = "white") +
   scale_x_continuous(labels = scales::percent_format(1)) +
   labs(title = "Per-Fighter Overall Significant Strike Accuracy",
-       x = "Overall accuracy", y = "Count")
+       x = "Overall accuracy", y = "Count") +
+  theme_striking()
 
 ```
 
@@ -565,6 +714,175 @@ Import caveat: What counts as a strike and how does the UFC count a strike?
 
 
 All fighters, across all their fights, are never 100% accurate with their strikes. They always throw more strikes than they land. Captain Obvious over here, but good to know we can see it in the data.
+
+# Career (Survival Analysis)
+
+```{r}
+library(dplyr)
+library(lubridate)
+```
+
+```{r}
+today <- as_date(Sys.Date())         # or fix a reference date
+inactive_cutoff_years <- 2
+
+careers <- fights %>%
+  group_by(fighter_id) %>%
+  summarise(
+    fighter = first(fighter),
+    gender = first(gender),
+    weight_class = first(weight_class),
+    first_fight = min(date),
+    last_fight = max(date),
+    n_fights = n()
+  ) %>%
+  mutate(
+    career_length_years = as.numeric(last_fight - first_fight) / 365,
+    inactive_years = as.numeric(today - last_fight) / 365,
+    event = if_else(inactive_years >= inactive_cutoff_years, 1, 0)
+  )
+```
+
+If `event` is 1, then the fighter has been inactive for at least 2 years. Otherwise, if `event` is 0, then the fighter has been inactive for less than that. We treat this as still active, so the observation is right censored.
+
+
+```{r}
+careers %>%
+  count(event)
+```
+
+```{r}
+library(ggplot2)
+
+theme_careers <- function(base_size = 12, base_family = "sans") {
+  theme_minimal(base_size = base_size, base_family = base_family) +
+    theme(
+      # Titles and subtitles
+      plot.title = element_text(
+        face = "bold",
+        hjust = 0,
+        size = base_size + 2
+      ),
+      plot.subtitle = element_text(
+        hjust = 0,
+        size = base_size
+      ),
+      
+      # Axis titles and text
+      axis.title.x = element_text(
+        margin = margin(t = 8),
+        face = "bold"
+      ),
+      axis.title.y = element_text(
+        margin = margin(r = 8),
+        face = "bold"
+      ),
+      axis.text = element_text(size = base_size - 1),
+      
+      # Panel grid lines
+      panel.grid.major.x = element_line(linewidth = 0.3),
+      panel.grid.major.y = element_line(linewidth = 0.3),
+      panel.grid.minor = element_blank(),
+      
+      # Legend
+      legend.position = "bottom",
+      legend.title = element_blank(),
+      legend.text = element_text(size = base_size - 1),
+      
+      # Plot margins
+      plot.margin = margin(t = 10, r = 10, b = 10, l = 10)
+    )
+}
+
+```
+
+
+
+```{r}
+career_length_hist <- ggplot(careers, aes(career_length_years)) +
+  geom_histogram(binwidth = 1, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribution of UFC Career Lengths",
+    x = "Career Length (years)",
+    y = "Number of Fighters"
+  ) +
+  theme_careers()
+
+career_length_hist
+```
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "career_length_hist.png"),
+  plot     = career_length_hist,
+  width    = 8,
+  height   = 5,
+  dpi      = 300,
+  bg       = "white"
+)
+```
+
+
+
+
+```{r}
+career_length_by_weight_boxplot <- ggplot(careers, aes(x = weight_class, y = career_length_years, fill = weight_class)) +
+  geom_boxplot(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Career Length by Weight Class",
+    x = "Weight Class",
+    y = "Career Length (years)"
+  ) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_careers()
+
+career_length_by_weight_boxplot
+```
+
+
+```{r}
+ggsave(
+  filename = here("reports", "midterm", "figs", "career_length_by_weight_boxplot.png"),
+  plot     = career_length_by_weight_boxplot,
+  width    = 8,
+  height   = 5,
+  dpi      = 300,
+  bg       = "white"
+)
+```
+
+
+
+```{r}
+ggplot(careers, aes(n_fights, career_length_years)) +
+  geom_point(alpha = 0.3) +
+  labs(
+    title = "Number of UFC Fights vs Career Length",
+    x = "Total UFC Fights",
+    y = "Career Length (years)"
+  ) +
+  theme_careers()
+```
+
+
+
+```{r}
+library(survival)
+library(survminer)
+
+km <- survfit(Surv(career_length_years, event) ~ 1, data = careers)
+
+ggsurvplot(
+  km,
+  conf.int = TRUE,
+  risk.table = TRUE,
+  xlab = "Career length (years)",
+  ylab = "Proportion still active",
+  title = "Survival Curve for UFC Careers"
+)
+```
+
 
 
 # Model-Ready Data
