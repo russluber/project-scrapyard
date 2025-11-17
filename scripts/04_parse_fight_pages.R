@@ -205,15 +205,46 @@ if (length(parsed_list) > 0) {
   parsed <- tibble()
 }
 
+# Use the freshly parsed data as the numeric schema
+if (nrow(parsed) > 0) {
+  numeric_cols <- names(parsed)[vapply(parsed, is.numeric, logical(1))]
+  
+  coerce_numeric_cols <- function(df) {
+    df %>%
+      mutate(
+        across(
+          any_of(numeric_cols),
+          ~ suppressWarnings(as.numeric(.x))
+        )
+      )
+  }
+}
+
 # Append or write output
 if (file.exists(OUT_CSV) && nrow(parsed) > 0) {
   old <- read_csv(OUT_CSV, show_col_types = FALSE)
-  out <- bind_rows(old, parsed) %>% distinct(fight_id, .keep_all = TRUE)
-} else {
+  
+  # align types on numeric columns before binding
+  old    <- coerce_numeric_cols(old)
+  parsed <- coerce_numeric_cols(parsed)
+  
+  out <- bind_rows(old, parsed) %>%
+    distinct(fight_id, .keep_all = TRUE)
+  
+} else if (nrow(parsed) > 0) {
+  # first run or no existing file
   out <- parsed
+  
+} else if (file.exists(OUT_CSV)) {
+  # nothing new parsed, keep existing file as is
+  out <- read_csv(OUT_CSV, show_col_types = FALSE)
+  
+} else {
+  # no parsed rows and no existing file (weird edge case)
+  out <- tibble()
 }
-write_csv(out, OUT_CSV)
 
+write_csv(out, OUT_CSV)
 
 message("Parsed new fights : ", nrow(parsed))
 message("Output written to: ", OUT_CSV)
