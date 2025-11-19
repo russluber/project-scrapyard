@@ -11,7 +11,7 @@ root/
 ├── data/                       # All datasets
 │   ├── raw/                    # Untouched CSVs directly from scraping
 │   ├── clean/                  # Outputs from scripts/data_cleaning.R
-│   └── model/                  # Modeling-ready data (e.g., accuracy_sig_ready.rds)
+│   └── model/                  # Modeling-ready data (e.g. striking_df.rds)
 │
 ├── scripts/                    # Data scraping and cleaning pipeline
 │   ├── 01_fetch_event_cards.R
@@ -22,6 +22,7 @@ root/
 │   ├── 06_data_cleaning.R
 │   ├── 07_fetch_fighter_pages.R
 │   └── 08_parse_fighter_pages.R
+│   └── 09_make_striking_data.R
 │
 ├── R/                          # Helper R scripts for modeling & visualization
 │   ├── prep_accuracy_data.R    # Builds y/n + factor IDs for modeling
