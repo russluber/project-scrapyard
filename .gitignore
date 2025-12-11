@@ -15,6 +15,7 @@ data/model/**
 !data/raw/fighters_data_raw.csv
 !data/model/striking_df.csv
 !data/model/striking_df.rds
+!models/fits
 
 # === Quarto / Rmd caches ===
 **/_files/
