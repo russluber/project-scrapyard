@@ -1,0 +1,1190 @@
+---
+title: "Estimating the Striking Accuracy of UFC Fighters"
+author: "Russel Luber"
+format: pdf
+editor: visual
+---
+
+# Introduction
+
+Mixed Martial Arts (MMA) is a combat sport built on controlled aggression and technical skill. Under the [Unified Rules](https://www.abcboxing.com/wp-content/uploads/2024/07/unified-mma-rules-rev-july-2024.pdf), athletes may strike with punches, kicks, elbows, and knees, and may grapple using throws, takedowns, submissions, and ground control. The [Ultimate Fighting Championship](https://www.ufc.com/) (UFC), now more than three decades old, is the sport’s premier organization, staging events viewed by millions around the world.
+
+MMA performance rests on two broad pillars: striking and grappling. Striking focuses on inflicting damage from a distance or in close range, while grappling emphasizes controlling an opponent on the ground and threatening submissions. Both elements contribute to winning fights, but they do so in different and measurable ways.
+
+# Research Questions
+
+This project investigates two central questions about performance in UFC competition:
+
+1.  Which in-fight performance differential metric is the most predictive of winning?
+2.  What is each fighter's *latent* probability of landing a significant strike, after accounting for gender, weight class, and fight-to-fight randomness?
+
+Understanding which advantages translate most reliably into victory helps clarify what matters strategically inside the cage. Just as importantly, striking accuracy is a core determinant of offensive success: every significant strike thrown has the potential to meaningfully damage an opponent. Estimating each fighter’s latent ability to land these strikes provides insight into persistent skill differences that shape competitive outcomes.
+
+# Data Collection
+
+The data was collected from the [UFC Stats](http://www.ufcstats.com/statistics/events/completed) website was webscraped using the `rvest` package. The scripts for my webscraping pipeline can be found [here](https://github.com/russluber/project-scrapyard/tree/main/scripts). I made use of the `tidyverse` collection of packages to do data cleaning and exploratory data analysis.
+
+# Methodology
+
+To answer my research questions, I fit two separate statistical models: a predictive logistic regression model for win probability (RQ1) and a hierarchical Bayesian binomial model for significant strike accuracy (RQ2). The second model is motivated by results from the first.
+
+The first research question focuses on understanding which performance metrics are most predictive of winning a UFC fight. In particular, I chose four metrics: significant strike differential, takedown differential, knockdown differential, and control time differential.
+
+For each fight, I computed differential statistics by subtracting one fighter's performance from the other's. For example, if we have a fight between Fighter A and Fighter B, then Fighter A's significant strike differential would be:
+
+$$
+\text{Fighter A's sig. strike differential} = \text{sig. strikes landed by A} - \text{sig. strikes landed by B}
+$$
+
+Fighter B's significant strike differential would be the other way around. And the same goes for the other performance metrics of knockdown differentials, takedown differentials, and control time differentials.
+
+All predictors were then standardized so that regression coefficients reflect the effect of a one-standard deviation increase in each differential metric.
+
+I fit a **binomial logistic regression model** where the outcome is whether the fighter won (1) or lost (0). The model estimates how each standardized differential contributes to the log-odds of winning.
+
+The second research question shifts from predicting wins to estimating latent fighter skill: each fighter underlying probability of landing a significant strike, after adjusting for structural factors and random variation.
+
+Observed accuracy varies across fighters, weight classes, genders, and individual fights, and is often noisy due to differences in opponent, pacing, and fight context. To separate these sources of variation, I fit a **hierarchical Bayesian binomial logistic regression model** that treats significant strikes landed out of attempts as binomial outcomes.
+
+The model includes:
+
+-   Population-level (fixed) effects for gender and weight class, which capture systematic differences in strike accuracy across divisions.
+
+-   Fighter-level random effects, which estimate each fighter’s deviation from their division and gender-adjusted baseline accuracy. These represent inherent striking ability.
+
+-   Fight-level random effects, shared by both fighters in a given fight, capturing contextual variation such as stylistic matchups, altitude, or fight pace.
+
+Together, these components allow the model to estimate each fighter’s "typical" strike-landing probability in an average fight, while accounting for both structural factors and fight-to-fight randomness. Weakly informative priors are used to stabilize estimates, especially for fighters with limited data.
+
+# Data Summaries
+
+The dataset used in this analysis contains 16,402 observations, where each row represents a single fighter in a single UFC bout. Because each fight contributes two rows (one per competitor in the fight), the dataset corresponds to 8,201 unique fights.
+
+Each observation includes detailed information about the fighter’s performance, identity, and context within that bout. Key variables include:
+
+| Variable Name | Description |
+|------------------------------------|------------------------------------|
+| `fight_id` | The unique identifier for a UFC fight. |
+| `fighter` | The name of the `fighter` of interest. |
+| `opponent` | The name of the `fighter`'s `opponent`. |
+| `weight_class` | The `weight class` that the fight is taking place at. For example "welterweight" i.e. fighters who weigh over 155 lbs and up to 170 lbs during the fight. |
+| `gender` | Gender of the `fighter`. |
+| `sig_strikes_landed` | The number of *significant* strikes that the fighter landed *on* the `opponent`. |
+| `sig_strikes_thrown` | The number of significant strikes that the fighter threw at the `opponent`. |
+| `sig_strikes_landed_by_opp` | The number of *significant* strikes landed *by* the `opponent` on the `fighter`. |
+| `sig_strike_diff_z` | Z scored measure of striking advantage: how many standard deviations above or below average a fighter’s significant strike differential was in a given fight. |
+
+Across all observations, the data include 2,451 unique fighters, covering UFC athletes across all major divisions.
+
+The dates of the fights range from November 1, 2000 to November 15, 2025, corresponding roughly to the period from the adoption of the Unified Rules of MMA to the most recent scraped event. This provides a comprehensive historical dataset spanning 25 years of UFC competition, enabling both cross-sectional comparisons between fighters and longitudinal analyses of fight outcomes and striking performance.
+
+```{r, echo=FALSE}
+suppressPackageStartupMessages({
+  library(tidyverse) # data wrangling + ggplot2
+  library(here) # folder management + file i/o
+  library(brms) # model specification and fitting
+  library(bayesplot) # diagnostic and posterior plots
+  library(posterior) # work with draws, Rhat, ESS, summaries
+  library(loo) # PSIS-LOO, WAIC, model comparison
+  library(tidybayes) # tidyverse-friendly posterior wrangling
+  library(patchwork) # plot combos
+  library(broom) # cleaning
+  library(knitr) # to PDF
+  library(kableExtra)
+  library(DiagrammeR) # diagram-making
+  library(DiagrammeRsvg) # diagram-saving
+  library(rsvg) # diagram-saving
+})
+
+# ggplot2 theme
+theme_set(
+  theme_bw(base_size = 13) +
+    theme(
+      plot.title = element_text(face = "bold", hjust = 0.5),
+      plot.subtitle = element_text(hjust = 0.5),
+      panel.grid.minor = element_blank()
+    )
+)
+```
+
+```{r, echo=FALSE}
+# Load the data
+fights <- read_csv(here("data/clean/fight_data.csv"), show_col_types = FALSE)
+
+# Subset the data (unified rules onward)
+unified_rules_adopted = "2000-11-01" # YYYY-MM-DD
+
+fights <- fights %>%
+  filter(date >= as.Date(unified_rules_adopted))
+```
+
+```{r,echo=FALSE}
+today <- as_date(Sys.Date())         # or fix a reference date
+inactive_cutoff_years <- 2
+
+careers <- fights %>%
+  group_by(fighter_id) %>%
+  summarise(
+    fighter = first(fighter),
+    gender = first(gender),
+    weight_class = first(weight_class),
+    first_fight = min(date),
+    last_fight = max(date),
+    n_fights = n()
+  ) %>%
+  mutate(
+    career_length_years = as.numeric(last_fight - first_fight) / 365,
+    inactive_years = as.numeric(today - last_fight) / 365,
+    event = if_else(inactive_years >= inactive_cutoff_years, 1, 0)
+  )
+```
+
+```{r, echo=FALSE}
+# Median and colors
+median_nf <- median(careers$n_fights, na.rm = TRUE)
+bar_col <- "chartreuse4"
+med_col <- "black"
+box_fill  <- "grey92"
+box_line  <- "grey40"
+
+# 1) Histogram with median vline
+p_hist <- ggplot(careers, aes(n_fights)) +
+  geom_histogram(
+    binwidth  = 1,
+    boundary  = 0.5,
+    fill      = bar_col,
+    color     = "white"
+  ) +
+  geom_vline(
+    xintercept = median_nf,
+    color      = med_col,
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  scale_x_continuous(
+    breaks = c(1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
+  ) +
+  labs(
+    title    = "Fight Count Distribution",
+    subtitle = paste("Median UFC fights per fighter:", median_nf),
+    x        = NULL,                     # no x-label here (shared below)
+    y        = "Number of Fighters"
+  ) +
+  theme(
+    axis.title.x = element_blank(),
+    panel.grid.major.y = element_blank()
+  )
+
+# 2) Boxplot strip with same x-scale and median line
+p_box <- ggplot(careers, aes(x = n_fights, y = 0)) +
+  geom_boxplot(
+    fill         = box_fill,
+    color        = box_line,
+    width        = 0.4,
+    outlier.alpha = 0.4
+  ) +
+  geom_vline(
+    xintercept = median_nf,
+    color      = med_col,
+    linetype   = "dashed",
+    linewidth  = 1
+  ) +
+  scale_x_continuous(
+    breaks = c(1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50)
+  ) +
+  coord_cartesian(ylim = c(-1, 1)) +
+  labs(
+    x = "Number of UFC Fights",
+    y = NULL
+  ) +
+  theme(
+    axis.text.y  = element_blank(),
+    axis.ticks.y = element_blank(),
+    panel.grid   = element_blank(),
+    plot.title   = element_blank(),
+    plot.subtitle = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+
+# 3) Stack them with patchwork
+
+n_fights_per_fighter_hist <- p_hist / p_box + plot_layout(heights = c(3, 1))
+
+# n_fights_per_fighter_hist
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "n_fights_per_fighter_hist.png"),
+#   plot     = n_fights_per_fighter_hist,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+## Exploratory Data Analysis
+
+To motivate my analysis, I did some exploratory work and asked questions about the data to get a sense of it.
+
+> How many fights does each fighter have in the UFC?
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/n_fights_per_fighter_hist.png")
+```
+
+Most fighters have less than 5 fights on their record, with the most common number of fights being 2. It's an extremely right-skewed distribution. Almost power law-like. Many fighters enter the UFC but only a few accumulate long careers. The median number of fights in the UFC population is 4, meaning that 50% of fighters have fewer than 4 fights and 50% have more than 4 fights.
+
+> How many strikes do fighters throw versus how many do they actually land?
+
+```{r, echo=FALSE}
+# Strikes landed vs. strikes thrown
+sig_strikes_landed_vs_thrown_scatter <- ggplot(fights, aes(x = sig_strikes_thrown, y = sig_strikes_landed)) +
+  geom_point(alpha = 0.5) +
+  geom_abline(slope = 1, intercept = 0, linetype="dashed", color = "chartreuse4", linewidth = 0.7) +
+  coord_equal() +
+  labs(
+    x = "Thrown",
+    y = "Landed",
+    title = "Significant Strikes: Thrown vs. Landed",
+    subtitle = "Dashed line delineating perfect accuracy"
+  )
+
+# sig_strikes_landed_vs_thrown_scatter
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "sig_strikes_landed_vs_thrown_scatter.png"),
+#   plot     = sig_strikes_landed_vs_thrown_scatter,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/sig_strikes_landed_vs_thrown_scatter.png")
+```
+
+In this figure, we see how accurate UFC fighters are in general. Each dot is a fighter in a fight. The dashed line denotes what is possible i.e. You can't land more strikes than you throw. We see that the dots are well below the perfect accuracy line. This shows that fighters throw more than they land. And that's par for the course in MMA.
+
+> By what method do fighters win?
+
+```{r,echo=FALSE}
+victory_bars <- fights %>%
+  mutate(res_win = if_else(res == "W", 1L, 0L)) %>%
+  filter(res_win == 1) %>%
+  mutate(
+    method_group = fct_lump_n(method, n = 3)
+  ) %>%
+  ggplot(aes(x = fct_infreq(method_group), fill = method_group)) +
+  geom_bar() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    x = "Method of Victory",
+    y = "Number of fights"
+  ) +
+  theme(
+    legend.position = "none"
+  )
+
+# victory_bars
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "victory_bars.png"),
+#   plot     = victory_bars,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/victory_bars.png")
+```
+
+Most fighters win by judges' decision. Going to the score cards is the most common way to win in the UFC. Knocking your opponent out is the second most frequent method of victory, followed by submitting your opponent. The "other" category here includes winning because the opponent was disqualified and winning because the on-site doctor determines that the opponent cannot continue.
+
+> What proportion of significant strikes do UFC fighters land?
+
+```{r, echo=FALSE}
+MIN_SIG_STRIKES_THROWN = 5
+
+sig_strike_acc_df <- fights %>%
+  filter(sig_strikes_thrown >= MIN_SIG_STRIKES_THROWN) %>%
+  mutate(sig_strike_acc = sig_strikes_landed / sig_strikes_thrown)
+
+mean_acc <- mean(sig_strike_acc_df$sig_strike_acc, na.rm = TRUE)
+
+sig_strike_acc_hist <- sig_strike_acc_df %>%
+  ggplot(aes(x = sig_strike_acc)) +
+  geom_histogram(binwidth = 0.05, fill = "#3182bd", color = "white") +
+  geom_vline(xintercept = mean_acc,
+             linetype = "dashed",
+             linewidth = 0.7) +
+  labs(
+    title = "Distribution of Significant Strike Accuracy",
+    subtitle = paste0("Mean accuracy = ", round(mean_acc, 2)),
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+
+# sig_strike_acc_hist
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "sig_strike_acc_hist.png"),
+#   plot     = sig_strike_acc_hist,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/sig_strike_acc_hist.png")
+```
+
+The distribution of significant strike accuracy for the whole UFC population looks approximately Normal. There are 0.00 and 1.00 accuracies because there are some fights where a fighter never threw a strike and other fights where a fighter threw one or more strikes and they all landed. I enforced a minimum significant strikes thrown condition and subset the dataset (\< 4% of the data filtered out) to curtail this issue but it persists.
+
+> How does significant strike accuracy differ across gender and weight class?
+
+The natural question to ask after looking at the whole population is to look at sub-populations.
+
+```{r, echo=FALSE}
+levels_men <- c(
+  "Flyweight","Bantamweight","Featherweight","Lightweight",
+  "Welterweight","Middleweight","Light Heavyweight","Heavyweight","Catchweight"
+)
+
+# 1. Compute mean sig accuracy per weight class (Men only)
+means_men <- sig_strike_acc_df %>%
+  filter(gender == "Men") %>%
+  group_by(weight_class) %>%
+  summarise(mean_acc = mean(sig_strike_acc, na.rm = TRUE), .groups = "drop") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_men))
+
+# 2. Plot with per-facet vertical mean lines
+sig_strike_acc_by_weight_men <- sig_strike_acc_df %>%
+  filter(gender == "Men") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_men)) %>%
+  ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
+  geom_histogram(binwidth = 0.05, color = "white", show.legend = FALSE) +
+  geom_vline(
+    data = means_men,
+    aes(xintercept = mean_acc),
+    linetype = "dashed",
+    linewidth = 0.5,
+    color = "black"
+  ) +
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  facet_wrap(~ weight_class, ncol = 3, drop = TRUE) +
+  labs(
+    title = "Distribution of Significant Strike Accuracy",
+    subtitle = "Across Men's Weight Classes",
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+
+# sig_strike_acc_by_weight_men
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "sig_strike_acc_by_weight_men.png"),
+#   plot     = sig_strike_acc_by_weight_men,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/sig_strike_acc_by_weight_men.png")
+```
+
+The mean significant strike accuracy across men's weight divisions hovers around 44-50%. Just like the UFC population as a whole, the distribution of significant strike accuracy by weight class is approximately Normal. In terms of average accuracy, the heavyweight division seems to be the most accurate at 0.5 while the lightweight division is on the low end at 0.44.
+
+```{r, echo=FALSE}
+levels_women <- c(
+  "Strawweight", "Flyweight", "Bantamweight", "Featherweight"
+)
+
+# 1. Mean sig accuracy per women's weight class
+means_women <- sig_strike_acc_df %>%
+  filter(gender == "Women") %>%
+  group_by(weight_class) %>%
+  summarise(mean_acc = mean(sig_strike_acc, na.rm = TRUE), .groups = "drop") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_women))
+
+# 2. Histogram by weight class with facet-specific mean lines
+sig_strike_acc_by_weight_women <- sig_strike_acc_df %>%
+  filter(gender == "Women") %>%
+  mutate(weight_class = forcats::fct_relevel(weight_class, levels_women)) %>%
+  ggplot(aes(x = sig_strike_acc, fill = weight_class)) +
+  geom_histogram(binwidth = 0.05, color = "white", show.legend = FALSE) +
+  geom_vline(
+    data = means_women,
+    aes(xintercept = mean_acc),
+    linetype = "dashed",
+    linewidth = 0.5,
+    color = "black"
+  ) +
+  scale_x_continuous(labels = scales::number_format(accuracy = 0.01)) +
+  facet_wrap(~ weight_class, ncol = 2, drop = TRUE) +
+  labs(
+    title = "Distribution of Significant Strike Accuracy",
+    subtitle = "Across Women's Weight Classes",
+    x = "Significant Strike Accuracy",
+    y = "Count"
+  )
+
+# sig_strike_acc_by_weight_women
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "sig_strike_acc_by_weight_women.png"),
+#   plot     = sig_strike_acc_by_weight_women,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/sig_strike_acc_by_weight_women.png")
+```
+
+For women, the mean significant strike accuracy varies between 46-48%. The featherweight division's mean accuracy is 0.48, while the flyweight division's mean accuracy is 0.46. It's worth noting that women's MMA is a relatively recent addition to UFC, which started only in 2013.
+
+With hundreds to thousands of fighters in each weight class and gender, we observe some differences in the typical levels of significant strike accuracy across groups. While the distributions within each group appear roughly normal, their centers shift subtly from one weight class to another. This indicates that gender and weight class introduce structure into the data that's important to keep in mind when examining fighter accuracy.
+
+# Research Question 1
+
+> Which in-fight performance differential metric is the most predictive of winning?
+
+To answer this research question, I fit a logistic regression model predicting the probability that a fighter wins the bout as a function of four standardized in-fight performance differentials: significant strikes, knockdowns, takedowns, and control time. Each predictor is z-scored, so the coefficients represent the change in log-odds of winning associated with a one standard deviation in that metric.
+
+```{r, echo=FALSE}
+win_df <- read_rds(here("data", "model", "win_perf_diffs_df.rds"))
+```
+
+```{r}
+# Logistic regression model
+perf_diff_model <- glm(
+  res_win ~ sig_strike_diff_z + kd_diff_z + td_diff_z + ctrl_time_diff_z,
+  data = win_df,
+  family = binomial()
+)
+```
+
+```{r}
+summary(perf_diff_model)
+```
+
+The model fits the data well. The residual deviance decreases substantially relative to the null deviance (22,342 to 11,425), indicating that the four differentials collectively explain a large amount of the variability in fight outcomes. All predictors are highly statistically significant.
+
+```{r, echo=FALSE}
+library(dplyr)
+library(broom)
+library(ggplot2)
+
+# 1. Baseline: all diffs = 0 (fighters are equal)
+base <- data.frame(
+  sig_strike_diff_z = 0,
+  kd_diff_z         = 0,
+  td_diff_z         = 0,
+  ctrl_time_diff_z  = 0
+)
+
+p0 <- predict(perf_diff_model, newdata = base, type = "response")
+
+# 2. For each metric, set that one to +1 SD and keep others at 0
+scenarios <- tibble::tibble(
+  term = c("sig_strike_diff_z", "kd_diff_z", "td_diff_z", "ctrl_time_diff_z"),
+  sig_strike_diff_z = c(1, 0, 0, 0),
+  kd_diff_z         = c(0, 1, 0, 0),
+  td_diff_z         = c(0, 0, 1, 0),
+  ctrl_time_diff_z  = c(0, 0, 0, 1)
+)
+
+scenarios <- scenarios %>%
+  mutate(
+    p1 = predict(perf_diff_model, newdata = across(-term), type = "response"),
+    delta = p1 - p0
+  ) %>%
+  mutate(
+    term = recode(term,
+      sig_strike_diff_z = "Significant strikes (diff, 1 SD)",
+      kd_diff_z         = "Knockdowns (diff, 1 SD)",
+      td_diff_z         = "Takedowns (diff, 1 SD)",
+      ctrl_time_diff_z  = "Control time (diff, 1 SD)"
+    )
+  )
+
+# 3. Plot: change in win probability from a 1 SD advantage
+win_prob_plot <- ggplot(scenarios, aes(x = delta, y = reorder(term, delta))) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey70") +
+  geom_segment(aes(x = 0, xend = delta, yend = term), linewidth = 1) +
+  geom_point(size = 3) +
+  scale_x_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Effect of Performance Differentials on Win Probability",
+    x = "Change in win probability\n(from 1 SD advantage, others equal)",
+    y = NULL
+  ) +
+  theme_minimal(base_size = 12)
+
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "win_prob_plot.png"),
+#   plot     = win_prob_plot,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/win_prob_plot.png")
+```
+
+This plot shows how much a fighter’s probability of winning is expected to increase when they have a one standard deviation advantage in each performance metric, assuming all other metrics are equal.
+
+A one standard deviation advantage in significant strikes produces the largest effect, increasing the predicted chance of winning by roughly 40 percentage points. This means that in an otherwise even fight, outperforming an opponent by this margin in striking volume shifts the expected outcome from essentially 50–50 to close to a 90 percent win probability.
+
+A one standard deviation advantage in knockdowns increases win probability by about 30 percentage points, indicating that knockdowns are also highly consequential but still secondary to overall striking differential.
+
+Takedown differential has a more moderate effect, raising win probability by approximately 10 percentage points for a one standard deviation advantage.
+
+Finally, a one standard deviation advantage in control time has almost no effect on predicted win probability once the other metrics are accounted for, highlighting its limited independent predictive value in this particular model.
+
+Taken together, the results from RQ1 show that significant striking differential is the strongest in-fight predictor of winning, far outweighing the effects of knockdowns, takedowns, or control time. This naturally raises a deeper question about where these striking advantages come from in the first place. Given its connection to winning, striking accuracy is an important target of estimation for each fighter.
+
+# Research Question 2
+
+> What is each fighter's *latent* probability of landing a significant strike, after accounting for gender, weight class, and fight-to-fight randomness?
+
+Before building the model to estimate a fighter's probability of landing a significant strike, it's important to understand how the data is structured.
+
+```{r, echo=FALSE}
+library(DiagrammeR)
+
+ufc_graph <- grViz("
+digraph hierarchy {
+  graph [layout = dot, rankdir = TB]
+
+  # Node styling (default: box)
+  node [shape = box, style = filled, fillcolor = 'white',
+        fontsize = 12, fontname = Helvetica]
+
+  # Top-level node
+  UFC [label = 'UFC Population']
+
+  # Fighter level
+  F1    [label = 'Fighter 1']
+  F2    [label = 'Fighter 2']
+  Fmore [label = '...', shape = plaintext]   # ellipsis for more fighters
+  Fm    [label = 'Fighter m']
+
+  # Fight level (examples for each fighter) - circles
+  Y11 [label = 'Fight 1',       shape = circle]
+  Y21 [label = '...',           shape = circle]
+  YN1 [label = 'Fight n@_{1}',  shape = circle]
+
+  Y12 [label = 'Fight 1',       shape = circle]
+  Y22 [label = '...',           shape = circle]
+  YN2 [label = 'Fight n@_{2}',  shape = circle]
+
+  Ymore [label = '...', shape = plaintext]  # ellipsis for more fights
+
+  Y1m [label = 'Fight 1',       shape = circle]
+  Y2m [label = '...',           shape = circle]
+  YNm [label = 'Fight n@_{m}',  shape = circle]
+
+  # Edges: population -> fighters
+  UFC -> F1
+  UFC -> F2
+  UFC -> Fmore [style = dashed]   # arrow to '...' fighter node
+  UFC -> Fm
+
+  # Edges: fighters -> fights
+  F1 -> {Y11 Y21 YN1}
+  F2 -> {Y12 Y22 YN2}
+  
+  # dashed arrow to '...' fights node (implying more groups / fights)
+  Fmore -> Ymore [style = dashed]
+  
+  Fm -> {Y1m Y2m YNm}
+}
+")
+
+# ufc_graph
+```
+
+```{r, echo=FALSE}
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+
+svg_txt <- export_svg(ufc_graph)
+
+# rsvg_png(
+#   charToRaw(svg_txt),
+#   here::here("reports", "final", "figs", "ufc_graph.png"),
+#   width  = 2400,  
+#   height = 1500    
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/ufc_graph.png")
+```
+
+Each fighter $i$ has $n_i$ fights. As we've seen, the median UFC fighter has about 4 fights in their career. But there's a lot variation in the number of fights fighters have fought in.
+
+To estimate each fighter’s underlying probability of landing a significant strike, we need a model that respects the structure of UFC data. Fighters belong to a broader UFC population, but they vary widely in how many fights they have, who they face, and the conditions under which their performances are observed. Some have long careers with dozens of bouts, while others fight only once or twice. Because of this uneven data structure, treating each fighter independently would overfit the data for fighters with very few observations, while fully pooling fighters together would obscure meaningful skill differences.
+
+A **Bayesian multilevel model** provides a principled middle ground through **partial pooling**. In this framework, each fighter’s latent striking ability is estimated while simultaneously borrowing strength from the overall distribution of abilities in the UFC population. Fighters with many fights have estimates driven mostly by their own data, while fighters with few fights are stabilized by the population-level prior. This approach accounts for gender and weight class differences, incorporates fight-to-fight randomness, and yields coherent, shrinkage-adjusted estimates of each fighter’s true striking accuracy.
+
+## Model
+
+Population-level parameters
+
+Intercept
+
+$$\alpha \sim \mathcal{N}(\text{logit}(0.46), 1)$$
+
+Gender effect
+
+$$ \beta_{\text{gender}} \sim \mathcal{N}(0, 0.3) $$
+
+Weight-class effects
+
+For each non-baseline weight class $j$:
+
+$$ \beta_{\text{wc}, j} \sim \mathcal{N}(0, 0.3) $$
+
+Fighter-level random effects (varying intercepts)
+
+For each fighter $f = 1, \ldots, F$:
+
+$$ u_f \sim \mathcal{N}(0, \sigma^2_{\text{fighter}}) $$
+
+Fight-level random effects (varying intercepts)
+
+For each fight $k = 1, \ldots, K$:
+
+$$ v_k \sim \mathcal{N}(0, \sigma^2_{\text{fight}}) $$
+
+Hyperpriors
+
+$$ \sigma_{\text{fighter}} \sim \mathcal{N}^{+}(0, 0.4) $$
+
+$$ \sigma_{\text{fight}} \sim \mathcal{N}^{+}(0, 0.4) $$
+
+Likelihood
+
+For each observation $i$:
+
+-   $y_i$ = significant strikes landed
+
+-   $n_i$ = significant strikes thrown (attempted)
+
+-   $\text{fighter}(i), \text{fight}(i)$ = fighter and fight indices
+
+-   $\text{gender}(i)$, $\text{wc}(i)$ = covariates
+
+Linear predictor
+
+$$ \ell_i = \alpha + \beta_{\text{gender}(i)} + \beta_{wc}(i) + u_{\text{fighter}(i)} + v_{\text{fight}(i)} $$
+
+Strike landing probability
+
+$$ p_i = \text{logit}^{-1}(\ell_i)  $$
+
+Observed data model
+
+$$ y_i \mid n_i, p_i \sim \text{Binomial}(n_i, p_i) $$
+
+Likelihood function
+
+$$ \text{Pr}(\mathbf{y} \mid \alpha, \beta, u, v, n) = \prod_{i=1}^{N} \text{Binomial}(y_i \mid n_i,  \text{logit}^{-1}(\ell_i)) $$
+
+Posterior distribution
+
+Let
+
+$$ \Theta = (\alpha, \beta, u, v, \sigma_{\text{fighter}}, \sigma_{\text{fight}}) $$
+
+be the full set of parameters.
+
+Given the data
+
+$$ \mathcal{D} = \{y_i, n_i, \text{gender}(i), \text{weight class}(i), \text{fighter}(i), \text{fight(i)}\}_{i=1}^{N} $$
+
+Bayes' rule states that
+
+$$ \text{Pr}(\Theta \mid \mathcal{D}) \propto \text{Pr}(\Theta) \times \text{Pr}(\mathcal{D} \mid \Theta) $$
+
+Written out fully:
+
+$$ \underbrace{\text{Pr}(\Theta \mid \mathcal{D})}_{\text{Posterior}} \propto \underbrace{\text{Pr}(\alpha) \text{Pr}(\beta) \text{Pr}(\sigma_{\text{fighter}}) \text{Pr}(\sigma_{\text{fight}}) \Bigg[ \prod_{f=1}^{F} \text{Pr}(u_f \mid \sigma_{\text{fighter}}) \Bigg] \Bigg[\prod_{k=1}^{K} \text{Pr}(v_k \mid \sigma_{\text{fight}}) \Bigg]}_{\text{Priors}} \times \underbrace{\Bigg[ \prod_{i=1}^{N} \text{Binomial}(y_i \mid n_i, \text{logit}^{-1}(\ell_i)) \Bigg]}_{\text{Likelihood}} $$
+
+Posterior fighter-level accuracy
+
+To obtain a fighter's latent probability of landing a significant strike (removing fight-level randomness), we have:
+
+$$\theta_f = \text{logit}^{-1} \big( \alpha + \beta_{\text{gender}(f)} + \beta_{\text{wc}(f)} + u_f\big)$$
+
+## Generative Story
+
+The model assumes that every fighter has an underlying tendency to land significant strikes, and every fight has its own quirks that make landing either easier or harder than usual. We begin by imagining a baseline level of strike landing log odds for the baseline category fighter, which in this model is a male Bantamweight fighter in an average fight. Gender and weight class then shift this baseline up or down in systematic ways, holding the other predictor constant.
+
+In addition to these population-level shifts, each fighter receives their own deviation that captures how much more or less likely they are to land strikes compared to fighters of the same gender and weight class. Each fight also receives its own deviation that reflects the unpredictable circumstances of that particular matchup, such as style interactions, pacing, or contextual conditions.
+
+For each fighter in each fight, these components are added together on the log odds scale and transformed into a probability that a strike attempt will land in that specific context. Finally, the observed number of landed strikes is generated by drawing from a binomial distribution using this probability and the number of strikes attempted. Bayesian inference then uses the observed data to update our beliefs about fighter-level tendencies, fight-level contextual variation, and the overall influence of gender and weight class on strike landing probability.
+
+### Summary of the Generative Story
+
+1.  Draw a global baseline log odds of landing a significant strike, representing the baseline category fighter (male Bantamweight) in an average fight.
+2.  Draw systematic effects for gender and weight class, each representing how those predictors move up or down, holding the other predictor constant.
+3.  Draw fighter-specific log-odds deviations, which represent how much each fighter tends to land strikes more or less often than expected based on gender and weight class alone.
+4.  Draw fight-specific log-odds deviations, which represent the contextual quirks of each fight that make landing strikes easier or harder for everyone in that fight.
+5.  For each fighter-fight observation:
+    -   Sum the baseline, fixed effects, fighter deviation, and fight deviation to create the linear predictor $\ell_i$.
+    -   Transform $\ell_i$ to a significant strike landing probability $p_i = \text{logit}^{-1}(\ell_i)$.
+    -   Generate the observed significant strikes landed $y_i$ from a Binomial distribution with parameters $n_i$ (significant strike attempts) and $p_i$.
+
+This defines the full joint distribution over all parameters and data. Bayesian inference conditions this generative story on the observed data to obtain the posterior distribution.
+
+## Model Building
+
+```{r, echo=FALSE}
+df <- read_rds(here("data", "model", "striking_df.rds"))
+```
+
+```{r}
+# Model
+formula_acc <- bf(
+  sig_strikes_landed | trials(sig_strikes_thrown) ~ 
+    1 + gender + weight_class + 
+    (1 | fighter_id) + 
+    (1 | fight_id)
+)
+```
+
+```{r}
+# Priors
+mu0 <- qlogis(0.46)  # baseline mean on logit scale
+
+priors_acc <- c(
+  # Intercept
+  set_prior(paste0("normal(", mu0, ", 1)"), class = "Intercept"),
+
+  # Gender, weight class effects (fixed effects)
+  set_prior("normal(0, 0.3)", class = "b"),
+
+  # Fighter variation
+  set_prior("normal(0, 0.4)", class = "sd", group = "fighter_id"),
+
+  # Fight variation
+  set_prior("normal(0, 0.4)", class = "sd", group = "fight_id")
+)
+```
+
+## Prior Predictive Simulation
+
+Before fitting the model, I ran a prior predictive simulation to check whether the chosen priors generate realistic UFC-like striking accuracies. This ensures the priors are weakly informative but still produce plausible ranges of fighter ability and fight-to-fight variation. Prior predictive checks help confirm that the model is sensible *before* it sees real data.
+
+```{r, eval=FALSE}
+fit_prior_acc <- brm(
+  formula = formula_acc,
+  data = df,
+  family = binomial(),
+  prior = priors_c,
+  sample_prior = "only",
+  iter = 1000,
+  chains = 2,
+  cores = 2,
+  backend = getOption("brms.backend"),
+  seed = 1738
+)
+```
+
+```{r, echo=FALSE}
+# Prior Predictive Check
+fit_prior_acc <- readRDS(here("models", "fits", "fit_prior_acc.rds"))
+```
+
+```{r, echo=FALSE}
+# 1. Get prior predictive linear predictors and transform to probabilities
+#    posterior_linpred returns an array: iterations x observations
+pp_prior <- posterior_linpred(
+  fit_prior_acc,
+  transform = TRUE          # logit^-1 to get probabilities
+)
+
+
+# 2. Flatten and take a random subset for plotting (to avoid millions of points)
+set.seed(1738)
+pp_sample <- as.vector(pp_prior)
+pp_sample <- sample(pp_sample, size = min(length(pp_sample), 50000))
+
+pp_df <- tibble(
+  p = pp_sample
+)
+
+# 3. Plot: distribution of prior predictive strike-landing probabilities
+prior_pred_check_plot <- ggplot(pp_df, aes(x = p)) +
+  geom_histogram(
+    bins = 40,
+    color = "white"
+  ) +
+  labs(
+    title = "Prior Predictive Distribution of Strike-Landing Probabilities",
+    x = "Strike-landing probability (p)",
+    y = "Count"
+  ) +
+  theme_minimal(base_size = 12)
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "prior_pred_check_plot.png"),
+#   plot     = prior_pred_check_plot,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/prior_pred_check_plot.png")
+```
+
+The prior predictive distribution of strike-landing probabilities is broad and centered around moderate accuracy levels. Most simulated probabilities fall between roughly 0.15 and 0.80, with the density peaking around 0.35-0.55 and tapering toward the extremes near 0 and 1. This indicates that the priors allow a wide range of plausible striking abilities while still concentrating mass in a realistic region for UFC fighters, avoiding implausibly high or low accuracy values.
+
+## Computational Implementation
+
+The model was fit using `brms`, which compiles the multilevel binomial logistic model into Stan and performs posterior inference via Hamiltonian Monte Carlo. I used four chains with 2,000 iterations each (1,000 warmup), along with a slightly increased `adapt_delta` to reduce divergences.
+
+```{r, eval=FALSE}
+fit_acc_model <- brm(
+  formula = formula_acc,
+  data = df,
+  family = binomial(),
+  prior = priors_acc,
+  sample_prior = "yes",   # include prior draws in the fit object
+  iter = 2000,
+  warmup = 1000,
+  chains = 4,
+  cores = 4,
+  backend = getOption("brms.backend"),
+  seed = 1738,
+  control = list(adapt_delta = 0.95)    # reduces divergences in logistic models
+)
+```
+
+```{r, echo=FALSE}
+# Fit the model using MCMC
+fit_acc_model <- readRDS(here("models", "fits", "fit_acc_model.rds"))
+```
+
+Sampling completed successfully, providing stable posterior draws for all parameters.
+
+## Fitting and Diagnostics
+
+```{r}
+summary(fit_acc_model)
+```
+
+The fitted model indicates meaningful variability in strike-landing ability both across fighters and across fights. The fighter-level standard deviation ($\approx 0.39$ on the log-odds scale) reflects substantial underlying differences in striking accuracy between athletes, even after accounting for gender and weight class. The fight-level standard deviation ($\approx 0.41$) is similarly large, suggesting that contextual factors unique to each bout (such as pace, matchup dynamics, or environmental conditions) also contribute significantly to how easy or difficult it is to land strikes in a given fight.
+
+The population intercept corresponds to the baseline category (male bantamweight fighters in an average fight), and the fixed effects show that gender and most weight classes produce modest shifts from this baseline. In particular, women exhibit slightly higher strike-landing log-odds than men, while weight-class effects cluster tightly around zero, indicating that once fighter identity is accounted for, weight class alone does not strongly predict accuracy. All parameters show excellent convergence diagnostics ($\hat{R} \approx 1$ and high ESS), indicating that the posterior samples are stable and reliable for inference.
+
+## Model Evaluation
+
+One way to evaluate the model is to answer the question:
+
+> Does the model generate simulated data that look like the real UFC data?
+
+In other words, I performed a posterior predictive check by comparing the observed strike-landing outcomes to data simulated from the posterior predictive distribution.
+
+```{r, echo=FALSE}
+library(tidyverse)
+
+# 1. Posterior predictive draws (fewer draws)
+yrep_acc <- posterior_predict(fit_acc_model, draws = 50)
+
+# 2. Accuracy
+acc_rep <- sweep(yrep_acc, 2, df$sig_strikes_thrown, "/")
+acc_obs <- df$sig_strikes_landed / df$sig_strikes_thrown
+
+acc_rep_long <- as_tibble(acc_rep) |>
+  pivot_longer(everything(), values_to = "acc")
+
+# 3. PPC on the accuracy scale, using density
+post_pred_check_plot <- ggplot() +
+  geom_histogram(
+    data = tibble(acc = acc_obs),
+    aes(x = acc, y = after_stat(density)),
+    binwidth = 0.02,
+    fill = NA,
+    color = "black"
+  ) +
+  geom_histogram(
+    data = acc_rep_long,
+    aes(x = acc, y = after_stat(density)),
+    binwidth = 0.02,
+    fill = "blue",
+    alpha = 0.3,
+    color = NA
+  ) +
+  labs(
+    title = "Posterior Predictive Check: Significant Strike Accuracy",
+    x = "Accuracy (landed / thrown)",
+    y = "Density"
+  ) +
+  theme_minimal(base_size = 12)
+
+# post_pred_check_plot
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "post_pred_check_plot.png"),
+#   plot     = post_pred_check_plot,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/post_pred_check_plot.png")
+```
+
+The posterior predictive check on the accuracy scale shows that the model reproduces the overall distribution of strike-landing accuracy very well. The simulated accuracies (purple) closely overlap the observed accuracies (black outline) across the entire range: the center of the distribution around 40–60 percent, the spread toward both lower and higher accuracies, and even the small mass near 0 and 1 that occurs when fighters throw very few strikes. This strong agreement indicates that the hierarchical binomial model captures both the central tendency and variability of per-fight striking accuracy in the UFC data.
+
+## Fighter Accuracy Estimation
+
+To answer the second research question, I use the fitted multilevel model to estimate each fighter’s underlying probability of landing a significant strike, independent of fight-to-fight randomness.
+
+In this framework, every fighter has a latent accuracy parameter, $\theta_f$​, which represents their true strike-landing ability after accounting for gender, weight class, and partial pooling toward the population mean. Mathematically, $\theta_f$​ is obtained by combining the population intercept, the appropriate fixed effects, and the fighter’s random effect, then transforming the result through the logistic function. The posterior distribution of $\theta_f$​ therefore provides a probabilistic estimate of each fighter’s striking accuracy in an “average” UFC fight.
+
+$$ \theta_f = \text{logit}^{-1} \big( \alpha + \beta_{\text{gender}(f)} + \beta_{\text{wc}(f)} + u_f\big)$$
+
+```{r, echo=FALSE}
+library(dplyr)
+library(tidyr)
+library(tidybayes)
+library(ggplot2)
+library(forcats)
+```
+
+```{r, echo=FALSE}
+# Modal weight class per fighter
+
+fighter_modal_wc <- df %>%
+  count(fighter_id, weight_class) %>%
+  group_by(fighter_id) %>%
+  slice_max(n, with_ties = FALSE) %>%
+  ungroup() %>%
+  select(fighter_id, weight_class_modal = weight_class)
+
+fighter_cov <- df %>%
+  distinct(fighter_id, fighter, gender) %>%
+  left_join(fighter_modal_wc, by = "fighter_id")
+```
+
+```{r, echo=FALSE}
+# Posterior draws for fighter-level theta_f
+
+fighter_draws <- fit_acc_model %>%
+  spread_draws(
+    b_Intercept,
+    b_genderWomen,
+    b_weight_classCatchweight,
+    b_weight_classFeatherweight,
+    b_weight_classFlyweight,
+    b_weight_classHeavyweight,
+    b_weight_classLightHeavyweight,
+    b_weight_classLightweight,
+    b_weight_classMiddleweight,
+    b_weight_classStrawweight,
+    b_weight_classWelterweight,
+    r_fighter_id[fighter_id, term]
+  ) %>%
+  filter(term == "Intercept") %>%
+  left_join(fighter_cov, by = "fighter_id") %>%
+  mutate(
+    gender_effect = if_else(gender == "Women", b_genderWomen, 0),
+    wc_effect = case_when(
+      weight_class_modal == "Catchweight"       ~ b_weight_classCatchweight,
+      weight_class_modal == "Featherweight"     ~ b_weight_classFeatherweight,
+      weight_class_modal == "Flyweight"         ~ b_weight_classFlyweight,
+      weight_class_modal == "Heavyweight"       ~ b_weight_classHeavyweight,
+      weight_class_modal == "Light Heavyweight" ~ b_weight_classLightHeavyweight,
+      weight_class_modal == "Lightweight"       ~ b_weight_classLightweight,
+      weight_class_modal == "Middleweight"      ~ b_weight_classMiddleweight,
+      weight_class_modal == "Strawweight"       ~ b_weight_classStrawweight,
+      weight_class_modal == "Welterweight"      ~ b_weight_classWelterweight,
+      TRUE                                      ~ 0
+      ),
+    ell_i   = b_Intercept + gender_effect + wc_effect + r_fighter_id,
+    theta_f = plogis(ell_i)
+  )
+
+```
+
+```{r, echo=FALSE}
+# Summaries for each fighter
+fighter_summary <- fighter_draws %>%
+  group_by(fighter_id, fighter, gender, weight_class_modal) %>%
+  median_qi(theta_f, .width = 0.95)
+```
+
+```{r, echo=FALSE}
+# Add number of fights per fighter
+fighter_counts <- df %>%
+  count(fighter_id, name = "n_fights")
+
+fighter_summary <- fighter_summary %>%
+  left_join(fighter_counts, by = "fighter_id")
+```
+
+```{r, echo=FALSE}
+top10_min5 <- fighter_summary %>%
+  filter(n_fights >= 5) %>%           # only fighters with at least 5 UFC fights
+  arrange(desc(theta_f)) %>%          # sort by latent accuracy (posterior median)
+  slice_head(n = 10) %>%              # keep top 10
+  mutate(fighter = fct_reorder(fighter, theta_f))  # order factor for plotting
+```
+
+```{r, echo=FALSE}
+# Histogram of latent accuracy distribution
+latent_acc_dist <- ggplot(fighter_summary, aes(x = theta_f)) +
+  geom_histogram(bins = 40, fill = "steelblue", color = "white") +
+  labs(
+    title = "Distribution of Fighter-Level Latent Striking Accuracy",
+    x = expression(theta[f]),
+    y = "Count"
+    ) +
+  theme_minimal(base_size = 12)
+
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "latent_acc_dist.png"),
+#   plot     = latent_acc_dist,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/latent_acc_dist.png")
+```
+
+This histogram shows the posterior distribution of latent striking accuracy $\theta_f$ across all UFC fighters. The shape closely mirrors the empirical distribution of observed significant strike accuracy, indicating that the hierarchical model successfully recovers the underlying population pattern while smoothing out fight-to-fight noise. Most fighters fall between 0.40 and 0.50 accuracy with only a small minority displaying much higher or lower underlying precision.
+
+```{r, echo=FALSE}
+top10_ci_plot <- ggplot(top10_min5, aes(y = fighter, x = theta_f)) +
+  geom_errorbar(
+    aes(xmin = .lower, xmax = .upper),
+    orientation = "y",   # horizontal error bars
+    width = 0.15         # little vertical caps at ends
+  ) +
+  geom_point(size = 2) +
+  labs(
+    title = "Top 10 Fighters by Latent Significant Strike Accuracy",
+    subtitle = "Posterior Median and 95% Credible Intervals",
+    x = "Latent Accuracy",
+    y = "Fighter",
+    caption = "Note: Fighters with at least 5 UFC fights"
+  ) +
+  theme_minimal(base_size = 12)
+
+# top10_ci_plot
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "top10_ci_plot.png"),
+#   plot     = top10_ci_plot,
+#   width    = 8,
+#   height   = 5,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/top10_ci_plot.png")
+```
+
+This figure displays the ten fighters with the highest estimated latent striking accuracy among those with at least 5 UFC fights. Points denote posterior median accuracy and horizontal bars show 95 percent credible intervals, highlighting both the rank ordering and the uncertainty around each estimate. This plot emphasizes which fighters the model identifies as having the strongest underlying ability to land significant strikes.
+
+For example, conditional on the model, there is a 95% probability that Alistair Overeem's significant strike accuracy falls between 0.71 and 0.78.
+
+```{r, echo=FALSE}
+set.seed(6942)  # for reproducibility
+
+random20 <- fighter_summary %>%
+  filter(n_fights >= 5) %>%      # keep same threshold, if you want
+  slice_sample(n = 20) %>%
+  mutate(fighter = fct_reorder(fighter, theta_f))
+```
+
+```{r, echo=FALSE}
+random20_ci_plot <- ggplot(random20, aes(y = fighter, x = theta_f)) +
+  geom_errorbar(
+    aes(xmin = .lower, xmax = .upper),
+    orientation = "y",
+    width = 0.15
+  ) +
+  geom_point(size = 2) +
+  labs(
+    title = "Latent Significant Strike Accuracy",
+    subtitle = "Posterior Median and 95% Credible Intervals",
+    x = "Latent Accuracy",
+    y = "Random Sample of 20 Fighters",
+    caption = "Note: Fighters with at least 5 UFC fights"
+  ) +
+  theme_minimal(base_size = 12)
+
+# random20_ci_plot
+
+# # Save figure
+# ggsave(
+#   filename = here("reports", "final", "figs", "random20_ci_plot.png"),
+#   plot     = random20_ci_plot,
+#   width    = 9,
+#   height   = 8,
+#   dpi      = 300,
+#   bg       = "white"
+# )
+```
+
+```{r,echo=FALSE, fig.align='center', out.width='80%'}
+knitr::include_graphics("figs/random20_ci_plot.png")
+```
+
+This figure shows posterior estimates of latent significant strike accuracy for a random subset of 20 UFC fighters who have recorded at least 5 bouts. Each point represents the fighter’s posterior median accuracy, while the horizontal bar represents the 95 percent credible interval. This plot illustrates typical uncertainty levels across the roster and provides a representative look at the distribution of underlying striking skill in the population.
+
+# Conclusion
+
+Across thousands of UFC bouts spanning twenty-five years, the predictive modeling in RQ1 showed that not all in-fight performance metrics contribute equally to determining who wins. Significant strike differential emerged as the dominant predictor, with each one-standard deviation advantage in landed-versus-absorbed significant strikes producing a large increase in the odds of winning. Knockdowns also contributed meaningfully, though less consistently due to their rarity, while takedown differential and control time had much weaker and less reliable associations. Overall, the model reveals that winning in modern UFC competition is driven far more by effective striking output than by positional or grappling control.
+
+In RQ2, the Bayesian multilevel model uncovered a more fundamental layer of the sport: each fighter’s underlying probability of landing a significant strike, separated from fight-to-fight randomness and adjusted for gender and weight class. The model identified meaningful variation across fighters, with some individuals showing substantially higher latent accuracy than others even after accounting for systematic differences across divisions. Posterior predictive checks confirmed that the model captures the broad distribution of observed striking accuracy, while partial pooling stabilized estimates for fighters with fewer bouts.
+
+Taken together, these results provide both a descriptive and structural understanding of UFC performance. RQ1 isolates *what* in-fight metrics matter most for winning, clearly pointing to striking efficiency and output. RQ2 then reveals *why* fighters vary in those metrics, quantifying stable differences in underlying striking skill across the roster. The combination offers a coherent statistical picture of the sport: fights are won primarily through striking effectiveness, and fighters differ systematically in their ability to land strikes, even after adjusting for context and division.
