@@ -1,4 +1,5 @@
-# parse_fight_pages.R — parse cached fight pages (no network)
+# 04_parse_fight_pages.R — parse cached fight pages (no network)
+# Fixed: stable schema coercion for stat columns and clock columns + error log output
 
 suppressPackageStartupMessages({
   library(rvest)
@@ -15,6 +16,7 @@ OUT_CSV   <- here("data/raw",  "fight_data_raw.csv")
 ERR_CSV   <- here("data/raw",  "parse_errors_fights.csv")
 
 dir.create(dirname(OUT_CSV), recursive = TRUE, showWarnings = FALSE)
+dir.create(dirname(ERR_CSV), recursive = TRUE, showWarnings = FALSE)
 
 # ------------------------- Helpers ------------------------
 `%||%` <- function(a, b) if (!is.null(a) && length(a) > 0) a else b
@@ -22,6 +24,59 @@ squish_na <- function(x) { x <- str_squish(x); na_if(x, "") }
 
 fight_id_from_path <- function(path) {
   sub("\\.html$", "", basename(path), ignore.case = TRUE)
+}
+
+# Numeric stat columns that must never flip types
+STAT_COLS <- c(
+  "fighter_1_KD","fighter_2_KD",
+  "fighter_1_Sig_Strike_Landed","fighter_1_Sig_Strike_Attempts",
+  "fighter_2_Sig_Strike_Landed","fighter_2_Sig_Strike_Attempts",
+  "fighter_1_Strike_Landed","fighter_1_Strike_Attempts",
+  "fighter_2_Strike_Landed","fighter_2_Strike_Attempts",
+  "fighter_1_TD_Landed","fighter_1_TD_Attempts",
+  "fighter_2_TD_Landed","fighter_2_TD_Attempts",
+  "fighter_1_Sub_Attempts","fighter_2_Sub_Attempts",
+  "fighter_1_Rev","fighter_2_Rev",
+  "fighter_1_Sig_Strike_Percent","fighter_2_Sig_Strike_Percent",
+  "fighter_1_TD_Percent","fighter_2_TD_Percent"
+)
+
+# Clock like columns that should always be character in raw
+CLOCK_COLS <- c(
+  "time",               # fight details time (end of round)
+  "fighter_1_Ctrl",      # control time from summary table
+  "fighter_2_Ctrl"
+)
+
+coerce_stats <- function(df) {
+  df %>%
+    mutate(
+      across(any_of(STAT_COLS), ~ {
+        x <- as.character(.x)
+        x <- str_replace_all(x, "—|–|--", "")
+        x <- str_squish(x)
+        x <- na_if(x, "")
+        suppressWarnings(as.numeric(x))
+      })
+    )
+}
+
+coerce_clocks <- function(df) {
+  df %>%
+    mutate(
+      across(any_of(CLOCK_COLS), ~ {
+        x <- as.character(.x)
+        x <- str_squish(x)
+        x <- na_if(x, "")
+        x
+      })
+    )
+}
+
+coerce_schema <- function(df) {
+  df %>%
+    coerce_stats() %>%
+    coerce_clocks()
 }
 
 # -------------------- Parse a single fight -----------------
@@ -36,7 +91,7 @@ parse_one_fight <- function(path) {
   tbl_list <- html_table(tbl_nodes[1], trim = TRUE, fill = TRUE)
   if (length(tbl_list) == 0 || nrow(tbl_list[[1]]) == 0) stop("First table empty")
   
-  # fighter anchors for IDs (scope to col 1; fallback selectors if needed)
+  # fighter anchors for IDs
   fighter_anchors <- tbl_nodes[1] %>%
     html_element("tbody") %>%
     html_elements("tr td:nth-child(1) a.b-link[href*='fighter-details']")
@@ -69,7 +124,7 @@ parse_one_fight <- function(path) {
   fighter_1_id <- fighter_ids[1]
   fighter_2_id <- fighter_ids[2]
   
-  # -------- tidy the summary table (mirrors your original) --------
+  # -------- tidy the summary table --------
   summary_data <- bind_rows(tbl_list) %>%
     as_tibble() %>%
     rename(
@@ -101,7 +156,7 @@ parse_one_fight <- function(path) {
              into = c("fighter_2_TD_Landed", "fighter_2_TD_Attempts"),
              sep = " of ", extra = "merge") %>%
     mutate(
-      across(contains("Percent"), ~ as.numeric(str_remove(.x, "%")) * 0.01),
+      across(contains("Percent"), ~ suppressWarnings(as.numeric(str_remove(.x, "%"))) * 0.01),
       across(-matches("(^fighter_1$|^fighter_2$|Fighter|Ctrl$)"),
              ~ suppressWarnings(as.numeric(.x)))
     )
@@ -116,10 +171,11 @@ parse_one_fight <- function(path) {
   fighter_1_res <- if (statuses[1] %in% c("W","L","D","NC")) statuses[1] else NA_character_
   fighter_2_res <- if (statuses[2] %in% c("W","L","D","NC")) statuses[2] else NA_character_
   
-  # fight details block (Event, Date, Method, Round, Time, etc.)
+  # fight details block
   details_vals <- doc %>%
     html_nodes(xpath = '//*[contains(concat(" ", @class, " "), " b-fight-details__text ") and (((count(preceding-sibling::*) + 1) = 1) and parent::*)]//i') %>%
     html_text()
+  
   fight_details <- tibble(value = details_vals) %>%
     mutate(value = str_squish(value)) %>%
     separate(value, into = c("feature", "value"), sep = ":", extra = "merge") %>%
@@ -155,7 +211,12 @@ parse_one_fight <- function(path) {
     source_path  = path
   )
   
-  as_tibble(bind_cols(summary_data, ids, fight_details))
+  out <- as_tibble(bind_cols(summary_data, ids, fight_details))
+  
+  # Enforce stable schema
+  out <- coerce_schema(out)
+  
+  out
 }
 
 # --------------------- Main: parse all cached ---------------------
@@ -195,57 +256,59 @@ res <- map(todo$path, safe_parse)
 ok_tbls  <- map(res, "result")
 err_list <- map(res, "error")
 
+
+# Write parse errors (if any)
+err_tbl <- tibble(
+  path     = todo$path,
+  fight_id = todo$fight_id,
+  error    = map_chr(err_list, ~ if (is.null(.x)) NA_character_ else conditionMessage(.x))
+)
+
+err_tbl <- err_tbl %>% filter(!is.na(error))
+
+
+
+
+if (nrow(err_tbl) > 0) {
+  write_csv(err_tbl, ERR_CSV)
+  message("Wrote parse errors: ", ERR_CSV)
+}
+
 # Bind successes
 parsed_list <- compact(ok_tbls)
+
 if (length(parsed_list) > 0) {
   parsed <- dplyr::bind_rows(parsed_list) %>%
     mutate(round_finished = suppressWarnings(as.integer(round_finished))) %>%
     distinct()
+  
+  parsed <- coerce_schema(parsed)
 } else {
   parsed <- tibble()
-}
-
-# Use the freshly parsed data as the numeric schema
-if (nrow(parsed) > 0) {
-  numeric_cols <- names(parsed)[vapply(parsed, is.numeric, logical(1))]
-  
-  coerce_numeric_cols <- function(df) {
-    df %>%
-      mutate(
-        across(
-          any_of(numeric_cols),
-          ~ suppressWarnings(as.numeric(.x))
-        )
-      )
-  }
 }
 
 # Append or write output
 if (file.exists(OUT_CSV) && nrow(parsed) > 0) {
   old <- read_csv(OUT_CSV, show_col_types = FALSE)
   
-  # align types on numeric columns before binding
-  old    <- coerce_numeric_cols(old)
-  parsed <- coerce_numeric_cols(parsed)
+  old    <- coerce_schema(old)
+  parsed <- coerce_schema(parsed)
   
   out <- bind_rows(old, parsed) %>%
     distinct(fight_id, .keep_all = TRUE)
   
 } else if (nrow(parsed) > 0) {
-  # first run or no existing file
   out <- parsed
   
 } else if (file.exists(OUT_CSV)) {
-  # nothing new parsed, keep existing file as is
   out <- read_csv(OUT_CSV, show_col_types = FALSE)
   
 } else {
-  # no parsed rows and no existing file (weird edge case)
   out <- tibble()
 }
 
 write_csv(out, OUT_CSV)
 
 message("Parsed new fights : ", nrow(parsed))
-message("Output written to: ", OUT_CSV)
+message("Output written to : ", OUT_CSV)
 if (file.exists(ERR_CSV)) message("Errors (if any)   : ", ERR_CSV)
