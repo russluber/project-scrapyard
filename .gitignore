@@ -40,5 +40,4 @@ Thumbs.db
 # === Reports: keep only finals ===
 reports/**
 !reports/final/**
-!analysis/model_accuracy_final.qmd
 
