@@ -40,7 +40,7 @@ root/
 │   └── 08_parse_fighter_pages.R
 │   └── 09_make_striking_data.R
 │
-├── analysis/                   
+├── eda/                   
 │   └── eda.Rmd                 # Exploratory data analysis
 │
 ├── figs/                       # Generated figures
