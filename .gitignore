@@ -4,7 +4,7 @@
 cache/
 models/
 figs/*
-!figs/final/**
+!figs/**
 
 # === Data: ignore intermediates; whitelist curated CSVs ===
 data/raw/**
