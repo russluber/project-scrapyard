@@ -212,9 +212,9 @@ n_fights_per_fighter_hist <- p_hist / p_box + plot_layout(heights = c(3, 1))
 
 # n_fights_per_fighter_hist
 
-# # Save figure
+# # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "n_fights_per_fighter_hist.png"),
+#   filename = here("figs", "n_fights_per_fighter_hist.png"),
 #   plot     = n_fights_per_fighter_hist,
 #   width    = 8,
 #   height   = 5,
@@ -230,7 +230,7 @@ To motivate my analysis, I did some exploratory work and asked questions about t
 > How many fights does each fighter have in the UFC?
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/n_fights_per_fighter_hist.png")
+knitr::include_graphics(here::here("figs", "n_fights_per_fighter_hist.png"))
 ```
 
 Most fighters have less than 5 fights on their record, with the most common number of fights being 2. It's an extremely right-skewed distribution. Almost power law-like. Many fighters enter the UFC but only a few accumulate long careers. The median number of fights in the UFC population is 4, meaning that 50% of fighters have fewer than 4 fights and 50% have more than 4 fights.
@@ -254,7 +254,7 @@ sig_strikes_landed_vs_thrown_scatter <- ggplot(fights, aes(x = sig_strikes_throw
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "sig_strikes_landed_vs_thrown_scatter.png"),
+#   filename = here("figs", "sig_strikes_landed_vs_thrown_scatter.png"),
 #   plot     = sig_strikes_landed_vs_thrown_scatter,
 #   width    = 8,
 #   height   = 5,
@@ -264,7 +264,7 @@ sig_strikes_landed_vs_thrown_scatter <- ggplot(fights, aes(x = sig_strikes_throw
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/sig_strikes_landed_vs_thrown_scatter.png")
+knitr::include_graphics(here::here("figs", "sig_strikes_landed_vs_thrown_scatter.png"))
 ```
 
 In this figure, we see how accurate UFC fighters are in general. Each dot is a fighter in a fight. The dashed line denotes what is possible i.e. You can't land more strikes than you throw. We see that the dots are well below the perfect accuracy line. This shows that fighters throw more than they land. And that's par for the course in MMA.
@@ -293,7 +293,7 @@ victory_bars <- fights %>%
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "victory_bars.png"),
+#   filename = here("figs", "victory_bars.png"),
 #   plot     = victory_bars,
 #   width    = 8,
 #   height   = 5,
@@ -303,7 +303,7 @@ victory_bars <- fights %>%
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/victory_bars.png")
+knitr::include_graphics(here::here("figs", "victory_bars.png"))
 ```
 
 Most fighters win by judges' decision. Going to the score cards is the most common way to win in the UFC. Knocking your opponent out is the second most frequent method of victory, followed by submitting your opponent. The "other" category here includes winning because the opponent was disqualified and winning because the on-site doctor determines that the opponent cannot continue.
@@ -336,7 +336,7 @@ sig_strike_acc_hist <- sig_strike_acc_df %>%
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "sig_strike_acc_hist.png"),
+#   filename = here("figs", "sig_strike_acc_hist.png"),
 #   plot     = sig_strike_acc_hist,
 #   width    = 8,
 #   height   = 5,
@@ -346,7 +346,7 @@ sig_strike_acc_hist <- sig_strike_acc_df %>%
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/sig_strike_acc_hist.png")
+knitr::include_graphics(here::here("figs", "sig_strike_acc_hist.png"))
 ```
 
 The distribution of significant strike accuracy for the whole UFC population looks approximately Normal. There are 0.00 and 1.00 accuracies because there are some fights where a fighter never threw a strike and other fights where a fighter threw one or more strikes and they all landed. I enforced a minimum significant strikes thrown condition and subset the dataset (\< 4% of the data filtered out) to curtail this issue but it persists.
@@ -394,7 +394,7 @@ sig_strike_acc_by_weight_men <- sig_strike_acc_df %>%
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "sig_strike_acc_by_weight_men.png"),
+#   filename = here("figs", "sig_strike_acc_by_weight_men.png"),
 #   plot     = sig_strike_acc_by_weight_men,
 #   width    = 8,
 #   height   = 5,
@@ -404,7 +404,7 @@ sig_strike_acc_by_weight_men <- sig_strike_acc_df %>%
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/sig_strike_acc_by_weight_men.png")
+knitr::include_graphics(here::here("figs", "sig_strike_acc_by_weight_men.png"))
 ```
 
 The mean significant strike accuracy across men's weight divisions hovers around 44-50%. Just like the UFC population as a whole, the distribution of significant strike accuracy by weight class is approximately Normal. In terms of average accuracy, the heavyweight division seems to be the most accurate at 0.5 while the lightweight division is on the low end at 0.44.
@@ -447,7 +447,7 @@ sig_strike_acc_by_weight_women <- sig_strike_acc_df %>%
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "sig_strike_acc_by_weight_women.png"),
+#   filename = here("figs", "sig_strike_acc_by_weight_women.png"),
 #   plot     = sig_strike_acc_by_weight_women,
 #   width    = 8,
 #   height   = 5,
@@ -457,7 +457,7 @@ sig_strike_acc_by_weight_women <- sig_strike_acc_df %>%
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/sig_strike_acc_by_weight_women.png")
+knitr::include_graphics(here::here("figs", "sig_strike_acc_by_weight_women.png"))
 ```
 
 For women, the mean significant strike accuracy varies between 46-48%. The featherweight division's mean accuracy is 0.48, while the flyweight division's mean accuracy is 0.46. It's worth noting that women's MMA is a relatively recent addition to UFC, which started only in 2013.
@@ -543,7 +543,7 @@ win_prob_plot <- ggplot(scenarios, aes(x = delta, y = reorder(term, delta))) +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "win_prob_plot.png"),
+#   filename = here("figs", "win_prob_plot.png"),
 #   plot     = win_prob_plot,
 #   width    = 8,
 #   height   = 5,
@@ -553,7 +553,7 @@ win_prob_plot <- ggplot(scenarios, aes(x = delta, y = reorder(term, delta))) +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/win_prob_plot.png")
+knitr::include_graphics(here::here("figs", "win_prob_plot.png"))
 ```
 
 This plot shows how much a fighter’s probability of winning is expected to increase when they have a one standard deviation advantage in each performance metric, assuming all other metrics are equal.
@@ -638,14 +638,14 @@ svg_txt <- export_svg(ufc_graph)
 
 # rsvg_png(
 #   charToRaw(svg_txt),
-#   here::here("reports", "final", "figs", "ufc_graph.png"),
-#   width  = 2400,  
-#   height = 1500    
+#   here::here("figs", "ufc_graph.png"),
+#   width  = 2400,
+#   height = 1500
 # )
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/ufc_graph.png")
+knitr::include_graphics(here::here("figs", "ufc_graph.png"))
 ```
 
 Each fighter $i$ has $n_i$ fights. As we've seen, the median UFC fighter has about 4 fights in their career. But there's a lot variation in the number of fights fighters have fought in.
@@ -857,7 +857,7 @@ prior_pred_check_plot <- ggplot(pp_df, aes(x = p)) +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "prior_pred_check_plot.png"),
+#   filename = here("figs", "prior_pred_check_plot.png"),
 #   plot     = prior_pred_check_plot,
 #   width    = 8,
 #   height   = 5,
@@ -867,7 +867,7 @@ prior_pred_check_plot <- ggplot(pp_df, aes(x = p)) +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/prior_pred_check_plot.png")
+knitr::include_graphics(here::here("figs", "prior_pred_check_plot.png"))
 ```
 
 The prior predictive distribution of strike-landing probabilities is broad and centered around moderate accuracy levels. Most simulated probabilities fall between roughly 0.15 and 0.80, with the density peaking around 0.35-0.55 and tapering toward the extremes near 0 and 1. This indicates that the priors allow a wide range of plausible striking abilities while still concentrating mass in a realistic region for UFC fighters, avoiding implausibly high or low accuracy values.
@@ -959,7 +959,7 @@ post_pred_check_plot <- ggplot() +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "post_pred_check_plot.png"),
+#   filename = here("figs", "post_pred_check_plot.png"),
 #   plot     = post_pred_check_plot,
 #   width    = 8,
 #   height   = 5,
@@ -969,7 +969,7 @@ post_pred_check_plot <- ggplot() +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/post_pred_check_plot.png")
+knitr::include_graphics(here::here("figs", "post_pred_check_plot.png"))
 ```
 
 The posterior predictive check on the accuracy scale shows that the model reproduces the overall distribution of strike-landing accuracy very well. The simulated accuracies (purple) closely overlap the observed accuracies (black outline) across the entire range: the center of the distribution around 40–60 percent, the spread toward both lower and higher accuracies, and even the small mass near 0 and 1 that occurs when fighters throw very few strikes. This strong agreement indicates that the hierarchical binomial model captures both the central tendency and variability of per-fight striking accuracy in the UFC data.
@@ -1083,7 +1083,7 @@ latent_acc_dist <- ggplot(fighter_summary, aes(x = theta_f)) +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "latent_acc_dist.png"),
+#   filename = here("figs", "latent_acc_dist.png"),
 #   plot     = latent_acc_dist,
 #   width    = 8,
 #   height   = 5,
@@ -1093,7 +1093,7 @@ latent_acc_dist <- ggplot(fighter_summary, aes(x = theta_f)) +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/latent_acc_dist.png")
+knitr::include_graphics(here::here("figs", "latent_acc_dist.png"))
 ```
 
 This histogram shows the posterior distribution of latent striking accuracy $\theta_f$ across all UFC fighters. The shape closely mirrors the empirical distribution of observed significant strike accuracy, indicating that the hierarchical model successfully recovers the underlying population pattern while smoothing out fight-to-fight noise. Most fighters fall between 0.40 and 0.50 accuracy with only a small minority displaying much higher or lower underlying precision.
@@ -1119,7 +1119,7 @@ top10_ci_plot <- ggplot(top10_min5, aes(y = fighter, x = theta_f)) +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "top10_ci_plot.png"),
+#   filename = here("figs", "top10_ci_plot.png"),
 #   plot     = top10_ci_plot,
 #   width    = 8,
 #   height   = 5,
@@ -1129,7 +1129,7 @@ top10_ci_plot <- ggplot(top10_min5, aes(y = fighter, x = theta_f)) +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/top10_ci_plot.png")
+knitr::include_graphics(here::here("figs", "top10_ci_plot.png"))
 ```
 
 This figure displays the ten fighters with the highest estimated latent striking accuracy among those with at least 5 UFC fights. Points denote posterior median accuracy and horizontal bars show 95 percent credible intervals, highlighting both the rank ordering and the uncertainty around each estimate. This plot emphasizes which fighters the model identifies as having the strongest underlying ability to land significant strikes.
@@ -1166,7 +1166,7 @@ random20_ci_plot <- ggplot(random20, aes(y = fighter, x = theta_f)) +
 
 # # Save figure
 # ggsave(
-#   filename = here("reports", "final", "figs", "random20_ci_plot.png"),
+#   filename = here("figs", "random20_ci_plot.png"),
 #   plot     = random20_ci_plot,
 #   width    = 9,
 #   height   = 8,
@@ -1176,7 +1176,7 @@ random20_ci_plot <- ggplot(random20, aes(y = fighter, x = theta_f)) +
 ```
 
 ```{r,echo=FALSE, fig.align='center', out.width='80%'}
-knitr::include_graphics("figs/random20_ci_plot.png")
+knitr::include_graphics(here::here("figs", "random20_ci_plot.png"))
 ```
 
 This figure shows posterior estimates of latent significant strike accuracy for a random subset of 20 UFC fighters who have recorded at least 5 bouts. Each point represents the fighter’s posterior median accuracy, while the horizontal bar represents the 95 percent credible interval. This plot illustrates typical uncertainty levels across the roster and provides a representative look at the distribution of underlying striking skill in the population.
