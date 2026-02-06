@@ -8,13 +8,14 @@ In this project, I investigate two central questions about fighter performance i
 
 ## Figure Gallery
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
-  <img src="figs/n_fights_per_fighter_hist.png" width="300" />
-  <img src="figs/victory_bars.png" width="300" />
-  <img src="figs/top10_ci_plot.png" width="300" />
-  <img src="figs/latent_acc_dist.png" width="300" />
-</div>
-
+<p align="center">
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px;">
+    <img src="figs/n_fights_per_fighter_hist.png" width="300" />
+    <img src="figs/victory_bars.png" width="300" />
+    <img src="figs/top10_ci_plot.png" width="300" />
+    <img src="figs/latent_acc_dist.png" width="300" />
+  </div>
+</p>
 
 
 ## Project Structure
