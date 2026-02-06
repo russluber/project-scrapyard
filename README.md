@@ -1,6 +1,10 @@
 # Project Scrapyard
 
-Analyzing [UFC](http://www.ufcstats.com/statistics/events/completed) fight data.
+Analyzing [UFC](http://www.ufcstats.com/statistics/events/completed) fight data. This project investigates two central questions about performance in UFC competition:
+
+1. Which in-fight performance differential metric is the most predictive of winning?
+
+2. What is each fighter's *latent* probability of landing a significant strike, after accounting for gender, weight class, and fight-to-fight randomness?
 
 ## Project Structure
 
@@ -11,7 +15,7 @@ root/
 ├── data/                       # All datasets
 │   ├── raw/                    # Untouched CSVs directly from scraping
 │   ├── clean/                  # Outputs from scripts/data_cleaning.R
-│   └── model/                  # Modeling-ready data (e.g. striking_df.rds)
+│   └── model/                  # Modeling-ready data
 │
 ├── scripts/                    # Data scraping and cleaning pipeline
 │   ├── 01_fetch_event_cards.R
@@ -24,32 +28,20 @@ root/
 │   └── 08_parse_fighter_pages.R
 │   └── 09_make_striking_data.R
 │
-├── R/                          # Helper R scripts for modeling & visualization
-│   ├── prep_accuracy_data.R    # Builds y/n + factor IDs for modeling
-│   └── theme_plots.R           # (Optional) Custom ggplot theme for consistent figures
-│
-├── analysis/                   # EDA and Bayesian modeling notebooks (Quarto)
-│   ├── eda.qmd                 # Exploratory data analysis
-│   ├── model_accuracy_stage1.qmd  # Stage 1: priors + prior predictive checks
-│   ├── model_accuracy_stage2.qmd  # Stage 2: model fit + posterior predictive checks
-│   ├── model_accuracy_stage3.qmd  # Stage 3: LOO, sensitivity, summaries
-│   └── model_accuracy_final.qmd   # Polished 10-page final report (render to PDF)
+├── analysis/                   
+│   └── eda.Rmd                 # Exploratory data analysis
 │
 ├── figs/                       # Generated figures
 │   ├── eda/
-│   ├── model_stage1/
-│   ├── model_stage2/
-│   ├── model_stage3/
 │   └── final/                  # Curated figures used in final report/presentation
 │
-├── models/                     # Saved model fits (.rds) from brms/Stan (ignored by Git)
+├── models/fits                 # Saved model fits (.rds) from brms/Stan
+│   ├── fit_prior_acc.rds
+│   └── fit_acc_model.rds
 │
 ├── reports/                    # Rendered outputs
 │   ├── midterm/                # Draft report for midterm checkpoint
-│   └── final/                  # Final report PDF + slides
-│
-├── docs/                       # Presentation slides and related assets
-│   └── slides/
+│   └── final/                  # Final report PDF
 │
 ├── .gitignore                  # Git ignore rules
 ├── README.md                   # Project overview (this file)
