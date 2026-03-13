@@ -37,7 +37,7 @@ root/
 │   ├── 05_join_event_metadata.R
 │   ├── 06_data_cleaning.R
 │   ├── 07_fetch_fighter_pages.R
-│   └── 08_parse_fighter_pages.R
+│   ├── 08_parse_fighter_pages.R
 │   └── 09_make_striking_data.R
 │
 ├── eda/                   
