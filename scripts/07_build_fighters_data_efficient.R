@@ -327,7 +327,15 @@ parse_fighters_safely <- function(df) {
     otherwise = NULL
   )
 
-  res <- pmap(df %>% select(fighter_id, fighter_url, path), safe_parse)
+  res <- pmap(
+    df %>%
+      transmute(
+        fighter_id = fighter_id,
+        details_url = fighter_url,
+        path = path
+      ),
+    safe_parse
+  )
 
   parsed <- compact(map(res, "result"))
   errs <- tibble(
@@ -347,6 +355,30 @@ parse_fighters_safely <- function(df) {
   }
 
   list(parsed = parsed_tbl, errors = errs)
+}
+
+coerce_fighter_output <- function(df) {
+  defaults <- list(
+    fighter_id = character(),
+    details_url = character(),
+    name = character(),
+    height_in = numeric(),
+    weight_lb = numeric(),
+    reach_in = numeric(),
+    stance = character(),
+    dob = as.Date(character())
+  )
+
+  ensure_cols(df, defaults) %>%
+    mutate(
+      across(c(fighter_id, details_url, name, stance), as.character),
+      height_in = suppressWarnings(as.numeric(height_in)),
+      weight_lb = suppressWarnings(as.numeric(weight_lb)),
+      reach_in = suppressWarnings(as.numeric(reach_in)),
+      dob = suppressWarnings(as.Date(dob))
+    ) %>%
+    arrange(fighter_id) %>%
+    distinct(fighter_id, .keep_all = TRUE)
 }
 
 # -------------------------------------------------------------------
@@ -440,7 +472,7 @@ write_csv(manifest, MANIFEST)
 # -------------------------------------------------------------------
 # 4) Parse only new or refetched fighter pages
 # -------------------------------------------------------------------
-existing_out <- read_csv_if_exists(OUT_CSV)
+existing_out <- read_csv_if_exists(OUT_CSV) %>% coerce_fighter_output()
 already_parsed <- if ("fighter_id" %in% names(existing_out)) unique(existing_out$fighter_id) else character()
 refetched_ids <- if (nrow(fetches) > 0) fetches$fighter_id[fetches$fetch_ok %in% TRUE] else character()
 
@@ -458,17 +490,19 @@ if (nrow(parsed_res$errors) > 0) {
   out_errs <- bind_rows(prior_errs, parsed_res$errors) %>%
     distinct(fighter_id, .keep_all = TRUE)
   write_csv(out_errs, ERR_CSV)
+} else if (file.exists(ERR_CSV)) {
+  file.remove(ERR_CSV)
 }
 
 new_rows <- parsed_res$parsed
 out <- if (nrow(existing_out) > 0 && nrow(new_rows) > 0) {
   bind_rows(new_rows, existing_out) %>%
     distinct(fighter_id, .keep_all = TRUE) %>%
-    arrange(fighter_id)
+    coerce_fighter_output()
 } else if (nrow(new_rows) > 0) {
-  new_rows %>% arrange(fighter_id)
+  new_rows %>% coerce_fighter_output()
 } else {
-  existing_out %>% arrange(fighter_id)
+  existing_out %>% coerce_fighter_output()
 }
 
 write_csv(out, OUT_CSV)
