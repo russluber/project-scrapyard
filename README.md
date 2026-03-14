@@ -31,10 +31,6 @@ root/
 │
 ├── scripts/                    # Data scraping and cleaning pipeline
 │   ├── 01_fetch_event_cards.R
-│   ├── 02_parse_event_cards.R
-│   ├── 03_fetch_fight_pages.R
-│   ├── 04_parse_fight_pages.R
-│   ├── 05_join_event_metadata.R
 │   ├── 06_data_cleaning.R
 │   ├── 07_fetch_fighter_pages.R
 │   ├── 08_parse_fighter_pages.R
