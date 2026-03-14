@@ -1,13 +1,14 @@
 # Scripts Pipeline
 
-The canonical pipeline for this project is now:
+The canonical scripts pipeline for this project is now:
 
-1. `00_build_raw_enriched_efficient.R`
-2. `06_data_cleaning.R`
+1. `00_build_fight_data_raw_enriched.R`
+2. `01_clean_fight_data.R`
+3. `02_build_fighters_data_raw.R`
 
-The older `01_` through `05_` scripts are legacy pipeline pieces kept for reference, but the intended workflow going forward is `00_` followed by `06_`.
+The older `01_` through `05_` scripts are legacy pipeline pieces kept for reference. Going forward, the intended fight-data workflow is `00_` followed by `01_`. The fighter metadata workflow is handled separately by `02_`.
 
-## `00_build_raw_enriched_efficient.R`
+## `00_build_fight_data_raw_enriched.R`
 
 This script replaces the practical role of the old `01_` through `05_` sequence.
 
@@ -26,8 +27,7 @@ What it does:
 - Parses fight pages into `data/raw/fight_data_raw.csv`
 - Joins fight rows to event metadata and writes `data/raw/fight_data_raw_enriched.csv`
 
-
-## `06_data_cleaning.R`
+## `01_clean_fight_data.R`
 
 This script starts from `data/raw/fight_data_raw_enriched.csv` and converts the raw fight-level scrape into the cleaned analysis dataset.
 
@@ -46,13 +46,46 @@ What it does:
   - control time in seconds
 - Writes the cleaned output to `data/clean/fight_data.csv`
 
+## `02_build_fighters_data_raw.R`
+
+This script replaces the practical role of the old `07_fetch_fighter_pages.R` and `08_parse_fighter_pages.R` sequence.
+
+It is independent from the fight-data pipeline above. It does not affect `data/clean/fight_data.csv` unless you explicitly join fighter metadata into the fight data later.
+
+What it does:
+
+- Scans the UFCStats A-Z fighter directory
+- Discovers fighter profile URLs and fighter IDs
+- Updates `data/raw/fighters_manifest.csv`
+- Fetches only missing or failed fighter pages into `cache/fighters/`
+- Parses only new or refetched fighter pages
+- Writes fighter profile metadata to `data/raw/fighters_data_raw.csv`
+- Logs parse issues to `data/raw/parse_errors_fighters.csv`
+
+What kind of data it builds:
+
+- fighter ID
+- fighter profile URL
+- display name
+- height
+- weight
+- reach
+- stance
+- date of birth
+
 ## Recommended Run Order
 
-From the project root:
+For the canonical fight-data pipeline, from the project root:
 
 ```r
-source("scripts/00_build_raw_enriched_efficient.R")
-source("scripts/06_data_cleaning.R")
+source("scripts/00_build_fight_data_raw_enriched.R")
+source("scripts/01_clean_fight_data.R")
 ```
 
-Or run them individually in RStudio.
+For fighter metadata only:
+
+```r
+source("scripts/02_build_fighters_data_raw.R")
+```
+
+Run these scripts individually in RStudio or in your usual R workflow.
