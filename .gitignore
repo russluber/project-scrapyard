@@ -8,6 +8,8 @@ figs/*
 
 # === Data: ignore intermediates; whitelist curated CSVs ===
 data/raw/**
+!data/raw/efficient/
+!data/raw/efficient/**
 data/clean/**
 data/model/**
 !data/clean/fight_data.csv
