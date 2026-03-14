@@ -19,7 +19,7 @@ EVENTS_INDEX   <- paste0(BASE_URL, "/statistics/events/completed?page=all")
 
 EVENT_CACHE    <- here("cache", "events")
 FIGHT_CACHE    <- here("cache", "fights")
-OUT_DIR        <- here("data", "raw", "efficient")
+OUT_DIR        <- here("data", "raw")
 
 EVENT_MANIFEST <- file.path(OUT_DIR, "events_manifest.csv")
 FIGHT_MANIFEST <- file.path(OUT_DIR, "fights_manifest.csv")
@@ -39,8 +39,8 @@ MAX_FIGHT_RETRIES  <- 5
 STALE_AFTER_DAYS   <- Inf
 POLITE_WORKERS     <- min(max(1, parallelly::availableCores() - 1), 4)
 
-EVENT_UA <- "UFC stats research scraper (efficient event cache)"
-FIGHT_UA <- "UFC stats research scraper (efficient fight cache)"
+EVENT_UA <- "UFC stats research scraper (canonical event cache)"
+FIGHT_UA <- "UFC stats research scraper (canonical fight cache)"
 
 dir.create(EVENT_CACHE, recursive = TRUE, showWarnings = FALSE)
 dir.create(FIGHT_CACHE, recursive = TRUE, showWarnings = FALSE)
