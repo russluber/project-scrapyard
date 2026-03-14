@@ -30,11 +30,10 @@ root/
 │   └── model/                  # Modeling-ready data
 │
 ├── scripts/                    # Data scraping and cleaning pipeline
-│   ├── 01_fetch_event_cards.R
-│   ├── 06_data_cleaning.R
-│   ├── 07_fetch_fighter_pages.R
-│   ├── 08_parse_fighter_pages.R
-│   └── 09_make_striking_data.R
+│   ├── 00_build_fight_data_raw_enriched.R
+│   ├── 01_clean_fight_data.R
+│   ├── 02_build_fighters_data_raw.R
+│   └── 09_make_striking_data.R # Need to fix
 │
 ├── eda/                   
 │   └── eda.Rmd                 # Exploratory data analysis
