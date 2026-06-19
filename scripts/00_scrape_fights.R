@@ -46,9 +46,6 @@ STALE_AFTER_DAYS  <- Inf
 MAX_EVENT_RETRIES <- 6
 MAX_FIGHT_RETRIES <- 5
 
-EVENT_UA <- "UFC stats research scraper (event cache)"
-FIGHT_UA <- "UFC stats research scraper (fight cache)"
-
 dir.create(EVENT_CACHE, recursive = TRUE, showWarnings = FALSE)
 dir.create(FIGHT_CACHE, recursive = TRUE, showWarnings = FALSE)
 dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
@@ -296,9 +293,19 @@ parse_fights_safely <- function(paths) {
 # ===================================================================
 # 1) Discover all event cards from the completed-events index
 # ===================================================================
+# Start the headless browser used for all fetching in this script, and
+# make sure it is closed when the script exits (even on error).
+session <- browser_session()
+on.exit(try(session$close(), silent = TRUE), add = TRUE)
+
 message("Discovering event cards from UFCStats index...")
 
-cards <- read_html(EVENTS_INDEX) %>%
+index_html <- render_page(session, EVENTS_INDEX)
+if (is_challenge_html(index_html)) {
+  stop("Could not load the events index (anti-bot challenge not cleared): ", EVENTS_INDEX)
+}
+
+cards <- read_html(index_html) %>%
   html_elements("a.b-link_style_black") %>%
   html_attr("href") %>%
   discard(is.na) %>%
@@ -325,7 +332,7 @@ message("Event cards to fetch: ", nrow(need_events))
 
 if (nrow(need_events) > 0) {
   event_fetches <- fetch_sequential(
-    need_events, "url", "path", EVENT_UA, MAX_EVENT_RETRIES,
+    need_events, "url", "path", session = session, max_tries = MAX_EVENT_RETRIES,
     id_col = "event_id", log_label = "event"
   ) %>%
     bind_cols(need_events %>% select(event_id))
@@ -394,7 +401,10 @@ message("Fight pages indexed : ", nrow(fight_manifest))
 message("Fight pages to fetch: ", nrow(need_fights))
 
 if (nrow(need_fights) > 0) {
-  fight_fetches <- fetch_in_batches(need_fights, "url", "path", FIGHT_UA, MAX_FIGHT_RETRIES) %>%
+  fight_fetches <- fetch_sequential(
+    need_fights, "url", "path", session = session, max_tries = MAX_FIGHT_RETRIES,
+    id_col = "fight_id", log_label = "fight"
+  ) %>%
     bind_cols(need_fights %>% select(fight_id))
   fight_manifest <- fight_manifest %>% select(-needs_fetch) %>%
     apply_fetch_results(fight_fetches, "fight_id")

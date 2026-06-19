@@ -17,20 +17,15 @@ suppressPackageStartupMessages({
   library(stringr)
   library(purrr)
   library(lubridate)
-  library(httr2)
-  library(furrr)
-  library(future)
-  library(parallelly)
   library(xml2)
+  # chromote is loaded lazily in browser_session() so that the parsing-only
+  # helpers can be sourced without it installed.
 })
 
 # -------------------------------------------------------------------
 # Shared config
 # -------------------------------------------------------------------
 BASE_URL <- "http://ufcstats.com"
-
-# Bounded, polite concurrency for batch fetches: cores - 1, capped at 4.
-POLITE_WORKERS <- min(max(1, parallelly::availableCores() - 1), 4)
 
 # -------------------------------------------------------------------
 # Tiny helpers
@@ -213,102 +208,122 @@ mark_parsed <- function(manifest, ids, key) {
 }
 
 # -------------------------------------------------------------------
-# HTTP fetching
+# Fetching (headless browser)
+#
+# ufcstats.com serves a JavaScript anti-bot challenge ("Checking your
+# browser...") to plain HTTP clients, so a static fetch (httr2/rvest)
+# returns a challenge stub instead of the page. We drive a headless
+# Chromium browser (via chromote) so the challenge JS runs, then read
+# the rendered DOM. Parsing downstream is unchanged.
+#
+# A single browser session is reused across all pages (one session per
+# page would be far too slow), so fetching is sequential. The session is
+# created with browser_session() and must be closed by the caller.
 # -------------------------------------------------------------------
 
-# Build a request with a polite UA, timeout, and retry/backoff on
-# transient server errors.
-request_with_retry <- function(url, user_agent, max_tries) {
-  request(url) %>%
-    req_user_agent(user_agent) %>%
-    req_timeout(30) %>%
-    req_retry(
-      max_tries = max_tries,
-      is_transient = \(resp) resp_status(resp) %in% c(429, 500, 502, 503, 504),
-      backoff = ~ 1 * 2^tries
-    )
+# Locate a Chromium-based browser. Honor CHROMOTE_CHROME if set, else try
+# common Chrome/Edge install paths on Windows.
+find_chromium <- function() {
+  env <- Sys.getenv("CHROMOTE_CHROME", "")
+  if (nzchar(env) && file.exists(env)) return(env)
+
+  candidates <- c(
+    file.path(Sys.getenv("ProgramFiles"), "Google/Chrome/Application/chrome.exe"),
+    file.path(Sys.getenv("ProgramFiles(x86)"), "Google/Chrome/Application/chrome.exe"),
+    file.path(Sys.getenv("LOCALAPPDATA"), "Google/Chrome/Application/chrome.exe"),
+    file.path(Sys.getenv("ProgramFiles"), "Microsoft/Edge/Application/msedge.exe"),
+    file.path(Sys.getenv("ProgramFiles(x86)"), "Microsoft/Edge/Application/msedge.exe")
+  )
+  hit <- candidates[file.exists(candidates)]
+  if (length(hit) > 0) return(hit[1])
+  ""  # let chromote try its own default discovery
 }
 
-# Fetch one page to `path`. Returns a one-row tibble of fetch status.
-# Only writes the file on a 200 text/html response.
-fetch_one_page <- function(url, path, user_agent, max_tries) {
-  status <- NA_real_
-  ctype <- NA_character_
+# Start a headless browser session for scraping. Returns a ChromoteSession.
+browser_session <- function() {
+  if (!requireNamespace("chromote", quietly = TRUE)) {
+    stop("The 'chromote' package is required to scrape ufcstats.com ",
+         "(it serves a JavaScript anti-bot challenge). Install it with ",
+         "install.packages('chromote').")
+  }
+  browser_path <- find_chromium()
+  if (nzchar(browser_path)) Sys.setenv(CHROMOTE_CHROME = browser_path)
+  message("Headless browser: ", if (nzchar(browser_path)) browser_path else "(chromote default)")
+  chromote::ChromoteSession$new()
+}
+
+# True if rendered HTML still looks like the anti-bot challenge stub.
+is_challenge_html <- function(html) {
+  is.null(html) || !nzchar(html) ||
+    grepl("Checking your browser|requires JavaScript", html, ignore.case = TRUE)
+}
+
+# Navigate `session` to `url` and return rendered HTML once the challenge
+# clears, or NULL on timeout. Polls the DOM rather than sleeping a fixed
+# amount, so it's as fast as the challenge allows.
+render_page <- function(session, url, max_wait = 30, poll = 1.0) {
+  session$Page$navigate(url)
+  try(session$Page$loadEventFired(timeout = max_wait * 1000), silent = TRUE)
+
+  deadline <- Sys.time() + max_wait
+  repeat {
+    html <- tryCatch({
+      root <- session$DOM$getDocument(depth = -1)$root$nodeId
+      session$DOM$getOuterHTML(nodeId = root)$outerHTML
+    }, error = function(e) NULL)
+
+    if (!is_challenge_html(html)) return(html)
+    if (Sys.time() > deadline) return(NULL)
+    Sys.sleep(poll)
+  }
+}
+
+# Fetch one page through the shared browser `session`, saving rendered
+# HTML to `path`. Returns a one-row tibble of fetch status, matching the
+# manifest schema. `max_tries` retries navigation if the challenge sticks.
+fetch_one_page <- function(url, path, session, max_tries = 3, max_wait = 30) {
   bytes <- NA_real_
   err <- NA_character_
   ok <- FALSE
 
-  tryCatch({
-    resp <- request_with_retry(url, user_agent, max_tries) %>% req_perform()
-    status <- resp_status(resp)
-    ctype <- resp_content_type(resp)
-
-    if (status == 200 && grepl("text/html", ctype, fixed = TRUE)) {
-      raw <- resp_body_raw(resp)
-      save_bin(raw, path)
-      bytes <- length(raw)
+  for (attempt in seq_len(max_tries)) {
+    html <- tryCatch(render_page(session, url, max_wait = max_wait),
+                     error = function(e) { err <<- conditionMessage(e); NULL })
+    if (!is.null(html) && !is_challenge_html(html)) {
+      save_bin(charToRaw(enc2utf8(html)), path)
+      bytes <- nchar(html, type = "bytes")
       ok <- TRUE
-    } else {
-      err <- sprintf("status=%s ctype=%s", status, ctype %||% NA_character_)
+      err <- NA_character_
+      break
     }
-  }, error = function(e) {
-    err <<- conditionMessage(e)
-  })
+    err <- err %||% "challenge not cleared"
+    if (attempt < max_tries) Sys.sleep(2 * attempt)  # backoff before retry
+  }
 
   tibble(
     fetched_at = now_chr(),
     fetch_ok = ok,
-    status_code = status,
-    content_type = ctype,
+    status_code = if (ok) 200 else NA_real_,
+    content_type = if (ok) "text/html" else NA_character_,
     bytes = bytes,
     error_msg = err
   )
 }
 
-# Fetch many pages sequentially with polite per-request jitter.
-# Use for small batches (e.g. event index pages).
-fetch_sequential <- function(df, url_col, path_col, user_agent, max_tries,
+# Fetch many pages sequentially through one browser `session`, with polite
+# per-request jitter. Used for every batch (large and small), since the
+# browser session can't be shared across parallel workers.
+fetch_sequential <- function(df, url_col, path_col, session, max_tries = 3,
                              delay = c(0.5, 1.25), id_col = NULL, log_label = "page") {
   if (nrow(df) == 0) return(tibble())
   results <- vector("list", nrow(df))
   for (i in seq_len(nrow(df))) {
     Sys.sleep(runif(1, delay[1], delay[2]))
     results[[i]] <- fetch_one_page(df[[url_col]][i], df[[path_col]][i],
-                                   user_agent = user_agent, max_tries = max_tries)
+                                   session = session, max_tries = max_tries)
     tag <- if (!is.null(id_col)) df[[id_col]][i] else basename(df[[path_col]][i])
     message(sprintf("[%d/%d] %s %s fetched=%s", i, nrow(df), log_label, tag,
                     if (results[[i]]$fetch_ok[1]) "yes" else "no"))
-  }
-  bind_rows(results)
-}
-
-# Fetch many pages with bounded concurrency, in worker-sized batches,
-# pausing between batches. Use for large batches (fights, fighters).
-fetch_in_batches <- function(df, url_col, path_col, user_agent, max_tries,
-                             batch_pause = c(0.5, 1.25), workers = POLITE_WORKERS) {
-  if (nrow(df) == 0) return(tibble())
-
-  old_plan <- future::plan()
-  on.exit(future::plan(old_plan), add = TRUE)
-  future::plan(future::multisession, workers = workers)
-
-  batches <- split(seq_len(nrow(df)), ceiling(seq_len(nrow(df)) / workers))
-  results <- vector("list", length(batches))
-
-  for (i in seq_along(batches)) {
-    chunk <- df[batches[[i]], , drop = FALSE]
-    results[[i]] <- furrr::future_map2_dfr(
-      chunk[[url_col]],
-      chunk[[path_col]],
-      function(u, p) {
-        Sys.sleep(runif(1, 0.10, 0.35))
-        fetch_one_page(u, p, user_agent = user_agent, max_tries = max_tries)
-      },
-      .options = furrr::furrr_options(seed = TRUE)
-    )
-    if (i < length(batches)) {
-      Sys.sleep(runif(1, batch_pause[1], batch_pause[2]))
-    }
   }
   bind_rows(results)
 }

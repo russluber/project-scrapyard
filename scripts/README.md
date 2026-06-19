@@ -7,6 +7,21 @@ striking-accuracy model used in the final report.
 Rerun it whenever new UFC events have happened — the scrapers are
 cache-first and only fetch what's new.
 
+## Requirements
+
+- **R** with the project packages (rvest, dplyr/tidyr/readr/stringr/purrr,
+  lubridate, brms for the model stage).
+- **A headless browser + `chromote`.** ufcstats.com serves a JavaScript
+  anti-bot challenge to plain HTTP clients, so the scrapers (stages 00 and
+  01) drive a headless **Chromium-based browser** via the `chromote`
+  package to run the challenge and read the rendered page.
+  - Install: `install.packages("chromote")`.
+  - Needs Chrome or Edge installed. The scrapers auto-detect common
+    Chrome/Edge paths; to force a specific one, set the `CHROMOTE_CHROME`
+    environment variable to the browser executable.
+- The cleaning and model-data stages (02, 03) need no browser — they only
+  read local files, so `--no-scrape` runs work without chromote.
+
 ## Quick start
 
 From the project root:
@@ -57,8 +72,11 @@ Both scrapers are **cache-first and idempotent**:
 To force a fully fresh scrape, delete the relevant `cache/` subfolder (or
 set `STALE_AFTER_DAYS` in the scraper to a finite number of days).
 
-Scraping is polite: a descriptive User-Agent, randomized delays, bounded
-concurrency, and retry-with-backoff on transient (429/5xx) errors.
+Because pages are loaded through one headless-browser session (to clear
+the JS challenge), fetching is **sequential**, with randomized delays
+between requests and retry-with-backoff when the challenge doesn't clear.
+The incremental cache is what keeps reruns quick — a routine refresh only
+loads the handful of pages from new events.
 
 ## Notes
 

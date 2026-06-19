@@ -34,8 +34,6 @@ LETTERS_TO_SCRAPE <- letters
 STALE_AFTER_DAYS  <- Inf
 MAX_FETCH_RETRIES <- 5
 
-USER_AGENT <- "UFC stats research scraper (fighter metadata cache)"
-
 dir.create(CACHE_DIR, recursive = TRUE, showWarnings = FALSE)
 dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
 
@@ -43,13 +41,14 @@ dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
 # Fighter directory discovery
 # -------------------------------------------------------------------
 
-# Collect fighter-detail URLs from one letter's directory page.
-get_fighters_from_letter <- function(letter) {
-  doc <- try(read_html(MASTER_URL(letter)), silent = TRUE)
-  if (inherits(doc, "try-error")) {
+# Collect fighter-detail URLs from one letter's directory page, rendered
+# through the headless browser `session` so the anti-bot challenge clears.
+get_fighters_from_letter <- function(letter, session) {
+  html <- tryCatch(render_page(session, MASTER_URL(letter)), error = function(e) NULL)
+  if (is_challenge_html(html)) {
     return(tibble(letter = character(), url = character()))
   }
-  links <- doc %>%
+  links <- read_html(html) %>%
     html_elements("table.b-statistics__table tbody tr.b-statistics__table-row td:nth-child(-n+3) a[href]") %>%
     html_attr("href") %>%
     discard(is.na) %>%
@@ -202,9 +201,13 @@ coerce_fighter_output <- function(df) {
 # ===================================================================
 # 1) Discover fighter profile URLs from the A-Z directory
 # ===================================================================
+# Start the headless browser used for all fetching, closing it on exit.
+session <- browser_session()
+on.exit(try(session$close(), silent = TRUE), add = TRUE)
+
 message("Scanning fighter directory pages (a-z)...")
 
-fighters_tbl <- map_dfr(LETTERS_TO_SCRAPE, get_fighters_from_letter) %>%
+fighters_tbl <- map_dfr(LETTERS_TO_SCRAPE, ~ get_fighters_from_letter(.x, session)) %>%
   mutate(fighter_id = id_from_url(url, "fighter"),
          path = file.path(CACHE_DIR, paste0(fighter_id, ".html"))) %>%
   filter(!is.na(fighter_id), nzchar(fighter_id)) %>%
@@ -230,10 +233,13 @@ message("Fighters indexed : ", nrow(manifest))
 message("Need to fetch    : ", nrow(need))
 
 # ===================================================================
-# 3) Fetch missing/failed fighter pages (bounded concurrency)
+# 3) Fetch missing/failed fighter pages (sequential, headless browser)
 # ===================================================================
 if (nrow(need) > 0) {
-  fetches <- fetch_in_batches(need, "url", "path", USER_AGENT, MAX_FETCH_RETRIES) %>%
+  fetches <- fetch_sequential(
+    need, "url", "path", session = session, max_tries = MAX_FETCH_RETRIES,
+    id_col = "fighter_id", log_label = "fighter"
+  ) %>%
     bind_cols(need %>% select(fighter_id))
   manifest <- manifest %>% select(-needs_fetch) %>%
     apply_fetch_results(fetches, "fighter_id")
