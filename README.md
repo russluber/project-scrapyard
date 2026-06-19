@@ -20,21 +20,23 @@ In this project, I investigate two central questions about fighter performance i
 
 ## Data Pipeline
 
-A single, incremental pipeline scrapes [UFCStats](http://ufcstats.com),
-cleans the data, builds the model datasets, and fits the Bayesian model.
-Rerun it whenever new UFC events occur — the scrapers are cache-first and
-only fetch what's new.
+An incremental pipeline scrapes [UFCStats](http://ufcstats.com) and
+produces the cleaned fight and fighter datasets. Rerun it whenever new UFC
+events occur — the scrapers are cache-first and only fetch what's new.
 
 ```r
-# From the project root:
-source("scripts/run_pipeline.R")            # refresh all data
-RUN_FIT <- TRUE; source("scripts/run_pipeline.R")   # data + refit model
+# From the project root — refresh the data (scrape + clean):
+source("scripts/run_pipeline.R")
 ```
 
 ```sh
-Rscript scripts/run_pipeline.R          # data only
-Rscript scripts/run_pipeline.R --fit    # data + model fit
+Rscript scripts/run_pipeline.R               # scrape + clean
+Rscript scripts/run_pipeline.R --no-scrape   # rebuild clean data from existing raw CSVs
 ```
+
+The research-question-specific steps (building model datasets and fitting
+the model) live in `03_make_model_data.R` and `04_fit_models.R` and are
+run directly, separate from the core data pipeline.
 
 See [`scripts/README.md`](scripts/README.md) for full pipeline docs.
 
@@ -49,14 +51,14 @@ root/
 │   ├── clean/                  # Cleaned, analysis-ready fight data
 │   └── model/                  # Model-ready datasets
 │
-├── scripts/                    # The data pipeline (see scripts/README.md)
+├── scripts/                    # Pipeline + analysis scripts (see scripts/README.md)
 │   ├── _helpers.R              # Shared scrape/fetch/manifest/parse utilities
-│   ├── 00_scrape_fights.R      # Events → fights → enriched raw fight data
-│   ├── 01_scrape_fighters.R    # Fighter metadata (height/reach/stance/dob)
-│   ├── 02_clean_fight_data.R   # Clean + reshape to one row per fighter-fight
-│   ├── 03_make_model_data.R    # Build striking + win-differential datasets
-│   ├── 04_fit_models.R         # Fit + cache the Bayesian accuracy model
-│   └── run_pipeline.R          # End-to-end runner
+│   ├── 00_scrape_fights.R      # [data] Events → fights → enriched raw fight data
+│   ├── 01_scrape_fighters.R    # [data] Fighter metadata (height/reach/stance/dob)
+│   ├── 02_clean_fight_data.R   # [data] Clean + reshape to one row per fighter-fight
+│   ├── run_pipeline.R          # [data] Runs the core pipeline (00–02)
+│   ├── 03_make_model_data.R    # [RQ]   Build striking + win-differential datasets
+│   └── 04_fit_models.R         # [RQ]   Fit + cache the Bayesian accuracy model
 │
 ├── eda/                        # Exploratory data analysis
 │   └── eda.Rmd

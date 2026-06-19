@@ -1,32 +1,34 @@
 # scripts/run_pipeline.R
 #
-# End-to-end runner for the UFC data pipeline. Run this whenever new UFC
-# events have occurred to refresh the datasets (and, optionally, refit the
-# model) from scratch.
+# Runner for the core UFC DATA pipeline. Run this whenever new UFC events
+# have occurred to refresh the general-purpose datasets from scratch.
 #
 # Stages:
-#   00_scrape_fights.R    scrape events + fights        -> data/raw/fight_data_raw_enriched.csv
-#   01_scrape_fighters.R  scrape fighter metadata       -> data/raw/fighters_data_raw.csv
-#   02_clean_fight_data.R clean + reshape fights        -> data/clean/fight_data.csv
-#   03_make_model_data.R  build model datasets          -> data/model/*.rds
-#   04_fit_models.R       fit Bayesian model (SLOW)     -> models/fits/*.rds
+#   00_scrape_fights.R    scrape events + fights   -> data/raw/fight_data_raw_enriched.csv
+#   01_scrape_fighters.R  scrape fighter metadata  -> data/raw/fighters_data_raw.csv
+#   02_clean_fight_data.R clean + reshape fights   -> data/clean/fight_data.csv
+#
+# This pipeline stops at the cleaned, analysis-ready data. The
+# research-question-specific steps are intentionally NOT run here:
+#   03_make_model_data.R  builds datasets for the current report's models
+#   04_fit_models.R       fits the Bayesian model
+# Run those directly when working on that research question, e.g.
+#   source("scripts/03_make_model_data.R")
+#   source("scripts/04_fit_models.R")
 #
 # Each stage is run in its own environment so the scripts' top-level
 # objects don't leak between stages.
 #
 # Usage:
-#   # Data refresh only (default — does NOT refit the model):
+#   # Full refresh (scrape + clean):
 #   Rscript scripts/run_pipeline.R
 #   #   ...or in an R session:  source("scripts/run_pipeline.R")
 #
-#   # Include the slow model-fitting stage:
-#   Rscript scripts/run_pipeline.R --fit
-#
-#   # Skip scraping and only rebuild downstream data from existing raw CSVs:
+#   # Skip scraping and only rebuild the clean data from existing raw CSVs:
 #   Rscript scripts/run_pipeline.R --no-scrape
 #
-# Flags can be combined. They can also be set before sourcing:
-#   RUN_FIT <- TRUE; RUN_SCRAPE <- FALSE; source("scripts/run_pipeline.R")
+# The flag can also be set before sourcing:
+#   RUN_SCRAPE <- FALSE; source("scripts/run_pipeline.R")
 
 suppressPackageStartupMessages({
   library(here)
@@ -37,7 +39,6 @@ suppressPackageStartupMessages({
 # -------------------------------------------------------------------
 .args <- commandArgs(trailingOnly = TRUE)
 
-if (!exists("RUN_FIT"))    RUN_FIT    <- "--fit" %in% .args
 if (!exists("RUN_SCRAPE")) RUN_SCRAPE <- !("--no-scrape" %in% .args)
 
 # Run one pipeline stage in a fresh environment, timing it.
@@ -55,7 +56,7 @@ run_stage <- function(file) {
 # -------------------------------------------------------------------
 # Run stages
 # -------------------------------------------------------------------
-message("Pipeline options: scrape=", RUN_SCRAPE, "  fit=", RUN_FIT)
+message("Data pipeline options: scrape=", RUN_SCRAPE)
 
 if (RUN_SCRAPE) {
   run_stage("00_scrape_fights.R")
@@ -65,12 +66,6 @@ if (RUN_SCRAPE) {
 }
 
 run_stage("02_clean_fight_data.R")
-run_stage("03_make_model_data.R")
 
-if (RUN_FIT) {
-  run_stage("04_fit_models.R")
-} else {
-  message("\n[skip] model fitting (04_fit_models.R). Pass --fit (or set RUN_FIT <- TRUE) to include it.")
-}
-
-message("\nPipeline complete.")
+message("\nData pipeline complete. Cleaned data is in data/clean/.")
+message("For the report's models, run 03_make_model_data.R then 04_fit_models.R.")
