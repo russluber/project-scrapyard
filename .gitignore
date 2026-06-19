@@ -29,6 +29,9 @@ data/model/**
 .Rproj.user/
 .Rhistory
 .RData
+.RDataTmp*
+.Rprofile
+*.Rproj
 
 # === Toolchains (cmdstanr) ===
 .cmdstanr/
