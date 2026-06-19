@@ -9,12 +9,10 @@
 #   02_clean_fight_data.R clean + reshape fights   -> data/clean/fight_data.csv
 #
 # This pipeline stops at the cleaned, analysis-ready data. The
-# research-question-specific steps are intentionally NOT run here:
-#   03_make_model_data.R  builds datasets for the current report's models
-#   04_fit_models.R       fits the Bayesian model
-# Run those directly when working on that research question, e.g.
-#   source("scripts/03_make_model_data.R")
-#   source("scripts/04_fit_models.R")
+# research-question-specific steps live in their own subfolder and are
+# intentionally NOT run here. For the striking-accuracy report, run:
+#   source("scripts/striking_accuracy/make_data.R")  # build model datasets
+#   source("scripts/striking_accuracy/fit_model.R")  # fit the Bayesian model
 #
 # Each stage is run in its own environment so the scripts' top-level
 # objects don't leak between stages.
@@ -68,4 +66,4 @@ if (RUN_SCRAPE) {
 run_stage("02_clean_fight_data.R")
 
 message("\nData pipeline complete. Cleaned data is in data/clean/.")
-message("For the report's models, run 03_make_model_data.R then 04_fit_models.R.")
+message("For the report's models, run scripts/striking_accuracy/make_data.R then fit_model.R.")

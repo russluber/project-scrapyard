@@ -35,8 +35,8 @@ Rscript scripts/run_pipeline.R --no-scrape   # rebuild clean data from existing 
 ```
 
 The research-question-specific steps (building model datasets and fitting
-the model) live in `03_make_model_data.R` and `04_fit_models.R` and are
-run directly, separate from the core data pipeline.
+the model) live under `scripts/striking_accuracy/` and are run directly,
+separate from the core data pipeline.
 
 See [`scripts/README.md`](scripts/README.md) for full pipeline docs.
 
@@ -53,12 +53,13 @@ root/
 │
 ├── scripts/                    # Pipeline + analysis scripts (see scripts/README.md)
 │   ├── _helpers.R              # Shared scrape/fetch/manifest/parse utilities
-│   ├── 00_scrape_fights.R      # [data] Events → fights → enriched raw fight data
-│   ├── 01_scrape_fighters.R    # [data] Fighter metadata (height/reach/stance/dob)
-│   ├── 02_clean_fight_data.R   # [data] Clean + reshape to one row per fighter-fight
-│   ├── run_pipeline.R          # [data] Runs the core pipeline (00–02)
-│   ├── 03_make_model_data.R    # [RQ]   Build striking + win-differential datasets
-│   └── 04_fit_models.R         # [RQ]   Fit + cache the Bayesian accuracy model
+│   ├── 00_scrape_fights.R      # Core pipeline: events → fights → enriched raw
+│   ├── 01_scrape_fighters.R    # Core pipeline: fighter metadata
+│   ├── 02_clean_fight_data.R   # Core pipeline: clean + reshape
+│   ├── run_pipeline.R          # Runs the core data pipeline (00–02)
+│   └── striking_accuracy/      # Research-question scripts (run separately)
+│       ├── make_data.R         #   Build striking + win-differential datasets
+│       └── fit_model.R         #   Fit + cache the Bayesian accuracy model
 │
 ├── eda/                        # Exploratory data analysis
 │   └── eda.Rmd

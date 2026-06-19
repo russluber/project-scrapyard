@@ -10,10 +10,11 @@ The pipeline has two parts:
 
 - **Core data pipeline (`00`–`02`)** — scrape → clean. General-purpose;
   run by `run_pipeline.R`. This is what you rerun to refresh the data.
-- **Research-question steps (`03`, `04`)** — build model datasets and fit
-  the model for the current report. These are specific to that research
-  question, so they are **not** part of `run_pipeline.R`; run them
-  directly when working on that analysis.
+- **Research-question steps (`scripts/striking_accuracy/`)** — build model
+  datasets and fit the model for the current report. These are specific to
+  that research question, so they live in their own subfolder and are
+  **not** part of `run_pipeline.R`; run them directly when working on that
+  analysis. Future research questions get their own sibling subfolders.
 
 ## Requirements
 
@@ -27,8 +28,9 @@ The pipeline has two parts:
   - Needs Chrome or Edge installed. The scrapers auto-detect common
     Chrome/Edge paths; to force a specific one, set the `CHROMOTE_CHROME`
     environment variable to the browser executable.
-- The non-scraping stages (`02`, `03`) need no browser — they only read
-  local files, so `--no-scrape` runs work without chromote.
+- The non-scraping steps (`02_clean_fight_data.R` and the
+  `striking_accuracy/` scripts) need no browser — they only read local
+  files, so `--no-scrape` runs work without chromote.
 
 ## Quick start
 
@@ -49,8 +51,8 @@ To build the report's model datasets and fit the model (research-question
 specific — run after the data pipeline, not part of it):
 
 ```r
-source("scripts/03_make_model_data.R")
-source("scripts/04_fit_models.R")   # slow: compiles Stan, runs MCMC
+source("scripts/striking_accuracy/make_data.R")
+source("scripts/striking_accuracy/fit_model.R")   # slow: compiles Stan, runs MCMC
 ```
 
 ## Stages
@@ -68,12 +70,14 @@ can also be run individually in order.
 | `02_clean_fight_data.R` | Standardize fields, parse clocks to seconds, split each fight into two fighter-centric rows, derive features. | `data/clean/fight_data.csv` |
 | `run_pipeline.R` | Runs the core pipeline (00–02) end-to-end. | — |
 
-**Research-question steps** (run directly, not via `run_pipeline.R`):
+**Research-question steps** — under `scripts/striking_accuracy/`, run
+directly (not via `run_pipeline.R`). A new research question gets its own
+sibling subfolder rather than more numbered pipeline stages.
 
 | Script | Does | Output |
 |---|---|---|
-| `03_make_model_data.R` | Build the two model datasets the current report uses (striking accuracy + win-probability differentials). | `data/model/striking_df.{rds,csv}`, `data/model/win_perf_diffs_df.{rds,csv}` |
-| `04_fit_models.R` | Fit + cache the hierarchical Bayesian striking-accuracy model (prior-only and full posterior). **Slow** (compiles Stan, runs MCMC). | `models/fits/fit_prior_acc.rds`, `models/fits/fit_acc_model.rds` |
+| `striking_accuracy/make_data.R` | Build the two model datasets the current report uses (striking accuracy + win-probability differentials). | `data/model/striking_df.{rds,csv}`, `data/model/win_perf_diffs_df.{rds,csv}` |
+| `striking_accuracy/fit_model.R` | Fit + cache the hierarchical Bayesian striking-accuracy model (prior-only and full posterior). **Slow** (compiles Stan, runs MCMC). | `models/fits/fit_prior_acc.rds`, `models/fits/fit_acc_model.rds` |
 
 ## How the scrapers stay fast (incremental caching)
 
@@ -100,8 +104,8 @@ loads the handful of pages from new events.
 - The fighter table (`01_`) is built independently and is **not** joined
   into the fight data by default; it's available for analyses that need
   physical attributes (height/reach/stance/age).
-- `03_make_model_data.R` standardizes all four performance differentials
-  (significant strikes, knockdowns, takedowns, control time) with
-  `scale()`, so RQ1 coefficients are per-1-SD.
+- `striking_accuracy/make_data.R` standardizes all four performance
+  differentials (significant strikes, knockdowns, takedowns, control time)
+  with `scale()`, so RQ1 coefficients are per-1-SD.
 - The full model fit can exceed GitHub's file-size limit; it is also
   hosted externally (see `models/fits/README.md`).
