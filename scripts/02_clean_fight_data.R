@@ -1,7 +1,23 @@
-# 06_data_cleaning.R
-library(tidyverse)
-library(here)
-library(lubridate)
+# scripts/02_clean_fight_data.R
+#
+# Stage 2 of the pipeline: turn the enriched raw fight scrape into the
+# cleaned, analysis-ready fight dataset.
+#
+# What it does:
+#   - reads data/raw/fight_data_raw_enriched.csv (one row per fight)
+#   - standardizes dates, methods, weight classes, gender, rounds
+#   - parses end-of-fight and control-time clocks to seconds
+#   - splits each fight into two fighter-centric rows (one per competitor)
+#   - derives features (volume strikes, strikes avoided, takedowns
+#     stuffed, control time in seconds)
+#
+# Output: data/clean/fight_data.csv (one row per fighter per fight)
+
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(here)
+  library(lubridate)
+})
 
 df <- read_csv(here("data/raw/fight_data_raw_enriched.csv"), show_col_types = FALSE)
 

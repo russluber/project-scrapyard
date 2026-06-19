@@ -1,91 +1,72 @@
-# Scripts Pipeline
+# Data Pipeline
 
-The canonical scripts pipeline for this project is now:
+A reproducible, incremental pipeline that scrapes [UFCStats](http://ufcstats.com),
+cleans the data, builds model-ready datasets, and fits the Bayesian
+striking-accuracy model used in the final report.
 
-1. `00_build_fight_data_raw_enriched.R`
-2. `01_clean_fight_data.R`
-3. `02_build_fighters_data_raw.R`
+Rerun it whenever new UFC events have happened — the scrapers are
+cache-first and only fetch what's new.
 
-The older `01_` through `05_` scripts are legacy pipeline pieces kept for reference. Going forward, the intended fight-data workflow is `00_` followed by `01_`. The fighter metadata workflow is handled separately by `02_`.
+## Quick start
 
-## `00_build_fight_data_raw_enriched.R`
-
-This script replaces the practical role of the old `01_` through `05_` sequence.
-
-What it does:
-
-- Fetches the UFCStats completed-events index
-- Discovers all event card URLs and event IDs
-- Updates event and fight manifests in `data/raw/`
-- Fetches only missing or failed event pages into `cache/events/`
-- Parses event pages into:
-  - `data/raw/events_manifest.csv`
-  - `data/raw/event_cards_parsed.csv`
-  - `data/raw/event_fight_map.csv`
-- Builds the fight queue directly from parsed event pages
-- Fetches only missing or failed fight pages into `cache/fights/`
-- Parses fight pages into `data/raw/fight_data_raw.csv`
-- Joins fight rows to event metadata and writes `data/raw/fight_data_raw_enriched.csv`
-
-## `01_clean_fight_data.R`
-
-This script starts from `data/raw/fight_data_raw_enriched.csv` and converts the raw fight-level scrape into the cleaned analysis dataset.
-
-What it does:
-
-- Reads the canonical enriched raw fight data from `data/raw/`
-- Standardizes dates, factor fields, weight classes, and method fields
-- Converts end-of-fight and control-time clocks into usable numeric forms
-- Splits the wide fight-level row into two fighter-centric rows:
-  - one from fighter 1's perspective
-  - one from fighter 2's perspective
-- Derives analysis features such as:
-  - volume strikes
-  - strikes avoided
-  - takedowns stuffed
-  - control time in seconds
-- Writes the cleaned output to `data/clean/fight_data.csv`
-
-## `02_build_fighters_data_raw.R`
-
-This script replaces the practical role of the old `07_fetch_fighter_pages.R` and `08_parse_fighter_pages.R` sequence.
-
-It is independent from the fight-data pipeline above. It does not affect `data/clean/fight_data.csv` unless you explicitly join fighter metadata into the fight data later.
-
-What it does:
-
-- Scans the UFCStats A-Z fighter directory
-- Discovers fighter profile URLs and fighter IDs
-- Updates `data/raw/fighters_manifest.csv`
-- Fetches only missing or failed fighter pages into `cache/fighters/`
-- Parses only new or refetched fighter pages
-- Writes fighter profile metadata to `data/raw/fighters_data_raw.csv`
-- Logs parse issues to `data/raw/parse_errors_fighters.csv`
-
-What kind of data it builds:
-
-- fighter ID
-- fighter profile URL
-- display name
-- height
-- weight
-- reach
-- stance
-- date of birth
-
-## Recommended Run Order
-
-For the canonical fight-data pipeline, from the project root:
+From the project root:
 
 ```r
-source("scripts/00_build_fight_data_raw_enriched.R")
-source("scripts/01_clean_fight_data.R")
+# Refresh all data (does NOT refit the slow Bayesian model):
+source("scripts/run_pipeline.R")
+
+# Refresh data AND refit the model:
+RUN_FIT <- TRUE; source("scripts/run_pipeline.R")
 ```
 
-For fighter metadata only:
+Or from a shell:
 
-```r
-source("scripts/02_build_fighters_data_raw.R")
+```sh
+Rscript scripts/run_pipeline.R          # data only
+Rscript scripts/run_pipeline.R --fit    # data + model fit
+Rscript scripts/run_pipeline.R --no-scrape   # rebuild downstream data from existing raw CSVs
 ```
 
-Run these scripts individually in RStudio or in your usual R workflow.
+## Stages
+
+The pipeline is five numbered scripts plus shared helpers and a runner.
+Each stage reads the previous stage's output and writes its own, so they
+can also be run individually in order.
+
+| Script | Does | Output |
+|---|---|---|
+| `_helpers.R` | Shared scrape/fetch/manifest/parse utilities. Sourced by the scrapers; not run directly. | — |
+| `00_scrape_fights.R` | Discover events → fetch/parse event pages → fetch/parse fight pages → join event metadata. | `data/raw/fight_data_raw_enriched.csv` |
+| `01_scrape_fighters.R` | Scrape the A–Z fighter directory for physical attributes (height, weight, reach, stance, DOB). Independent of the fight scrape. | `data/raw/fighters_data_raw.csv` |
+| `02_clean_fight_data.R` | Standardize fields, parse clocks to seconds, split each fight into two fighter-centric rows, derive features. | `data/clean/fight_data.csv` |
+| `03_make_model_data.R` | Build the two model datasets the report uses (striking accuracy + win-probability differentials). | `data/model/striking_df.{rds,csv}`, `data/model/win_perf_diffs_df.{rds,csv}` |
+| `04_fit_models.R` | Fit + cache the hierarchical Bayesian striking-accuracy model (prior-only and full posterior). **Slow** (compiles Stan, runs MCMC). | `models/fits/fit_prior_acc.rds`, `models/fits/fit_acc_model.rds` |
+| `run_pipeline.R` | Runs the stages above end-to-end with options. | — |
+
+## How the scrapers stay fast (incremental caching)
+
+Both scrapers are **cache-first and idempotent**:
+
+- Raw HTML is cached under `cache/` (events, fights, fighters).
+- A per-page **manifest** in `data/raw/*_manifest.csv` records each page's
+  URL, cache path, and fetch/parse status.
+- On a rerun, only pages that are **missing or previously failed** are
+  fetched, and only pages that are **new or were just refetched** are
+  re-parsed.
+
+To force a fully fresh scrape, delete the relevant `cache/` subfolder (or
+set `STALE_AFTER_DAYS` in the scraper to a finite number of days).
+
+Scraping is polite: a descriptive User-Agent, randomized delays, bounded
+concurrency, and retry-with-backoff on transient (429/5xx) errors.
+
+## Notes
+
+- The fighter table (`01_`) is built independently and is **not** joined
+  into the fight data by default; it's available for analyses that need
+  physical attributes (height/reach/stance/age).
+- `03_make_model_data.R` standardizes all four performance differentials
+  (significant strikes, knockdowns, takedowns, control time) with
+  `scale()`, so RQ1 coefficients are per-1-SD.
+- The full model fit can exceed GitHub's file-size limit; it is also
+  hosted externally (see `models/fits/README.md`).
