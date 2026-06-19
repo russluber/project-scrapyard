@@ -1,7 +1,10 @@
-# scripts/03_make_model_data.R
+# scripts/striking_accuracy/make_data.R
 #
-# Stage 3 of the pipeline: build the model-ready datasets consumed by the
-# final report, from the cleaned fight data.
+# Research-question step (striking accuracy): build the model-ready
+# datasets consumed by the final report, from the cleaned fight data.
+#
+# This is NOT part of the core data pipeline (scripts/00-02); run it
+# directly after that pipeline has produced data/clean/fight_data.csv.
 #
 # Produces the two datasets the report's models use:
 #   - striking_df       : one row per fighter-fight, significant strikes
@@ -106,6 +109,6 @@ win_perf_diffs_df <- fight_data %>%
 write_rds(win_perf_diffs_df, file.path(OUT_DIR, "win_perf_diffs_df.rds"))
 write_csv(win_perf_diffs_df, file.path(OUT_DIR, "win_perf_diffs_df.csv"))
 
-message("Done (03_make_model_data).")
+message("Done (striking_accuracy/make_data).")
 message("  striking_df       : ", nrow(striking_df), " rows")
 message("  win_perf_diffs_df : ", nrow(win_perf_diffs_df), " rows")

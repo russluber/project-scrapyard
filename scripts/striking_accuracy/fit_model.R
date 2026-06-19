@@ -1,7 +1,10 @@
-# scripts/04_fit_models.R
+# scripts/striking_accuracy/fit_model.R
 #
-# Stage 4 of the pipeline: fit and cache the Bayesian striking-accuracy
-# model used in the final report (RQ2).
+# Research-question step (striking accuracy): fit and cache the Bayesian
+# striking-accuracy model used in the final report (RQ2).
+#
+# This is NOT part of the core data pipeline (scripts/00-02); run it
+# directly after striking_accuracy/make_data.R.
 #
 # This is the hierarchical binomial logistic model:
 #   sig_strikes_landed | trials(sig_strikes_thrown) ~
@@ -15,7 +18,7 @@
 # minutes. The formula and priors here are the single source of truth and
 # must match what the final report documents.
 #
-# Inputs : data/model/striking_df.rds  (from 03_make_model_data.R)
+# Inputs : data/model/striking_df.rds  (from striking_accuracy/make_data.R)
 # Outputs: models/fits/fit_prior_acc.rds, models/fits/fit_acc_model.rds
 
 suppressPackageStartupMessages({
@@ -87,6 +90,6 @@ fit_acc_model <- brm(
 )
 saveRDS(fit_acc_model, file.path(FITS_DIR, "fit_acc_model.rds"))
 
-message("Done (04_fit_models).")
+message("Done (striking_accuracy/fit_model).")
 message("  Prior fit : ", file.path(FITS_DIR, "fit_prior_acc.rds"))
 message("  Model fit : ", file.path(FITS_DIR, "fit_acc_model.rds"))
