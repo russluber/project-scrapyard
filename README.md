@@ -18,38 +18,59 @@ In this project, I investigate two central questions about fighter performance i
 </p>
 
 
+## Data Pipeline
+
+A single, incremental pipeline scrapes [UFCStats](http://ufcstats.com),
+cleans the data, builds the model datasets, and fits the Bayesian model.
+Rerun it whenever new UFC events occur — the scrapers are cache-first and
+only fetch what's new.
+
+```r
+# From the project root:
+source("scripts/run_pipeline.R")            # refresh all data
+RUN_FIT <- TRUE; source("scripts/run_pipeline.R")   # data + refit model
+```
+
+```sh
+Rscript scripts/run_pipeline.R          # data only
+Rscript scripts/run_pipeline.R --fit    # data + model fit
+```
+
+See [`scripts/README.md`](scripts/README.md) for full pipeline docs.
+
 ## Project Structure
 
 ```
 root/
-├── cache/                      # Raw HTML files from scraping (ignored by Git)
+├── cache/                      # Raw scraped HTML (events/fights/fighters; git-ignored)
 │
 ├── data/                       # All datasets
-│   ├── raw/                    # Untouched CSVs directly from scraping
-│   ├── clean/                  # Outputs from scripts/data_cleaning.R
-│   └── model/                  # Modeling-ready data
+│   ├── raw/                    # CSVs straight from scraping + scrape manifests
+│   ├── clean/                  # Cleaned, analysis-ready fight data
+│   └── model/                  # Model-ready datasets
 │
-├── scripts/                    # Data scraping and cleaning pipeline
-│   ├── 00_build_fight_data_raw_enriched.R
-│   ├── 01_clean_fight_data.R
-│   ├── 02_build_fighters_data_raw.R
-│   └── 09_make_striking_data.R # Need to fix
+├── scripts/                    # The data pipeline (see scripts/README.md)
+│   ├── _helpers.R              # Shared scrape/fetch/manifest/parse utilities
+│   ├── 00_scrape_fights.R      # Events → fights → enriched raw fight data
+│   ├── 01_scrape_fighters.R    # Fighter metadata (height/reach/stance/dob)
+│   ├── 02_clean_fight_data.R   # Clean + reshape to one row per fighter-fight
+│   ├── 03_make_model_data.R    # Build striking + win-differential datasets
+│   ├── 04_fit_models.R         # Fit + cache the Bayesian accuracy model
+│   └── run_pipeline.R          # End-to-end runner
 │
-├── eda/                   
-│   └── eda.Rmd                 # Exploratory data analysis
+├── eda/                        # Exploratory data analysis
+│   └── eda.Rmd
 │
 ├── figs/                       # Generated figures
 │
-├── models/fits                 # Saved model fits (.rds) from brms/Stan
-│   ├── fit_prior_acc.rds
-│   └── fit_acc_model.rds
+├── models/                     # Model code + saved fits
+│   └── fits/                   # Saved brms/Stan fits (.rds)
 │
-├── reports/                    # Rendered outputs
-│   ├── midterm/                # Draft report for midterm checkpoint
-│   └── final/                  # Final report PDF
+├── reports/                    # Rendered reports
+│   ├── midterm/                # Midterm checkpoint report
+│   └── final/                  # Final report (the central document)
 │
-├── .gitignore                  # Git ignore rules
-├── README.md                   # Project overview (this file)
-└── LICENSE / requirements.txt  # Optional metadata
+├── .gitignore
+└── README.md                   # Project overview (this file)
 ```
 
