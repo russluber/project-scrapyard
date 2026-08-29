@@ -248,6 +248,14 @@ browser_session <- function() {
   }
   browser_path <- find_chromium()
   if (nzchar(browser_path)) Sys.setenv(CHROMOTE_CHROME = browser_path)
+  if (identical(tolower(basename(browser_path)), "msedge.exe")) {
+    # Edge can relaunch itself through the Windows compatibility layer,
+    # which detaches chromote from the process and its DevTools port.
+    chromote::set_chrome_args(unique(c(
+      chromote::get_chrome_args(),
+      "--edge-skip-compat-layer-relaunch"
+    )))
+  }
   message("Headless browser: ", if (nzchar(browser_path)) browser_path else "(chromote default)")
   chromote::ChromoteSession$new()
 }

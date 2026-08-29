@@ -293,6 +293,10 @@ parse_fights_safely <- function(paths) {
 # ===================================================================
 # 1) Discover all event cards from the completed-events index
 # ===================================================================
+# Keep the executable stage in one top-level expression. `sys.source()`
+# evaluates separate top-level expressions in separate contexts, which would
+# otherwise run the `on.exit()` cleanup immediately after it is registered.
+{
 # Start the headless browser used for all fetching in this script, and
 # make sure it is closed when the script exits (even on error).
 session <- browser_session()
@@ -479,3 +483,4 @@ write_csv(fight_enriched, OUT_ENRICHED)
 message("Done (00_scrape_fights).")
 message("  Fight raw      : ", OUT_FIGHTS_RAW)
 message("  Fight enriched : ", OUT_ENRICHED)
+}

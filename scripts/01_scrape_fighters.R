@@ -201,6 +201,10 @@ coerce_fighter_output <- function(df) {
 # ===================================================================
 # 1) Discover fighter profile URLs from the A-Z directory
 # ===================================================================
+# Keep the executable stage in one top-level expression. `sys.source()`
+# evaluates separate top-level expressions in separate contexts, which would
+# otherwise run the `on.exit()` cleanup immediately after it is registered.
+{
 # Start the headless browser used for all fetching, closing it on exit.
 session <- browser_session()
 on.exit(try(session$close(), silent = TRUE), add = TRUE)
@@ -289,3 +293,4 @@ write_csv(manifest, MANIFEST)
 
 message("Done (01_scrape_fighters).")
 message("  Fighters table : ", OUT_CSV, " (", nrow(out), " fighters)")
+}
