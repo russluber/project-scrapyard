@@ -15,6 +15,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 00a3ff40c4b2cf21,http://ufcstats.com/fighter-details/00a3ff40c4b2cf21,Glaico Franca Moreira,72,155,77,Orthodox,1991-02-28
 00a905a4a4a2b071,http://ufcstats.com/fighter-details/00a905a4a4a2b071,Greg McIntyre,70,155,NA,Orthodox,1980-04-21
 00b490982afd1b17,http://ufcstats.com/fighter-details/00b490982afd1b17,SangHoon Yoo,72,170,74,Orthodox,1990-01-18
+00b8dd0fbe2fbfd9,http://ufcstats.com/fighter-details/00b8dd0fbe2fbfd9,Taner Trembley,69,145,69,Orthodox,1994-12-28
 00debc804e2b1cd4,http://ufcstats.com/fighter-details/00debc804e2b1cd4,Dylan Andrews,73,185,74,Switch,1979-11-15
 00e11b5c8b7bfeeb,http://ufcstats.com/fighter-details/00e11b5c8b7bfeeb,Luke Rockhold,75,185,77,Southpaw,1984-10-17
 010986ee359fb863,http://ufcstats.com/fighter-details/010986ee359fb863,John Salter,73,185,74,Southpaw,1985-03-21
@@ -74,6 +75,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 037cfd34a27d59e9,http://ufcstats.com/fighter-details/037cfd34a27d59e9,Michael Oliveira,73,170,78,Orthodox,1998-01-21
 03b1b79b34eaf217,http://ufcstats.com/fighter-details/03b1b79b34eaf217,Nayara Maia,65,125,66,Orthodox,1990-07-25
 03b1e846b09f721d,http://ufcstats.com/fighter-details/03b1e846b09f721d,Denis Sobolev,75,216,NA,Orthodox,1975-08-26
+03c629aaa15a17ce,http://ufcstats.com/fighter-details/03c629aaa15a17ce,Alvi Dasuyev,NA,170,NA,NA,NA
 03c9994c5b8958ec,http://ufcstats.com/fighter-details/03c9994c5b8958ec,John Cholish,71,155,74,Orthodox,1983-12-17
 03da33a102d9a45f,http://ufcstats.com/fighter-details/03da33a102d9a45f,Jose Canseco,76,240,NA,Orthodox,1964-07-02
 03dee485905dbc9f,http://ufcstats.com/fighter-details/03dee485905dbc9f,Zachary Scroggin,75,170,74,Orthodox,1996-03-09
@@ -109,6 +111,8 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 05560764359161e4,http://ufcstats.com/fighter-details/05560764359161e4,Constantinos Philippou,71,185,73,Orthodox,1979-11-29
 0565706b1e7f7e7c,http://ufcstats.com/fighter-details/0565706b1e7f7e7c,Kaiwen,68,145,71,Switch,1995-10-16
 056c493bbd76a918,http://ufcstats.com/fighter-details/056c493bbd76a918,Henry Cejudo,64,135,64,Orthodox,1987-02-09
+0572ebd8e276d66f,http://ufcstats.com/fighter-details/0572ebd8e276d66f,Isaac Moreno,NA,170,NA,NA,1997-09-11
+0575068a0f83f963,http://ufcstats.com/fighter-details/0575068a0f83f963,Marcos Degli,NA,125,NA,NA,2000-05-13
 0577808d22dfe79c,http://ufcstats.com/fighter-details/0577808d22dfe79c,Jon Olav Einemo,78,253,NA,Orthodox,1975-12-10
 057a241e4ba90c4d,http://ufcstats.com/fighter-details/057a241e4ba90c4d,Ivan Gnizditskiy,NA,205,NA,NA,1996-05-10
 05866d8c3a321856,http://ufcstats.com/fighter-details/05866d8c3a321856,Marvin Eastman,69,185,73,Orthodox,1971-06-08
@@ -197,6 +201,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 0aa74d04c196800c,http://ufcstats.com/fighter-details/0aa74d04c196800c,Errol Zimmerman,75,185,NA,Orthodox,1986-04-20
 0aa92558424ced9e,http://ufcstats.com/fighter-details/0aa92558424ced9e,Randy Couture,73,205,75,Orthodox,1963-06-22
 0abcf6bc47191219,http://ufcstats.com/fighter-details/0abcf6bc47191219,Bruno Lopes,74,205,74,Orthodox,1993-04-24
+0adbaf643b60b130,http://ufcstats.com/fighter-details/0adbaf643b60b130,Nell Ariano,NA,205,NA,NA,NA
 0adf1aacda5e26ac,http://ufcstats.com/fighter-details/0adf1aacda5e26ac,AJ Fonseca,64,145,NA,NA,NA
 0b235384fe23fc9c,http://ufcstats.com/fighter-details/0b235384fe23fc9c,Greg Scott,69,145,NA,NA,NA
 0b31f87be71ebbb1,http://ufcstats.com/fighter-details/0b31f87be71ebbb1,Ben Askren,71,170,73,Orthodox,1984-07-18
@@ -257,6 +262,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 0e5c79b3594ff0ad,http://ufcstats.com/fighter-details/0e5c79b3594ff0ad,Sherrard Blackledge,71,155,75,Orthodox,1993-08-16
 0e6b611451a9a7d8,http://ufcstats.com/fighter-details/0e6b611451a9a7d8,Mark Vologdin,63,135,65,Orthodox,2000-04-18
 0e6bc8d1d6c0ad90,http://ufcstats.com/fighter-details/0e6bc8d1d6c0ad90,Abdul Hussein,NA,135,NA,NA,1997-08-02
+0e75cd3ba8274cea,http://ufcstats.com/fighter-details/0e75cd3ba8274cea,Tom Pagliarulo,72,145,74,Switch,1997-06-19
 0e8744ded08ee5fb,http://ufcstats.com/fighter-details/0e8744ded08ee5fb,Louis Jauregui,67,170,NA,NA,NA
 0e96af5220d27ed4,http://ufcstats.com/fighter-details/0e96af5220d27ed4,Dhafir Harris,NA,257,NA,NA,1977-08-04
 0e9869d712e81f8f,http://ufcstats.com/fighter-details/0e9869d712e81f8f,Sam Adkins,75,225,NA,Orthodox,1965-04-26
@@ -316,11 +322,13 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 1291dd6b8ab4d952,http://ufcstats.com/fighter-details/1291dd6b8ab4d952,George Zuniga,69,185,NA,NA,NA
 1291edf2d566a71a,http://ufcstats.com/fighter-details/1291edf2d566a71a,Julio Arce,67,145,70,Southpaw,1989-10-27
 129537073431e52e,http://ufcstats.com/fighter-details/129537073431e52e,Garett Whiteley,72,155,72,Orthodox,1980-12-13
+12954cff4025a427,http://ufcstats.com/fighter-details/12954cff4025a427,Stefano Paterno,NA,170,NA,NA,1995-08-18
 12d855d12a624da2,http://ufcstats.com/fighter-details/12d855d12a624da2,Neiman Gracie,72,170,NA,NA,NA
 12e0fdc606f7e274,http://ufcstats.com/fighter-details/12e0fdc606f7e274,Luis Saldana,71,145,73,Orthodox,1991-01-27
 12ebd7d157e91701,http://ufcstats.com/fighter-details/12ebd7d157e91701,Bruno Silva,72,185,74,Orthodox,1989-07-13
 12f1b140e248bdb9,http://ufcstats.com/fighter-details/12f1b140e248bdb9,Jerrod Sanders,68,135,72,Orthodox,1979-10-01
 12f91bfa8f1f723b,http://ufcstats.com/fighter-details/12f91bfa8f1f723b,Joanne Wood,66,125,65,Orthodox,1985-12-23
+130b65b53f30f33c,http://ufcstats.com/fighter-details/130b65b53f30f33c,Ilimbek Akylbek Uulu,NA,135,NA,NA,2003-09-01
 13104eaed3ae96c3,http://ufcstats.com/fighter-details/13104eaed3ae96c3,Young Sam Jung,68,139,NA,Orthodox,1985-10-27
 13150cf89a5b81e0,http://ufcstats.com/fighter-details/13150cf89a5b81e0,Brandon Hester,73,205,NA,NA,NA
 132505067f08c54d,http://ufcstats.com/fighter-details/132505067f08c54d,Bubba Bush,72,185,NA,Orthodox,1985-07-24
@@ -335,6 +343,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 13b2f59210dda9cc,http://ufcstats.com/fighter-details/13b2f59210dda9cc,Kevin Jackson,70,199,NA,Switch,1964-11-25
 13c4313ed0f744f3,http://ufcstats.com/fighter-details/13c4313ed0f744f3,Brad Kohler,69,220,NA,Orthodox,1964-05-26
 13e62d766b709aa6,http://ufcstats.com/fighter-details/13e62d766b709aa6,Steve Nelmark,72,240,NA,Orthodox,NA
+13ebc425c8dade90,http://ufcstats.com/fighter-details/13ebc425c8dade90,Christian Echols,NA,185,NA,NA,1998-06-11
 140567899d98978a,http://ufcstats.com/fighter-details/140567899d98978a,Robelis Despaigne,79,265,84,Orthodox,1988-09-09
 140745cbbcb023ac,http://ufcstats.com/fighter-details/140745cbbcb023ac,Mauricio Rua,73,205,76,Orthodox,1981-11-25
 1411c630ba711b64,http://ufcstats.com/fighter-details/1411c630ba711b64,Tommy Speer,70,170,71,Orthodox,1984-08-20
@@ -344,6 +353,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 148bb103cfbf123e,http://ufcstats.com/fighter-details/148bb103cfbf123e,Toshiomi Kazama,67,135,69,Orthodox,1997-05-15
 1497e735d9f2560a,http://ufcstats.com/fighter-details/1497e735d9f2560a,Ange Loosa,70,170,74,Orthodox,1993-03-18
 14a433bccba87016,http://ufcstats.com/fighter-details/14a433bccba87016,Scott Harper,72,185,NA,Orthodox,1972-04-14
+14a48a86b2b57f0e,http://ufcstats.com/fighter-details/14a48a86b2b57f0e,Alex Apodaca,67,135,71,Switch,1994-06-30
 14aa21bc82cac57d,http://ufcstats.com/fighter-details/14aa21bc82cac57d,Iliarde Santos,65,125,67,Orthodox,1980-09-25
 14b9e0f2679a2205,http://ufcstats.com/fighter-details/14b9e0f2679a2205,Rafael Freitas,NA,205,NA,Orthodox,NA
 14e797332ea32cdb,http://ufcstats.com/fighter-details/14e797332ea32cdb,Chad George,66,135,68,Southpaw,1982-04-30
@@ -359,10 +369,12 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 1562b12763cc8d67,http://ufcstats.com/fighter-details/1562b12763cc8d67,Alex Andrade,71,200,NA,Orthodox,1974-05-14
 1588b787bda7b540,http://ufcstats.com/fighter-details/1588b787bda7b540,Tom Breese,75,185,73,Southpaw,1991-09-26
 159da492e000afbf,http://ufcstats.com/fighter-details/159da492e000afbf,Leandro Silva,69,155,72,Orthodox,1985-11-11
+15a064f0c3bdb6e0,http://ufcstats.com/fighter-details/15a064f0c3bdb6e0,Luca Borando,NA,155,NA,NA,2000-09-24
 15b1b21cd743d652,http://ufcstats.com/fighter-details/15b1b21cd743d652,Rafaello Oliveira,68,155,71,Orthodox,1982-01-26
 15b1f83a90302adf,http://ufcstats.com/fighter-details/15b1f83a90302adf,Quentin Pasley,NA,205,NA,NA,NA
 15dedd05f8bcb475,http://ufcstats.com/fighter-details/15dedd05f8bcb475,Alexander Crispim,NA,145,NA,NA,NA
 15df64c02b6b0fde,http://ufcstats.com/fighter-details/15df64c02b6b0fde,Danny Abbadi,71,155,NA,Orthodox,1983-07-03
+15e0d2df09025bda,http://ufcstats.com/fighter-details/15e0d2df09025bda,Ronald Humphrey,70,170,77,Orthodox,2000-09-20
 15ea371202eb25e1,http://ufcstats.com/fighter-details/15ea371202eb25e1,Roberto Romero,68,145,70,Orthodox,2000-01-30
 15ec018d144710db,http://ufcstats.com/fighter-details/15ec018d144710db,Nathan Coy,70,170,69,Southpaw,1978-07-24
 15edcf67ccf5be84,http://ufcstats.com/fighter-details/15edcf67ccf5be84,Brian Geraghty,67,155,NA,Orthodox,1980-11-04
@@ -397,6 +409,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 1836639ecf9b6e7f,http://ufcstats.com/fighter-details/1836639ecf9b6e7f,Sam Watford,NA,155,NA,NA,NA
 184b7a36d50dcc5e,http://ufcstats.com/fighter-details/184b7a36d50dcc5e,Chelsea Hackett,64,125,66,Switch,1998-08-16
 184b955181bdef52,http://ufcstats.com/fighter-details/184b955181bdef52,Wes Albritton,70,188,NA,Orthodox,NA
+184f6ec4ee712e9f,http://ufcstats.com/fighter-details/184f6ec4ee712e9f,Lucia Szabova,NA,135,NA,NA,1997-12-23
 18524b46c570730b,http://ufcstats.com/fighter-details/18524b46c570730b,Mark Hall,72,190,NA,Orthodox,1961-01-26
 185fb0200a4605e6,http://ufcstats.com/fighter-details/185fb0200a4605e6,Steve Kennedy,71,170,NA,Orthodox,1983-03-07
 18944a1a6ac1becf,http://ufcstats.com/fighter-details/18944a1a6ac1becf,Andre Walker,71,205,NA,Southpaw,1972-11-22
@@ -410,6 +423,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 18e8b7070228e728,http://ufcstats.com/fighter-details/18e8b7070228e728,Darrell Horcher,70,155,70,Southpaw,1987-07-28
 18f5669a92e99d92,http://ufcstats.com/fighter-details/18f5669a92e99d92,Jeremiah Constant,73,240,NA,Orthodox,1974-07-19
 192520689012c7e4,http://ufcstats.com/fighter-details/192520689012c7e4,Suman Mokhtarian,68,145,72,Orthodox,1992-06-13
+19388069e19ec6b9,http://ufcstats.com/fighter-details/19388069e19ec6b9,Douglas Henrique Rodrigues,72,185,74,Orthodox,1999-01-13
 193b9d1858bc4df3,http://ufcstats.com/fighter-details/193b9d1858bc4df3,Dan Hooker,72,155,75,Switch,1990-02-13
 194fc025f9355db6,http://ufcstats.com/fighter-details/194fc025f9355db6,Rickson Gracie,70,185,NA,Switch,1958-11-20
 195d0d3e14a2e256,http://ufcstats.com/fighter-details/195d0d3e14a2e256,Julio Cesar Neves Jr.,68,145,NA,NA,1994-04-25
@@ -424,6 +438,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 19a8cce18a1cef9e,http://ufcstats.com/fighter-details/19a8cce18a1cef9e,James Head,73,170,73,Orthodox,1984-02-09
 19b7738321cfae42,http://ufcstats.com/fighter-details/19b7738321cfae42,Mallory Martin,64,115,63,Orthodox,1994-01-29
 19ba965651486013,http://ufcstats.com/fighter-details/19ba965651486013,Derek Anderson,72,155,NA,NA,1990-02-02
+19c46512d8dd6202,http://ufcstats.com/fighter-details/19c46512d8dd6202,Mayton Perea,NA,170,NA,NA,2000-08-18
 19c591115a58982c,http://ufcstats.com/fighter-details/19c591115a58982c,Viacheslav Borshchev,71,155,69,Orthodox,1992-01-08
 19db7ac26308178f,http://ufcstats.com/fighter-details/19db7ac26308178f,Ivan Jorge,69,155,73,Orthodox,1980-11-07
 19f8a2f6eecd92ac,http://ufcstats.com/fighter-details/19f8a2f6eecd92ac,Puja Tomar,64,115,59,Southpaw,1993-12-05
@@ -461,6 +476,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 1bda4867f1baceac,http://ufcstats.com/fighter-details/1bda4867f1baceac,Kier Gooch,NA,155,NA,NA,1986-04-21
 1bf49bf829964144,http://ufcstats.com/fighter-details/1bf49bf829964144,Akihito Tanaka,NA,NA,NA,Southpaw,1983-03-09
 1c01d986283e6acb,http://ufcstats.com/fighter-details/1c01d986283e6acb,In Su Hwang,71,185,74,Orthodox,1994-01-18
+1c01e9a0c44e3128,http://ufcstats.com/fighter-details/1c01e9a0c44e3128,Colton Loud,NA,125,NA,NA,2000-12-07
 1c02b964466c10e4,http://ufcstats.com/fighter-details/1c02b964466c10e4,Ramiro Jimenez,69,145,73,Southpaw,1999-01-16
 1c061eb6e29eaa0a,http://ufcstats.com/fighter-details/1c061eb6e29eaa0a,Bob Cook,69,170,NA,Orthodox,NA
 1c0ffc63d8ec8f45,http://ufcstats.com/fighter-details/1c0ffc63d8ec8f45,Gary Mangat,67,135,NA,NA,NA
@@ -533,6 +549,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 1f8cd7634e8286ff,http://ufcstats.com/fighter-details/1f8cd7634e8286ff,Henrique Da Silva Lopes,75,240,NA,NA,1985-03-08
 1f9344211ca7fd60,http://ufcstats.com/fighter-details/1f9344211ca7fd60,Muhsin Corbbrey,70,155,NA,Orthodox,1978-05-18
 1f9c371c93dfd3a9,http://ufcstats.com/fighter-details/1f9c371c93dfd3a9,Ryan McGillivray,71,170,NA,NA,1986-09-27
+1fa85d7dcf2f57c5,http://ufcstats.com/fighter-details/1fa85d7dcf2f57c5,Ian Escuza,NA,145,NA,NA,1996-04-28
 1fac46d466abd5b8,http://ufcstats.com/fighter-details/1fac46d466abd5b8,Kevin Knabjian,70,170,NA,Orthodox,1984-07-05
 1fb80f46d3c105d9,http://ufcstats.com/fighter-details/1fb80f46d3c105d9,Fabio Maldonado,73,205,75,Orthodox,1980-03-17
 1fc64507a0cb38cf,http://ufcstats.com/fighter-details/1fc64507a0cb38cf,Rostem Akman,70,170,72,Switch,1991-12-19
@@ -596,6 +613,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 22d1e00e1aabb7c9,http://ufcstats.com/fighter-details/22d1e00e1aabb7c9,Mike Whitehead,73,205,NA,Orthodox,1981-06-29
 22d80fb67e50ab0b,http://ufcstats.com/fighter-details/22d80fb67e50ab0b,John Elam,NA,NA,NA,NA,NA
 22e07d3da1aa3475,http://ufcstats.com/fighter-details/22e07d3da1aa3475,Andrey Pulyaev,76,185,78,Southpaw,1997-09-10
+22e3458965d5d08a,http://ufcstats.com/fighter-details/22e3458965d5d08a,Michael Aljarouj,NA,125,NA,Orthodox,1997-08-21
 22e47b53e4ceb27c,http://ufcstats.com/fighter-details/22e47b53e4ceb27c,David Loiseau,72,185,76,Orthodox,1979-12-17
 22edaf53ad59a967,http://ufcstats.com/fighter-details/22edaf53ad59a967,Daniel Roberts,70,170,74,Southpaw,1980-08-05
 22ee260735da0d58,http://ufcstats.com/fighter-details/22ee260735da0d58,Richard Crunkilton,67,155,NA,Orthodox,1979-11-25
@@ -615,12 +633,14 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 239d8e5359022f3b,http://ufcstats.com/fighter-details/239d8e5359022f3b,Kevin Vallejos,67,145,68,Switch,2001-12-08
 23a16ebe733e3041,http://ufcstats.com/fighter-details/23a16ebe733e3041,Rory Markham,72,170,71,Orthodox,1982-03-25
 23a6e307077c6ccc,http://ufcstats.com/fighter-details/23a6e307077c6ccc,Enrique Marin,70,170,NA,NA,1986-09-02
+23a81656507b56a3,http://ufcstats.com/fighter-details/23a81656507b56a3,Terrance Chatman,72,265,76,Orthodox,1997-05-05
 23a8c33869bf5392,http://ufcstats.com/fighter-details/23a8c33869bf5392,Karl Amoussou,71,185,NA,Orthodox,1985-11-21
 23ab42947c1990e3,http://ufcstats.com/fighter-details/23ab42947c1990e3,Ron van Clief,70,190,NA,Orthodox,1943-01-25
 23bd78c3f89bdb54,http://ufcstats.com/fighter-details/23bd78c3f89bdb54,Kyosuke Sasaki,67,183,NA,Southpaw,1979-10-07
 23dec7c47cb418f8,http://ufcstats.com/fighter-details/23dec7c47cb418f8,Zach Reese,76,185,77,Switch,1994-03-24
 23fbe02caabcd214,http://ufcstats.com/fighter-details/23fbe02caabcd214,Ronaldo Candido,66,125,NA,Southpaw,1989-04-24
 24174a3f44ce8e03,http://ufcstats.com/fighter-details/24174a3f44ce8e03,Chan-Mi Jeon,65,115,NA,Orthodox,1997-08-28
+24176a5b6f3872e0,http://ufcstats.com/fighter-details/24176a5b6f3872e0,George Staines,NA,155,NA,NA,2000-09-20
 242d36d241b43c12,http://ufcstats.com/fighter-details/242d36d241b43c12,Kron Gracie,69,145,70,Southpaw,1988-07-11
 243a336eaa2d2eb4,http://ufcstats.com/fighter-details/243a336eaa2d2eb4,Emmanuel Sanchez,69,145,71,NA,1990-08-11
 243b07fc65ccbb16,http://ufcstats.com/fighter-details/243b07fc65ccbb16,Tatsuya Iwasaki,69,205,NA,Orthodox,1969-06-20
@@ -628,6 +648,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 247fbbfafea60bb1,http://ufcstats.com/fighter-details/247fbbfafea60bb1,Maiara Amanajas dos Santos,65,115,NA,Southpaw,1987-07-11
 2482ef3331a82e75,http://ufcstats.com/fighter-details/2482ef3331a82e75,Mark Dickman,69,145,NA,NA,1984-07-19
 24b033b3daf1c9df,http://ufcstats.com/fighter-details/24b033b3daf1c9df,Luiz Cane,74,185,77,Southpaw,1981-04-24
+24cb8f04de1310cb,http://ufcstats.com/fighter-details/24cb8f04de1310cb,Akbar Abdullaev,NA,155,NA,NA,1997-09-20
 24d98df7556ac8af,http://ufcstats.com/fighter-details/24d98df7556ac8af,Stephen Regman,71,185,76,Orthodox,1991-08-05
 24e9d6b0a24cff9d,http://ufcstats.com/fighter-details/24e9d6b0a24cff9d,Dean Hancock,NA,155,NA,NA,NA
 2525a853486ee670,http://ufcstats.com/fighter-details/2525a853486ee670,Sirwan Kakai,65,135,NA,Orthodox,1989-10-03
@@ -681,6 +702,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 2782235b078b72a7,http://ufcstats.com/fighter-details/2782235b078b72a7,Damonte Robinson,72,155,77,NA,1995-06-10
 279093302a6f44b3,http://ufcstats.com/fighter-details/279093302a6f44b3,Gerard Gordeau,77,216,NA,Orthodox,1959-03-30
 279566840aa55bf2,http://ufcstats.com/fighter-details/279566840aa55bf2,Alexander Volkov,79,261,80,Orthodox,1988-10-24
+27a9ce2c04071efe,http://ufcstats.com/fighter-details/27a9ce2c04071efe,Abe Alsaghir,68,155,71,Orthodox,2001-07-01
 27ab7257bf6a3b65,http://ufcstats.com/fighter-details/27ab7257bf6a3b65,Simon Biyong,NA,205,NA,NA,1991-04-05
 27b164b0d1833df0,http://ufcstats.com/fighter-details/27b164b0d1833df0,Kalindra Faria,67,125,NA,Switch,1986-07-23
 27b1a406ac171b19,http://ufcstats.com/fighter-details/27b1a406ac171b19,Luke Stewart,71,170,NA,Orthodox,NA
@@ -749,6 +771,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 2af2f2e26c4c0402,http://ufcstats.com/fighter-details/2af2f2e26c4c0402,Hunter Azure,68,145,69,Orthodox,1992-03-02
 2b06b6ad5db63348,http://ufcstats.com/fighter-details/2b06b6ad5db63348,Brandon Melendez,71,155,NA,Southpaw,1983-03-24
 2b074403b7c6cdb4,http://ufcstats.com/fighter-details/2b074403b7c6cdb4,Thomas Almeida,67,145,70,Southpaw,1991-07-31
+2b13dba37724eb87,http://ufcstats.com/fighter-details/2b13dba37724eb87,Emilio Quissua,NA,205,NA,NA,1997-04-21
 2b1587a3376ab743,http://ufcstats.com/fighter-details/2b1587a3376ab743,Ernie Verdicia,71,199,NA,Orthodox,NA
 2b1c6f28039efe36,http://ufcstats.com/fighter-details/2b1c6f28039efe36,Joe Cason,75,205,NA,NA,1988-01-19
 2b266e623e20737a,http://ufcstats.com/fighter-details/2b266e623e20737a,Rodrigo Vera,68,145,68,Orthodox,1995-10-18
@@ -762,6 +785,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 2b91eff985b532cd,http://ufcstats.com/fighter-details/2b91eff985b532cd,Michael Cora,73,170,77,Southpaw,1989-08-24
 2b93ebd9f5417ad2,http://ufcstats.com/fighter-details/2b93ebd9f5417ad2,Michael Bisping,73,185,75,Orthodox,1979-02-28
 2ba479b409011527,http://ufcstats.com/fighter-details/2ba479b409011527,Fabio Silva,71,205,NA,Orthodox,1982-03-31
+2bbdbc925f4323ac,http://ufcstats.com/fighter-details/2bbdbc925f4323ac,Mehemmedeli Osmanli,NA,135,NA,NA,2004-08-05
 2bc47c7cc6c05bd7,http://ufcstats.com/fighter-details/2bc47c7cc6c05bd7,HanSeul Kim,73,170,73,Southpaw,1990-06-19
 2bcc39af95d6f2e8,http://ufcstats.com/fighter-details/2bcc39af95d6f2e8,John Devine,NA,NA,NA,NA,1978-01-17
 2bd98ab77a8daa75,http://ufcstats.com/fighter-details/2bd98ab77a8daa75,Stewart Nicoll,65,125,65,Orthodox,1996-04-11
@@ -792,6 +816,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 2d6d6ffe5a446ea2,http://ufcstats.com/fighter-details/2d6d6ffe5a446ea2,Christian Ocon,68,135,69,Orthodox,1996-02-05
 2d85fcb4468c30d7,http://ufcstats.com/fighter-details/2d85fcb4468c30d7,Meng Bo,64,115,62,Orthodox,1996-03-29
 2db0c114414d4f06,http://ufcstats.com/fighter-details/2db0c114414d4f06,Karine Gevorgyan,64,125,63,NA,1989-03-09
+2db2ab1032bb4e76,http://ufcstats.com/fighter-details/2db2ab1032bb4e76,Aieza Bertolso,NA,115,NA,NA,2001-08-29
 2db65fc038c0018e,http://ufcstats.com/fighter-details/2db65fc038c0018e,James Gray,69,135,NA,Orthodox,1987-10-25
 2db7fa8db6bc9632,http://ufcstats.com/fighter-details/2db7fa8db6bc9632,Shane Nelson,69,155,70,Southpaw,1984-11-29
 2dbc60c52de126d8,http://ufcstats.com/fighter-details/2dbc60c52de126d8,Harry Hardwick,68,145,71,Switch,1994-09-29
@@ -802,12 +827,14 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 2dea80c069847321,http://ufcstats.com/fighter-details/2dea80c069847321,Gilles Arsene,69,190,NA,Southpaw,1970-12-23
 2e04a3b4a2011b97,http://ufcstats.com/fighter-details/2e04a3b4a2011b97,Roland Payne,69,205,NA,Orthodox,NA
 2e19380f34871c6a,http://ufcstats.com/fighter-details/2e19380f34871c6a,Dominick Reyes,76,205,77,Southpaw,1989-12-26
+2e1f3640443272ad,http://ufcstats.com/fighter-details/2e1f3640443272ad,Carlos Petruzzella,71,185,73,Orthodox,1997-03-29
 2e25c1d983c26311,http://ufcstats.com/fighter-details/2e25c1d983c26311,Colton Smith,72,155,71,Orthodox,1987-08-14
 2e2cdb6e9eb84bb9,http://ufcstats.com/fighter-details/2e2cdb6e9eb84bb9,Jesse Moreng,67,145,NA,Orthodox,1979-11-09
 2e45d08b3f2f02c8,http://ufcstats.com/fighter-details/2e45d08b3f2f02c8,Malcolm Wellmaker,70,135,71,Switch,1994-06-04
 2e517966267a468a,http://ufcstats.com/fighter-details/2e517966267a468a,Kai Yoshida,69,125,69,Southpaw,1999-10-10
 2e585c701f72fe55,http://ufcstats.com/fighter-details/2e585c701f72fe55,Ian Heinisch,71,185,72,Orthodox,1988-08-05
 2e5c2aa8e4ab9d82,http://ufcstats.com/fighter-details/2e5c2aa8e4ab9d82,Paulo Costa,73,205,72,Orthodox,1991-04-21
+2e75399d5a934b0e,http://ufcstats.com/fighter-details/2e75399d5a934b0e,Tyshawn Williams,NA,145,NA,NA,1996-08-24
 2e7878927067fdca,http://ufcstats.com/fighter-details/2e7878927067fdca,Manuel Torres,70,155,73,Switch,1995-03-25
 2e88f2030d8a928a,http://ufcstats.com/fighter-details/2e88f2030d8a928a,Alejandro Villalobos,67,145,NA,NA,1979-10-26
 2eab7a6c8b0ed8cc,http://ufcstats.com/fighter-details/2eab7a6c8b0ed8cc,Wayne Cole,73,205,NA,Orthodox,1971-01-06
@@ -850,6 +877,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 30a09e43f15f1d75,http://ufcstats.com/fighter-details/30a09e43f15f1d75,Paulo Thiago,71,170,74,Orthodox,1981-01-25
 30ad2050273d016a,http://ufcstats.com/fighter-details/30ad2050273d016a,Joey Armstrong,NA,NA,NA,NA,NA
 30b577b112bef42d,http://ufcstats.com/fighter-details/30b577b112bef42d,Vernon Ramos Ho,66,170,NA,Orthodox,1992-06-03
+30b7ef4026bd7c15,http://ufcstats.com/fighter-details/30b7ef4026bd7c15,Damian Piwowarczyk,NA,205,NA,NA,1997-09-14
 30ba4c2779e68a1e,http://ufcstats.com/fighter-details/30ba4c2779e68a1e,Magomedrasul Gasanov,NA,185,NA,NA,1994-10-23
 30cad5a751adcb48,http://ufcstats.com/fighter-details/30cad5a751adcb48,Alibi Idiris,66,125,68,Orthodox,1994-10-22
 30cd319d39ee689b,http://ufcstats.com/fighter-details/30cd319d39ee689b,Gerry Harris,80,270,NA,Orthodox,NA
@@ -860,6 +888,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 31123249b0bbf52e,http://ufcstats.com/fighter-details/31123249b0bbf52e,Matt Brown,72,170,75,Orthodox,1981-01-10
 312f47c3d2f83ffa,http://ufcstats.com/fighter-details/312f47c3d2f83ffa,Houston Dorr,73,210,NA,Orthodox,NA
 312f7d7b2b2f7de4,http://ufcstats.com/fighter-details/312f7d7b2b2f7de4,Djorden Santos,72,185,75,Orthodox,1997-08-01
+3138df4d117ebc12,http://ufcstats.com/fighter-details/3138df4d117ebc12,Delphine Benouaich,NA,115,NA,NA,1995-03-21
 3138fab619faf4d1,http://ufcstats.com/fighter-details/3138fab619faf4d1,Brian Cobb,71,155,NA,Orthodox,1980-09-03
 3143bf892608139a,http://ufcstats.com/fighter-details/3143bf892608139a,Yana Santos,66,135,68,Orthodox,1989-11-11
 3143e5daff9e5b71,http://ufcstats.com/fighter-details/3143e5daff9e5b71,Jonathan Santa Maria,69,125,NA,NA,NA
@@ -947,6 +976,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 34b96d52db1d26e6,http://ufcstats.com/fighter-details/34b96d52db1d26e6,Kevin Borjas,65,125,68,Orthodox,1997-12-06
 34c2b3656f88f7ef,http://ufcstats.com/fighter-details/34c2b3656f88f7ef,Aaron Phillips,69,135,71,Southpaw,1989-08-05
 34ca93f1791a5c50,http://ufcstats.com/fighter-details/34ca93f1791a5c50,Dwight Joseph,66,135,NA,Switch,1989-08-16
+34d4cae19105eb68,http://ufcstats.com/fighter-details/34d4cae19105eb68,Cam Nelson,71,170,72,Orthodox,1998-07-28
 34dbcd4dbaf21a36,http://ufcstats.com/fighter-details/34dbcd4dbaf21a36,Jordan Bailey,69,145,NA,NA,NA
 34e516ab361afb1c,http://ufcstats.com/fighter-details/34e516ab361afb1c,Darrick Minner,67,145,69,Orthodox,1990-04-28
 34e552520a934063,http://ufcstats.com/fighter-details/34e552520a934063,Brad Scott,73,170,76,Orthodox,1989-06-24
@@ -968,6 +998,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 35d6337320a4ae48,http://ufcstats.com/fighter-details/35d6337320a4ae48,Arlene Blencowe,65,145,NA,NA,1983-04-11
 35dc6220b113b7ec,http://ufcstats.com/fighter-details/35dc6220b113b7ec,Ryan Roberts,66,155,NA,Orthodox,1978-07-16
 35e1f9984ed64206,http://ufcstats.com/fighter-details/35e1f9984ed64206,Ryan MacDonald,71,135,71,Switch,1993-03-18
+35e3a24591f4e2cd,http://ufcstats.com/fighter-details/35e3a24591f4e2cd,Anthony Figueroa,NA,155,NA,NA,NA
 35faad160d346839,http://ufcstats.com/fighter-details/35faad160d346839,Mizuto Hirota,67,155,67,Orthodox,1981-05-05
 36120738148f203f,http://ufcstats.com/fighter-details/36120738148f203f,Buck Meredith,74,185,NA,NA,1982-05-17
 3618e0632ecdba9c,http://ufcstats.com/fighter-details/3618e0632ecdba9c,Keiichiro Nakamura,70,145,70,Southpaw,1998-12-02
@@ -975,6 +1006,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 36207c58e854cae5,http://ufcstats.com/fighter-details/36207c58e854cae5,Dashon Johnson,67,145,NA,Orthodox,1988-01-25
 3623bd267a2eef2e,http://ufcstats.com/fighter-details/3623bd267a2eef2e,Yaotzin Meza,69,145,71,Orthodox,1981-02-04
 3641a0d117e9bc6c,http://ufcstats.com/fighter-details/3641a0d117e9bc6c,Tony Johnson,74,205,76,Orthodox,1983-05-02
+364e7a7a1ea5e200,http://ufcstats.com/fighter-details/364e7a7a1ea5e200,Arlind Berisha,NA,205,NA,NA,2000-11-05
 36541f1e6c5d4955,http://ufcstats.com/fighter-details/36541f1e6c5d4955,Viviane Araujo,64,125,68,Orthodox,1986-11-21
 36549928f90f1d36,http://ufcstats.com/fighter-details/36549928f90f1d36,Jose Quinonez,68,135,69,Southpaw,1990-07-28
 365fee2da473b177,http://ufcstats.com/fighter-details/365fee2da473b177,Anthony Johnson,74,205,78,Orthodox,1984-03-06
@@ -1143,6 +1175,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 4078de7181a19142,http://ufcstats.com/fighter-details/4078de7181a19142,James Wallace,70,155,69,Orthodox,1992-11-17
 40a456a25d52ee65,http://ufcstats.com/fighter-details/40a456a25d52ee65,Rolando Bedoya,71,155,74,Orthodox,1997-01-13
 40a604761ca7d64d,http://ufcstats.com/fighter-details/40a604761ca7d64d,Din Thomas,69,155,NA,Orthodox,1976-09-28
+40a7ec5d1ad6ffa8,http://ufcstats.com/fighter-details/40a7ec5d1ad6ffa8,Anna Melisano,64,125,68,Orthodox,1997-05-20
 40cb680ae1cd331f,http://ufcstats.com/fighter-details/40cb680ae1cd331f,Yazmin Jauregui,63,115,64,Orthodox,1999-02-28
 40d8b74488743800,http://ufcstats.com/fighter-details/40d8b74488743800,Carlton Minus,70,170,75,Orthodox,1993-04-26
 40eb2aef4d5577d4,http://ufcstats.com/fighter-details/40eb2aef4d5577d4,John Yoo,NA,135,NA,NA,NA
@@ -1161,6 +1194,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 4148802ae4a50768,http://ufcstats.com/fighter-details/4148802ae4a50768,Daniel Zellhuber,73,155,77,Switch,1999-07-07
 41498c2d1a87b154,http://ufcstats.com/fighter-details/41498c2d1a87b154,Zviad Lazishvili,66,135,69,Orthodox,1991-10-25
 414bddf0c80c41e1,http://ufcstats.com/fighter-details/414bddf0c80c41e1,Josh Diekmann,64,246,NA,NA,1976-10-09
+41523699f37d400c,http://ufcstats.com/fighter-details/41523699f37d400c,Sean King,NA,145,NA,NA,2003-10-17
 41904fc4d3f5bffc,http://ufcstats.com/fighter-details/41904fc4d3f5bffc,Ariel Gandulla,71,205,NA,Orthodox,1968-05-07
 41b34b7f11f6d085,http://ufcstats.com/fighter-details/41b34b7f11f6d085,Levi Alford,NA,NA,NA,NA,NA
 41cc71cbf210e0fe,http://ufcstats.com/fighter-details/41cc71cbf210e0fe,Hyder Amil,69,145,70,Switch,1990-05-28
@@ -1210,6 +1244,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 44470bfd9483c7ad,http://ufcstats.com/fighter-details/44470bfd9483c7ad,Katsunori Kikuno,68,145,66,Orthodox,1981-10-31
 445a98acb8985970,http://ufcstats.com/fighter-details/445a98acb8985970,Falaniko Vitale,70,185,NA,Orthodox,1974-07-14
 4461d7e47375a895,http://ufcstats.com/fighter-details/4461d7e47375a895,Tatsuro Taira,67,125,70,Orthodox,2000-01-27
+44753fa1e57c5289,http://ufcstats.com/fighter-details/44753fa1e57c5289,Loai Abushaar,NA,155,NA,NA,1996-08-10
 447f9858ae78f921,http://ufcstats.com/fighter-details/447f9858ae78f921,Muslim Salikhov,71,170,70,Orthodox,1984-06-09
 4498b382c65a7faa,http://ufcstats.com/fighter-details/4498b382c65a7faa,Roxanne Modafferi,67,125,69,Orthodox,1982-09-24
 449c890bd90f3374,http://ufcstats.com/fighter-details/449c890bd90f3374,Hector Sandoval,62,125,64,Orthodox,1986-07-19
@@ -1220,6 +1255,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 44c233770075cea1,http://ufcstats.com/fighter-details/44c233770075cea1,Shingo Kohara,66,135,NA,NA,NA
 44f234a36324e6c8,http://ufcstats.com/fighter-details/44f234a36324e6c8,Mario Piazzon,69,265,73,Orthodox,1998-04-06
 44f46b0592ca0814,http://ufcstats.com/fighter-details/44f46b0592ca0814,Daniel Pereira,70,185,NA,NA,1990-12-13
+44f95ae20a6238e5,http://ufcstats.com/fighter-details/44f95ae20a6238e5,Roman Gabriel Puga,67,145,71,Orthodox,1996-09-17
 44f9c777fed7ca03,http://ufcstats.com/fighter-details/44f9c777fed7ca03,Frank Caracci,NA,NA,NA,NA,1970-02-16
 450bacdacd706bcd,http://ufcstats.com/fighter-details/450bacdacd706bcd,Pawan Maan,67,155,70,Orthodox,1986-04-06
 450bcab0968562c4,http://ufcstats.com/fighter-details/450bcab0968562c4,John Yannis,67,145,70,Southpaw,1994-07-07
@@ -1291,6 +1327,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 48a9a128784d53d1,http://ufcstats.com/fighter-details/48a9a128784d53d1,Elves Brener,70,155,72,Orthodox,1997-09-27
 48d1f690b763934c,http://ufcstats.com/fighter-details/48d1f690b763934c,Chael Sonnen,73,205,73,Southpaw,1977-04-03
 48e093ea1f43a053,http://ufcstats.com/fighter-details/48e093ea1f43a053,Takeya Mizugaki,67,135,69,Orthodox,1983-12-16
+48e43b65f7838878,http://ufcstats.com/fighter-details/48e43b65f7838878,Modestino Rodrigues,NA,185,NA,Orthodox,2003-10-09
 48e96d9cea6d4ab0,http://ufcstats.com/fighter-details/48e96d9cea6d4ab0,Josh Clopton,66,145,NA,Orthodox,1981-07-11
 4908c5ee68a50ee5,http://ufcstats.com/fighter-details/4908c5ee68a50ee5,Brad Imes,79,265,NA,Orthodox,1977-03-13
 4920292f5d9b76df,http://ufcstats.com/fighter-details/4920292f5d9b76df,Will Santiago,67,185,NA,Orthodox,1983-02-08
@@ -1373,6 +1410,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 4c2d90e335e6df19,http://ufcstats.com/fighter-details/4c2d90e335e6df19,Alexis Davis,66,135,68,Orthodox,1984-10-04
 4c33b3d37955aa85,http://ufcstats.com/fighter-details/4c33b3d37955aa85,Arisa Matsuda,63,115,64,Orthodox,1994-12-15
 4c4b44e3cf5815b3,http://ufcstats.com/fighter-details/4c4b44e3cf5815b3,Stephen Banaszak,72,145,NA,NA,1990-12-07
+4c718f671bf0b525,http://ufcstats.com/fighter-details/4c718f671bf0b525,Salhahuddin Everett,NA,185,NA,NA,NA
 4c7781da8c6cae93,http://ufcstats.com/fighter-details/4c7781da8c6cae93,Ryan LaFlare,73,170,74,Southpaw,1983-10-01
 4c78fc005a53831d,http://ufcstats.com/fighter-details/4c78fc005a53831d,Eldari Kurtanidze,66,235,NA,Orthodox,1972-04-16
 4c7afd56ef1947ac,http://ufcstats.com/fighter-details/4c7afd56ef1947ac,Li Yunfeng,68,135,68,Orthodox,1999-03-08
@@ -1446,6 +1484,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 5148a665aa527865,http://ufcstats.com/fighter-details/5148a665aa527865,Christopher Lopez,70,170,NA,NA,1986-01-30
 515890922fe9ce96,http://ufcstats.com/fighter-details/515890922fe9ce96,Adam Livingston,74,155,71,Orthodox,2001-08-15
 5159e6ee100c717e,http://ufcstats.com/fighter-details/5159e6ee100c717e,Cedric Doumbe,70,170,NA,NA,1992-08-13
+5182316da3c1d891,http://ufcstats.com/fighter-details/5182316da3c1d891,Bilal Hasan,67,125,70,Switch,2001-07-16
 518e5202a91980d4,http://ufcstats.com/fighter-details/518e5202a91980d4,Nate Moore,72,170,NA,NA,1983-04-06
 519e4fe37ce9ff75,http://ufcstats.com/fighter-details/519e4fe37ce9ff75,Drew Dober,68,155,70,Southpaw,1988-10-19
 51a0c09cbe9b8472,http://ufcstats.com/fighter-details/51a0c09cbe9b8472,Liz Carmouche,66,125,66,Orthodox,1984-02-19
@@ -1524,6 +1563,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 55fa6ce3e522c8bb,http://ufcstats.com/fighter-details/55fa6ce3e522c8bb,Zhalgas Zhumagulov,64,125,66,Switch,1988-08-29
 56116537d71a578c,http://ufcstats.com/fighter-details/56116537d71a578c,Bryan Pardoe,73,205,NA,Orthodox,1968-10-22
 56116a79e4deed06,http://ufcstats.com/fighter-details/56116a79e4deed06,Claude Patrick,71,170,75,Orthodox,1980-06-14
+56370b594d5fe0b3,http://ufcstats.com/fighter-details/56370b594d5fe0b3,Oscar Ravello,NA,185,NA,NA,1998-09-27
 563a1d42bb0e3cef,http://ufcstats.com/fighter-details/563a1d42bb0e3cef,Tre'ston Vines,73,185,79,Orthodox,1996-06-18
 563d051c9e769b24,http://ufcstats.com/fighter-details/563d051c9e769b24,Wagner da Conceicao Martins,79,390,NA,Orthodox,1978-05-19
 564c2f5f9eb45d67,http://ufcstats.com/fighter-details/564c2f5f9eb45d67,Mike King,75,185,NA,NA,1983-08-04
@@ -1566,6 +1606,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 5823ceab56741617,http://ufcstats.com/fighter-details/5823ceab56741617,Jonathan Meunier,75,170,NA,Switch,1987-08-04
 58258914525740a5,http://ufcstats.com/fighter-details/58258914525740a5,Kengo Ura,69,165,NA,NA,1981-06-20
 583ee11abddfc581,http://ufcstats.com/fighter-details/583ee11abddfc581,Nate Landwehr,69,145,72,Orthodox,1988-06-06
+5847c1a960bb23af,http://ufcstats.com/fighter-details/5847c1a960bb23af,Marina Spasic,64,115,64,Orthodox,1994-07-11
 585f9ffdb0cd0466,http://ufcstats.com/fighter-details/585f9ffdb0cd0466,Brandon Shuey,67,155,NA,Orthodox,1976-02-01
 5866fc86183a9fb8,http://ufcstats.com/fighter-details/5866fc86183a9fb8,Erick Silva,72,170,74,Orthodox,1984-06-21
 5870bd1eadf4f322,http://ufcstats.com/fighter-details/5870bd1eadf4f322,Jason Freeman,74,225,NA,NA,1976-09-02
@@ -1622,6 +1663,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 5bb70ebd65075c5c,http://ufcstats.com/fighter-details/5bb70ebd65075c5c,Shawn Teed,77,265,NA,Orthodox,1992-02-13
 5bd533d50c8e7b8a,http://ufcstats.com/fighter-details/5bd533d50c8e7b8a,Chris Haseman,71,205,NA,Orthodox,1969-06-02
 5bdcbd8dd681a257,http://ufcstats.com/fighter-details/5bdcbd8dd681a257,Jeremiah Metcalf,73,185,NA,Orthodox,1981-07-09
+5be51426ff3c1929,http://ufcstats.com/fighter-details/5be51426ff3c1929,Stan Dorsainvil,69,155,76,Orthodox,2000-05-12
 5be86bb2f78fef2f,http://ufcstats.com/fighter-details/5be86bb2f78fef2f,Jason Lambert,75,185,75,Orthodox,1975-06-03
 5befa793316d3469,http://ufcstats.com/fighter-details/5befa793316d3469,James Terry,70,170,NA,Orthodox,1981-03-16
 5bf31a46becc1204,http://ufcstats.com/fighter-details/5bf31a46becc1204,Michael Trizano,71,145,71,Orthodox,1991-12-31
@@ -1649,6 +1691,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 5d8a9c95af50280a,http://ufcstats.com/fighter-details/5d8a9c95af50280a,Chandler Cole,70,264,72,Orthodox,1995-01-09
 5da33b8fbfa5ee95,http://ufcstats.com/fighter-details/5da33b8fbfa5ee95,William Knight,70,205,73,Orthodox,1988-04-03
 5da4e8dc02e50ac0,http://ufcstats.com/fighter-details/5da4e8dc02e50ac0,Juan Mott,72,190,NA,Switch,1965-12-07
+5dad1e8a516e6477,http://ufcstats.com/fighter-details/5dad1e8a516e6477,Luis Hernandez,NA,185,NA,NA,1996-08-22
 5dd180c8b3196786,http://ufcstats.com/fighter-details/5dd180c8b3196786,Gloria de Paula,65,115,67,Orthodox,1995-06-10
 5de61b03868035ff,http://ufcstats.com/fighter-details/5de61b03868035ff,Matt Foki,67,220,NA,Orthodox,1976-03-16
 5df10509264586e5,http://ufcstats.com/fighter-details/5df10509264586e5,Cory Peterson,83,400,NA,Orthodox,1979-02-04
@@ -1686,6 +1729,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 5f6f049d54728e88,http://ufcstats.com/fighter-details/5f6f049d54728e88,Andre Ewell,68,145,75,Southpaw,1988-01-21
 5f87a5c00b3d17ed,http://ufcstats.com/fighter-details/5f87a5c00b3d17ed,Dennis Siver,66,145,70,Orthodox,1979-01-13
 5f8e00c27b7e7410,http://ufcstats.com/fighter-details/5f8e00c27b7e7410,Justin Bruckmann,69,170,NA,Orthodox,1974-07-23
+5f926979c980b87e,http://ufcstats.com/fighter-details/5f926979c980b87e,Borislav Nikolic,69,135,72,Orthodox,1993-01-29
 5f99b2bafb10305f,http://ufcstats.com/fighter-details/5f99b2bafb10305f,Daron Cruickshank,68,155,72,Switch,1985-06-11
 5fa2974cbd18e05c,http://ufcstats.com/fighter-details/5fa2974cbd18e05c,John Castaneda,66,135,71,Switch,1991-12-18
 5fceb45939fc0c8a,http://ufcstats.com/fighter-details/5fceb45939fc0c8a,Tom Niinimaki,69,145,69,Orthodox,1982-07-25
@@ -1729,8 +1773,10 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 621a6c59f88a44fe,http://ufcstats.com/fighter-details/621a6c59f88a44fe,Matt Hughes,69,170,73,Switch,1973-10-13
 6224e8d0a34264eb,http://ufcstats.com/fighter-details/6224e8d0a34264eb,Edward Faaloloto,NA,155,70,Orthodox,1984-07-15
 622f015c81a9b13a,http://ufcstats.com/fighter-details/622f015c81a9b13a,Travis Lutter,71,185,75,Orthodox,1973-05-12
+623f2eed9e1495af,http://ufcstats.com/fighter-details/623f2eed9e1495af,Gary Balletto,68,170,70,Switch,1995-01-20
 6256b2b1562cb8e1,http://ufcstats.com/fighter-details/6256b2b1562cb8e1,James Vick,75,155,76,Orthodox,1987-02-23
 625b65b45c1c6888,http://ufcstats.com/fighter-details/625b65b45c1c6888,Walter Smith-Cotito,68,135,NA,NA,NA
+6266abf6e4245c72,http://ufcstats.com/fighter-details/6266abf6e4245c72,Noah Gugnon,71,155,71,Orthodox,2000-10-18
 62918a2118de08b2,http://ufcstats.com/fighter-details/62918a2118de08b2,Tom Murphy,74,227,NA,Southpaw,1974-11-19
 6291ac0a3726732f,http://ufcstats.com/fighter-details/6291ac0a3726732f,Pete Williams,75,235,NA,Orthodox,1975-07-10
 6291decf7f3b6608,http://ufcstats.com/fighter-details/6291decf7f3b6608,James Wade,70,205,NA,NA,1972-02-08
@@ -1739,6 +1785,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 62f3039da2f92a8c,http://ufcstats.com/fighter-details/62f3039da2f92a8c,Eduardo Chapolin,67,125,67,Orthodox,1995-11-23
 62f7097c04311193,http://ufcstats.com/fighter-details/62f7097c04311193,Niklas Stolze,73,155,74,Switch,1992-12-28
 633a45d131192ffe,http://ufcstats.com/fighter-details/633a45d131192ffe,Kajan Johnson,71,155,75,Orthodox,1984-04-21
+633f0800d178dd21,http://ufcstats.com/fighter-details/633f0800d178dd21,Zaurbek Sabanov,NA,255,NA,NA,1998-06-14
 6343a95f1d9e6a33,http://ufcstats.com/fighter-details/6343a95f1d9e6a33,MinWoo Kim,68,135,72,Orthodox,1993-07-21
 634bb0de2eb043b4,http://ufcstats.com/fighter-details/634bb0de2eb043b4,Cristiane Justino,68,145,68,Orthodox,1985-07-09
 634e2fb70bde3fd5,http://ufcstats.com/fighter-details/634e2fb70bde3fd5,Holly Holm,68,135,69,Southpaw,1981-10-17
@@ -1773,6 +1820,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 64db35f7782fe274,http://ufcstats.com/fighter-details/64db35f7782fe274,Gaston Reyno,72,145,NA,NA,1986-11-11
 64facb6cc564262d,http://ufcstats.com/fighter-details/64facb6cc564262d,Punahele Soriano,71,170,72,Southpaw,1992-11-22
 6506c1d34da9c013,http://ufcstats.com/fighter-details/6506c1d34da9c013,Georges St-Pierre,71,185,76,Orthodox,1981-05-19
+651d209fa8c8cd83,http://ufcstats.com/fighter-details/651d209fa8c8cd83,Gigi Canuto,62,115,64,Orthodox,2002-11-16
 65239fccecd03404,http://ufcstats.com/fighter-details/65239fccecd03404,Bronson Mohika,NA,135,NA,NA,NA
 6546af7ab545b90c,http://ufcstats.com/fighter-details/6546af7ab545b90c,Darren Uyenoyama,66,125,65,Orthodox,1979-10-15
 654ae722109a0d31,http://ufcstats.com/fighter-details/654ae722109a0d31,Joe Duffy,70,155,73,Orthodox,1988-02-18
@@ -1787,6 +1835,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 65db4065e2bc107d,http://ufcstats.com/fighter-details/65db4065e2bc107d,Darrius Flowers,69,155,71,Orthodox,1994-08-25
 65ddc8a9ac4e8531,http://ufcstats.com/fighter-details/65ddc8a9ac4e8531,Keita Nakamura,71,170,73,Southpaw,1984-05-22
 65f09bacd3957381,http://ufcstats.com/fighter-details/65f09bacd3957381,Cory Sandhagen,71,135,70,Switch,1992-04-20
+65ff41ab071ab326,http://ufcstats.com/fighter-details/65ff41ab071ab326,Erick Visconde,NA,145,NA,NA,1996-11-21
 6623cb1c27025634,http://ufcstats.com/fighter-details/6623cb1c27025634,Brandon Lewis,64,135,70,Orthodox,1997-08-02
 663b76da637402c3,http://ufcstats.com/fighter-details/663b76da637402c3,Victor Valimaki,72,205,NA,Orthodox,1981-12-17
 66579081831db7b0,http://ufcstats.com/fighter-details/66579081831db7b0,Eliezer Kubanza,69,170,74,Orthodox,1997-12-23
@@ -1869,6 +1918,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 6aa1cbc1466e9a0b,http://ufcstats.com/fighter-details/6aa1cbc1466e9a0b,Marcio Cruz,76,232,NA,Orthodox,1978-04-24
 6aab5c20395ee722,http://ufcstats.com/fighter-details/6aab5c20395ee722,Murtaza Talha,72,205,74,Orthodox,1996-07-10
 6aae253467e8f9ce,http://ufcstats.com/fighter-details/6aae253467e8f9ce,Tafon Nchukwi,72,185,77,Orthodox,1994-10-14
+6ab620a6b7e80a72,http://ufcstats.com/fighter-details/6ab620a6b7e80a72,Callum Connor,NA,155,NA,NA,NA
 6ac9bc2953c47345,http://ufcstats.com/fighter-details/6ac9bc2953c47345,Gerald Meerschaert,73,185,77,Southpaw,1987-12-18
 6ad8e4296f7522d9,http://ufcstats.com/fighter-details/6ad8e4296f7522d9,Igor Severino,67,125,69,Orthodox,2003-04-21
 6ad9058b7c7898b0,http://ufcstats.com/fighter-details/6ad9058b7c7898b0,Tony DeSouza,72,170,70,Southpaw,1974-07-26
@@ -1995,6 +2045,8 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 7139cd2ae4bf6a29,http://ufcstats.com/fighter-details/7139cd2ae4bf6a29,Takahiro Oba,68,200,NA,Southpaw,1976-08-14
 714e1e0681ddb703,http://ufcstats.com/fighter-details/714e1e0681ddb703,Derrick Krantz,70,170,72,Orthodox,1988-01-13
 71505842fb6455c3,http://ufcstats.com/fighter-details/71505842fb6455c3,Dustin Stoltzfus,72,185,75,Orthodox,1991-11-15
+716538be58c6c5e1,http://ufcstats.com/fighter-details/716538be58c6c5e1,Martin Kozak,NA,185,NA,NA,2002-07-09
+71758ab9f337716c,http://ufcstats.com/fighter-details/71758ab9f337716c,Melissa Amaya,NA,115,NA,NA,1994-11-27
 7182146226dabe22,http://ufcstats.com/fighter-details/7182146226dabe22,Chris Wright,NA,NA,NA,NA,NA
 7195e2a932686f82,http://ufcstats.com/fighter-details/7195e2a932686f82,Nick Roehrick,74,205,NA,Orthodox,1987-07-06
 71caa995674203aa,http://ufcstats.com/fighter-details/71caa995674203aa,Waachiim Spiritwolf,68,170,NA,NA,1976-01-01
@@ -2028,6 +2080,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 738acab0c6934dd8,http://ufcstats.com/fighter-details/738acab0c6934dd8,Dmitri Stepanov,75,217,NA,Orthodox,NA
 739fd4fbb5d862f4,http://ufcstats.com/fighter-details/739fd4fbb5d862f4,Rizvan Kuniev,76,240,76,Orthodox,1992-03-10
 73a78713bd899f4c,http://ufcstats.com/fighter-details/73a78713bd899f4c,Allen Frye Jr.,77,265,80,Orthodox,1998-04-15
+73ab2872b8633322,http://ufcstats.com/fighter-details/73ab2872b8633322,Patrick Rivera,NA,170,NA,Orthodox,1992-02-24
 73abb7a5c57fb443,http://ufcstats.com/fighter-details/73abb7a5c57fb443,Alexander Trevino,NA,170,NA,NA,NA
 73c7cfa551289285,http://ufcstats.com/fighter-details/73c7cfa551289285,BJ Penn,69,155,70,Orthodox,1978-12-13
 73e09f837f3b5ecc,http://ufcstats.com/fighter-details/73e09f837f3b5ecc,Rogerio Nogueira,74,205,75,Southpaw,1976-06-02
@@ -2073,6 +2126,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 762226efa2b01654,http://ufcstats.com/fighter-details/762226efa2b01654,Ronal Siahaan,67,125,71,Southpaw,1996-05-05
 762572d67204fadb,http://ufcstats.com/fighter-details/762572d67204fadb,YeDam Seo,63,115,63,Orthodox,1992-03-20
 762c69860eef65d8,http://ufcstats.com/fighter-details/762c69860eef65d8,Alex Gilpin,67,145,NA,Orthodox,1992-03-26
+7631e2ba8e1ab9a5,http://ufcstats.com/fighter-details/7631e2ba8e1ab9a5,Camila Reynoso,NA,115,NA,NA,2003-08-28
 764342d39cdaa54a,http://ufcstats.com/fighter-details/764342d39cdaa54a,Frank Camacho,70,155,73,Orthodox,1989-05-18
 7649c4c95b824488,http://ufcstats.com/fighter-details/7649c4c95b824488,Josh Hendricks,74,235,NA,Southpaw,1976-08-28
 764d39074a352e33,http://ufcstats.com/fighter-details/764d39074a352e33,Thomas Petersen,73,264,74,Southpaw,1995-03-30
@@ -2085,6 +2139,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 769fa803bf9d2e3b,http://ufcstats.com/fighter-details/769fa803bf9d2e3b,Nasrudin Nasrudinov,72,205,71,Orthodox,1991-10-06
 76e2870ffafbe38f,http://ufcstats.com/fighter-details/76e2870ffafbe38f,Movsar Evloev,67,145,72,Orthodox,1994-02-11
 76ee3d666c648f6b,http://ufcstats.com/fighter-details/76ee3d666c648f6b,Charles Byrd,70,185,73,Orthodox,1983-10-11
+770108c77e4bcfd8,http://ufcstats.com/fighter-details/770108c77e4bcfd8,Norbert Novenyi,NA,185,NA,NA,1999-10-06
 7701377be464d2ef,http://ufcstats.com/fighter-details/7701377be464d2ef,Luis Santos,73,170,NA,Southpaw,1980-01-02
 770b9d4813c25902,http://ufcstats.com/fighter-details/770b9d4813c25902,Chalid Arrab,71,205,NA,Orthodox,1975-05-28
 771b60ff889661c8,http://ufcstats.com/fighter-details/771b60ff889661c8,Mark Scanlon,69,170,NA,Orthodox,NA
@@ -2116,6 +2171,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 78d48d3874dacafd,http://ufcstats.com/fighter-details/78d48d3874dacafd,Azunna Anyanwu,73,251,NA,Orthodox,1981-08-05
 78e501478a36a018,http://ufcstats.com/fighter-details/78e501478a36a018,Khama Worthy,71,155,74,Orthodox,1986-10-15
 78f485f851891d68,http://ufcstats.com/fighter-details/78f485f851891d68,Journey Newson,65,135,67,Orthodox,1989-03-07
+78f4cad9548b79e1,http://ufcstats.com/fighter-details/78f4cad9548b79e1,Hailai Wushamo,NA,115,NA,NA,2000-09-03
 791367e8c35cfb6a,http://ufcstats.com/fighter-details/791367e8c35cfb6a,Dustin Joynson,78,244,78,Orthodox,1985-10-14
 791c8437b341fba5,http://ufcstats.com/fighter-details/791c8437b341fba5,Joanderson Brito,68,145,72,Orthodox,1995-02-11
 7922e8269adcc25a,http://ufcstats.com/fighter-details/7922e8269adcc25a,Nick Pica,70,185,NA,NA,NA
@@ -2372,8 +2428,10 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 86f582852a5b240a,http://ufcstats.com/fighter-details/86f582852a5b240a,Mac Danzig,68,155,70,Orthodox,1980-01-02
 871ce0b4a01922b6,http://ufcstats.com/fighter-details/871ce0b4a01922b6,Sidney Outlaw,68,170,74,Orthodox,1992-04-11
 872b018076f831b0,http://ufcstats.com/fighter-details/872b018076f831b0,Rick Roufus,72,207,NA,Southpaw,1966-06-03
+8730ab4b1057f925,http://ufcstats.com/fighter-details/8730ab4b1057f925,Adama Diop,NA,NA,NA,NA,NA
 873626e5547b5235,http://ufcstats.com/fighter-details/873626e5547b5235,Kyle Prepolec,70,155,70,Southpaw,1989-08-30
 8738eacd62e82a32,http://ufcstats.com/fighter-details/8738eacd62e82a32,Matt Andersen,74,230,NA,Southpaw,1971-05-29
+874cfc98877daecd,http://ufcstats.com/fighter-details/874cfc98877daecd,Francesco Nuzzi,66,135,71,Southpaw,1996-08-28
 8753e125f4499816,http://ufcstats.com/fighter-details/8753e125f4499816,Blas Avena,72,170,74,Orthodox,1983-06-30
 8765559b6a29a421,http://ufcstats.com/fighter-details/8765559b6a29a421,Gaetano Pirrello,67,135,65,Orthodox,1992-04-29
 876f478f796495f7,http://ufcstats.com/fighter-details/876f478f796495f7,Josh Quinlan,72,170,72,Orthodox,1993-02-06
@@ -2418,6 +2476,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 896c322f56b8be5a,http://ufcstats.com/fighter-details/896c322f56b8be5a,George Sotiropoulos,70,155,71,Orthodox,1977-07-09
 898337ef520fe4d3,http://ufcstats.com/fighter-details/898337ef520fe4d3,Bryan Baker,75,185,NA,Orthodox,1985-10-13
 89839250eb25c9c1,http://ufcstats.com/fighter-details/89839250eb25c9c1,Caio Machado,76,250,78,Southpaw,1994-07-20
+8988705468d04ef7,http://ufcstats.com/fighter-details/8988705468d04ef7,Nicholas Galanti,73,185,75,Southpaw,1998-06-18
 8997ee20b6a43d76,http://ufcstats.com/fighter-details/8997ee20b6a43d76,Ren Ozaki,67,135,68,Orthodox,2001-12-15
 899923ff6ab13917,http://ufcstats.com/fighter-details/899923ff6ab13917,Bevon Lewis,75,185,79,Orthodox,1991-05-05
 899eaba48fa864a6,http://ufcstats.com/fighter-details/899eaba48fa864a6,Gina Carano,68,145,NA,Orthodox,1982-04-16
@@ -2440,6 +2499,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 8a64b3f87ad29d1e,http://ufcstats.com/fighter-details/8a64b3f87ad29d1e,Dominic Clark,70,155,NA,NA,1985-08-01
 8a65fd9ba31fd3f7,http://ufcstats.com/fighter-details/8a65fd9ba31fd3f7,Zhang Mingyang,74,205,75,Orthodox,1998-08-16
 8a70ceb3edbe757b,http://ufcstats.com/fighter-details/8a70ceb3edbe757b,Andrew Craig,73,170,76,Orthodox,1986-01-15
+8a81a0707350c4a8,http://ufcstats.com/fighter-details/8a81a0707350c4a8,Joe Kropschot,75,185,79,Orthodox,1995-06-19
 8a8a84b743ae7699,http://ufcstats.com/fighter-details/8a8a84b743ae7699,Dennis Hallman,69,155,72,Orthodox,1975-12-02
 8a9c6c4301f6d088,http://ufcstats.com/fighter-details/8a9c6c4301f6d088,Danny Martinez,66,125,67,Orthodox,1985-06-14
 8a9f54b9056b07f5,http://ufcstats.com/fighter-details/8a9f54b9056b07f5,Roshaun Jones,68,135,NA,NA,NA
@@ -2505,6 +2565,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 8e1f36476ef02a6a,http://ufcstats.com/fighter-details/8e1f36476ef02a6a,Jennifer Maia,64,125,64,Orthodox,1988-10-06
 8e32bfcff3ec1717,http://ufcstats.com/fighter-details/8e32bfcff3ec1717,RJ Clifford,NA,160,NA,NA,NA
 8e382b585a92affe,http://ufcstats.com/fighter-details/8e382b585a92affe,Phil Rowe,75,170,80,Orthodox,1990-07-18
+8e4902b4a8045070,http://ufcstats.com/fighter-details/8e4902b4a8045070,Hector Santiago,65,135,68,Orthodox,1993-03-21
 8e5bfd4e82352340,http://ufcstats.com/fighter-details/8e5bfd4e82352340,Pablo Garza,73,145,73,Orthodox,1983-09-16
 8e5d953bdb9ae5e7,http://ufcstats.com/fighter-details/8e5d953bdb9ae5e7,Loopy Godinez,62,115,61,Orthodox,1993-09-06
 8e6654e9f0461b8f,http://ufcstats.com/fighter-details/8e6654e9f0461b8f,Cody Haddon,67,135,69,Orthodox,1998-09-08
@@ -2698,6 +2759,8 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 9900ab86a4c458bd,http://ufcstats.com/fighter-details/9900ab86a4c458bd,Josh Bumgarner,73,170,NA,NA,1981-05-21
 99020eeb8cd5689d,http://ufcstats.com/fighter-details/99020eeb8cd5689d,Dave Phillips,72,185,NA,Orthodox,1980-01-12
 990bd63726a577f8,http://ufcstats.com/fighter-details/990bd63726a577f8,Tim Williams,74,185,76,Orthodox,1986-07-03
+9911989cf48b195d,http://ufcstats.com/fighter-details/9911989cf48b195d,Fabia Sintes,NA,125,NA,Orthodox,1994-07-27
+99223fbb4a05326b,http://ufcstats.com/fighter-details/99223fbb4a05326b,Damian Rzepecki,70,155,71,Orthodox,2001-11-23
 992c82450d96f726,http://ufcstats.com/fighter-details/992c82450d96f726,Damir Mirenic,72,185,NA,Orthodox,1974-08-02
 993d385f5a475375,http://ufcstats.com/fighter-details/993d385f5a475375,Andy Enz,75,185,78,Orthodox,1991-08-15
 99506df1af6c8b3b,http://ufcstats.com/fighter-details/99506df1af6c8b3b,John Dodson,63,135,66,Orthodox,1984-09-26
@@ -2722,6 +2785,7 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 9a967e8e43dcef63,http://ufcstats.com/fighter-details/9a967e8e43dcef63,Joao Pierini,73,155,NA,Switch,1971-12-11
 9a97acbfd5a08bfa,http://ufcstats.com/fighter-details/9a97acbfd5a08bfa,David Martinez,65,135,67,Orthodox,1998-08-03
 9aa56f004b2bca07,http://ufcstats.com/fighter-details/9aa56f004b2bca07,Donavon Frelow,67,135,NA,Orthodox,1985-01-20
+9ab21ab88230ce48,http://ufcstats.com/fighter-details/9ab21ab88230ce48,Bella Mir,67,135,66,Southpaw,2003-07-01
 9ab9912e0f8fa6d6,http://ufcstats.com/fighter-details/9ab9912e0f8fa6d6,Cory Hendricks,75,205,NA,Switch,1988-05-10
 9abc648e76c4493a,http://ufcstats.com/fighter-details/9abc648e76c4493a,Bill Algeo,72,145,73,Switch,1989-06-09
 9ac4e43ed56429ed,http://ufcstats.com/fighter-details/9ac4e43ed56429ed,Levi Rodrigues Jr.,72,205,76,Orthodox,1996-10-15
@@ -2790,11 +2854,13 @@ fighter_id,details_url,name,height_in,weight_lb,reach_in,stance,dob
 9e30f69cc0869301,http://ufcstats.com/fighter-details/9e30f69cc0869301,James Thompson,77,265,NA,Orthodox,1978-12-16
 9e3dbb9c68ed5d1a,http://ufcstats.com/fighter-details/9e3dbb9c68ed5d1a,Mike Aina,69,155,NA,Orthodox,1980-12-25
 9e50097a89442158,http://ufcstats.com/fighter-details/9e50097a89442158,Mickey Gall,74,170,74,Switch,1992-01-22
+9e6cd25e0bd05e3d,http://ufcstats.com/fighter-details/9e6cd25e0bd05e3d,Reginaldo Junior,NA,170,NA,NA,1999-02-10
 9e8e5c529057fe60,http://ufcstats.com/fighter-details/9e8e5c529057fe60,Jonatas Novaes,71,170,NA,NA,1981-03-02
 9e8f6c728eb01124,http://ufcstats.com/fighter-details/9e8f6c728eb01124,Justin Gaethje,71,155,70,Orthodox,1988-11-14
 9e91d7fd2720e241,http://ufcstats.com/fighter-details/9e91d7fd2720e241,Ryo Kawamura,71,205,NA,Orthodox,1981-06-29
 9e92e1ca498d7244,http://ufcstats.com/fighter-details/9e92e1ca498d7244,Fernie Garcia,67,135,67,Orthodox,1992-04-12
 9eb069062a0cfc13,http://ufcstats.com/fighter-details/9eb069062a0cfc13,Nolan Ticman,66,125,NA,Orthodox,1988-05-17
+9ebd666f99ba686b,http://ufcstats.com/fighter-details/9ebd666f99ba686b,Fabrizio Escarrega,69,155,74,Orthodox,1998-02-18
 9ec12134b1515f12,http://ufcstats.com/fighter-details/9ec12134b1515f12,Maria Rios,65,125,NA,NA,1983-05-31
 9edf2c9082cc2cd8,http://ufcstats.com/fighter-details/9edf2c9082cc2cd8,Blood Diamond,71,170,76,Switch,1988-07-10
 9eed2bcc9e0b92af,http://ufcstats.com/fighter-details/9eed2bcc9e0b92af,Leon Shahbazyan,76,170,74,Orthodox,1995-11-18
@@ -2859,6 +2925,7 @@ a1f6999fe57236e0,http://ufcstats.com/fighter-details/a1f6999fe57236e0,Wanderlei 
 a20d7dfaba74c067,http://ufcstats.com/fighter-details/a20d7dfaba74c067,Rodrigo Damm,67,155,71,Orthodox,1980-02-03
 a20f234df70f2182,http://ufcstats.com/fighter-details/a20f234df70f2182,Ji Yeon Kim,67,125,72,Orthodox,1989-10-18
 a220be6d41d6f97d,http://ufcstats.com/fighter-details/a220be6d41d6f97d,Carlos Barreto,76,230,NA,Orthodox,1968-07-22
+a221b4812b0e7364,http://ufcstats.com/fighter-details/a221b4812b0e7364,Charlie Cleveland,NA,248,NA,Southpaw,1997-12-30
 a23e63184c65f5b8,http://ufcstats.com/fighter-details/a23e63184c65f5b8,Chris Manuel,69,135,NA,Orthodox,1987-07-21
 a24e080000fa7a35,http://ufcstats.com/fighter-details/a24e080000fa7a35,Darrel Gholar,68,194,NA,Orthodox,1962-11-07
 a25b71fe5e31fa97,http://ufcstats.com/fighter-details/a25b71fe5e31fa97,Nobuhiko Takada,72,220,NA,Southpaw,1962-04-12
@@ -2896,6 +2963,7 @@ a3dda21be645be93,http://ufcstats.com/fighter-details/a3dda21be645be93,Jean-Paul 
 a3f8356ace5e3eb5,http://ufcstats.com/fighter-details/a3f8356ace5e3eb5,Miles McDonald,67,115,NA,NA,1991-08-13
 a421465acbe59c77,http://ufcstats.com/fighter-details/a421465acbe59c77,Denis Stojnic,72,245,NA,Orthodox,1980-02-02
 a44020ea2e8cd026,http://ufcstats.com/fighter-details/a44020ea2e8cd026,JooSang Yoo,67,145,71,Orthodox,1994-01-21
+a4555c13e6257539,http://ufcstats.com/fighter-details/a4555c13e6257539,Adam Darby,NA,170,NA,NA,1998-11-13
 a45bab49951a45cd,http://ufcstats.com/fighter-details/a45bab49951a45cd,Tony Johnson,73,265,NA,NA,NA
 a46ab6c64d321c2d,http://ufcstats.com/fighter-details/a46ab6c64d321c2d,Shah Kamali,NA,265,NA,NA,1998-10-25
 a46fa1c7972548d0,http://ufcstats.com/fighter-details/a46fa1c7972548d0,Shuya Kamikubo,65,135,68,Switch,1993-04-12
@@ -2920,6 +2988,7 @@ a53657e43b00614e,http://ufcstats.com/fighter-details/a53657e43b00614e,GwanWoo Li
 a53d30163304aa6e,http://ufcstats.com/fighter-details/a53d30163304aa6e,Carlston Harris,72,170,76,Orthodox,1987-07-09
 a54660deb6a8489c,http://ufcstats.com/fighter-details/a54660deb6a8489c,Muin Gafurov,67,135,68,Orthodox,1996-05-17
 a54a35a670d8e852,http://ufcstats.com/fighter-details/a54a35a670d8e852,Andre Roberts,74,345,NA,Orthodox,1965-02-24
+a54b961a1f8be1d5,http://ufcstats.com/fighter-details/a54b961a1f8be1d5,John Garza,67,135,68,Orthodox,2002-10-30
 a54fc2d6fc224dc3,http://ufcstats.com/fighter-details/a54fc2d6fc224dc3,Jamie Varner,68,155,71,Orthodox,1984-10-12
 a56607a451e4c70d,http://ufcstats.com/fighter-details/a56607a451e4c70d,Chris Wilson,73,170,75,Orthodox,1977-06-07
 a566371ba2ad7152,http://ufcstats.com/fighter-details/a566371ba2ad7152,Josh Thomson,70,155,71,Orthodox,1978-09-21
@@ -2952,6 +3021,7 @@ a6c2f5381d575920,http://ufcstats.com/fighter-details/a6c2f5381d575920,Orlando Wi
 a6c32678efd4f434,http://ufcstats.com/fighter-details/a6c32678efd4f434,Sidney Silva,75,170,NA,Southpaw,1972-02-27
 a6cba6bb66c1a8c9,http://ufcstats.com/fighter-details/a6cba6bb66c1a8c9,Danny Roberts,73,170,74,Southpaw,1987-07-14
 a6d8bfe9e0c8153b,http://ufcstats.com/fighter-details/a6d8bfe9e0c8153b,Kevin Burns,70,170,74,Orthodox,1980-03-03
+a6e76a8bf3c59ef6,http://ufcstats.com/fighter-details/a6e76a8bf3c59ef6,Davi Cabral de Souza,NA,185,NA,NA,1999-03-19
 a6eb54ae17a551be,http://ufcstats.com/fighter-details/a6eb54ae17a551be,Gabriella Fernandes,66,125,66,Southpaw,1993-08-13
 a6f3d15cb84334bb,http://ufcstats.com/fighter-details/a6f3d15cb84334bb,Dean Barry,70,170,72,Orthodox,1992-07-03
 a6fa5dd90528e9f7,http://ufcstats.com/fighter-details/a6fa5dd90528e9f7,Gabriel Miglioli,68,170,NA,NA,NA
@@ -3002,6 +3072,7 @@ a8fa0c4e95512806,http://ufcstats.com/fighter-details/a8fa0c4e95512806,Phil Johns
 a90c200c3fbb22c4,http://ufcstats.com/fighter-details/a90c200c3fbb22c4,Eli Aronov,70,185,72,Orthodox,1996-06-06
 a93f94c923c3a9cb,http://ufcstats.com/fighter-details/a93f94c923c3a9cb,Christian Leroy Duncan,74,185,79,Switch,1995-07-24
 a95a0504fd73bd3e,http://ufcstats.com/fighter-details/a95a0504fd73bd3e,Blake Bowman,74,170,NA,NA,NA
+a9936818d709e2d7,http://ufcstats.com/fighter-details/a9936818d709e2d7,Liu Ce,75,205,77,Orthodox,1996-09-04
 a993ef2dd36cea5f,http://ufcstats.com/fighter-details/a993ef2dd36cea5f,Lemont Davis,68,170,NA,Orthodox,NA
 a99d4aa689bdca18,http://ufcstats.com/fighter-details/a99d4aa689bdca18,Enrique Watson,NA,185,NA,NA,NA
 a9a314cc77d90b6e,http://ufcstats.com/fighter-details/a9a314cc77d90b6e,Wade Shipp,75,245,NA,Orthodox,1975-02-09
@@ -3026,6 +3097,7 @@ aa79d5399571068e,http://ufcstats.com/fighter-details/aa79d5399571068e,Brandon Wo
 aa8189053b3a8994,http://ufcstats.com/fighter-details/aa8189053b3a8994,Kenneth Bergh,74,205,74,Orthodox,1989-06-26
 aa8dc72b3a1f761c,http://ufcstats.com/fighter-details/aa8dc72b3a1f761c,Derek Campos,69,155,NA,NA,1988-04-01
 aa943b9bc00cb0ed,http://ufcstats.com/fighter-details/aa943b9bc00cb0ed,Colleen Schneider,NA,135,NA,NA,1982-03-12
+aabf33d691f64d61,http://ufcstats.com/fighter-details/aabf33d691f64d61,Hugo Guillon,NA,185,NA,NA,1997-04-12
 aac5ac38148f0528,http://ufcstats.com/fighter-details/aac5ac38148f0528,Paul Kelly,69,155,70,Orthodox,1984-09-12
 aac6edb0d5e0b7e9,http://ufcstats.com/fighter-details/aac6edb0d5e0b7e9,Marcin Wrzosek,69,155,NA,NA,1987-10-14
 aae0897825336b1a,http://ufcstats.com/fighter-details/aae0897825336b1a,Renzo Gracie,70,185,NA,Orthodox,1967-03-11
@@ -3048,6 +3120,8 @@ abcf7e55a0a9ed89,http://ufcstats.com/fighter-details/abcf7e55a0a9ed89,Marius Zar
 abd2109bc4cb0291,http://ufcstats.com/fighter-details/abd2109bc4cb0291,Bentley Syler,64,125,NA,Orthodox,1982-12-22
 abd5fb12437eda21,http://ufcstats.com/fighter-details/abd5fb12437eda21,Ramazan Emeev,70,170,76,Southpaw,1987-05-23
 abd64006fd37298d,http://ufcstats.com/fighter-details/abd64006fd37298d,Matej Penaz,75,185,83,Southpaw,1996-10-14
+abde3388a589103c,http://ufcstats.com/fighter-details/abde3388a589103c,Richie Miranda,68,155,75,Southpaw,1994-08-12
+abe2e048a04d22cf,http://ufcstats.com/fighter-details/abe2e048a04d22cf,Paris Moran,NA,125,NA,NA,1996-02-04
 ac026518a9b4dc0f,http://ufcstats.com/fighter-details/ac026518a9b4dc0f,Jordan Leavitt,69,145,71,Southpaw,1995-06-02
 ac0874309da489b9,http://ufcstats.com/fighter-details/ac0874309da489b9,Marek Bujlo,76,265,77,Orthodox,1992-10-10
 ac29d508d78384c9,http://ufcstats.com/fighter-details/ac29d508d78384c9,Marcelo Golm,75,249,75,Orthodox,1992-09-15
@@ -3063,9 +3137,11 @@ acbb9c76f5894e36,http://ufcstats.com/fighter-details/acbb9c76f5894e36,Sean Holde
 acd870570949d8a2,http://ufcstats.com/fighter-details/acd870570949d8a2,Leonardo Damiani,70,170,69,Orthodox,1990-08-30
 acd8a53f7c0ce85e,http://ufcstats.com/fighter-details/acd8a53f7c0ce85e,Charles McTorry,NA,NA,NA,NA,NA
 acd9513399a8b09b,http://ufcstats.com/fighter-details/acd9513399a8b09b,Ednaldo Oliveira,77,205,NA,Orthodox,1984-02-19
+acdefc52a4b6c576,http://ufcstats.com/fighter-details/acdefc52a4b6c576,Silvestre Sanchez,NA,155,NA,Orthodox,2001-11-15
 ace83095105dd205,http://ufcstats.com/fighter-details/ace83095105dd205,John Kelly,69,170,NA,NA,1978-08-02
 aceffa19749c4dc0,http://ufcstats.com/fighter-details/aceffa19749c4dc0,Zubaira Tukhugov,68,155,68,Orthodox,1991-01-15
 acff437707625fc7,http://ufcstats.com/fighter-details/acff437707625fc7,Yushin Okami,74,170,75,Southpaw,1981-07-21
+acff8cdcfc634cb5,http://ufcstats.com/fighter-details/acff8cdcfc634cb5,Matt Adams,71,235,75,Orthodox,1997-09-07
 ad044be25c94dcfd,http://ufcstats.com/fighter-details/ad044be25c94dcfd,Jakob Lovstad,75,205,NA,Orthodox,1979-12-28
 ad047e3073a775f3,http://ufcstats.com/fighter-details/ad047e3073a775f3,Steve Jennum,70,215,NA,Orthodox,1963-09-23
 ad0e42800a0d8977,http://ufcstats.com/fighter-details/ad0e42800a0d8977,Marcus Kowal,NA,135,NA,NA,1977-03-29
@@ -3100,6 +3176,7 @@ aec273fcb765330d,http://ufcstats.com/fighter-details/aec273fcb765330d,Kyle Jense
 aed06011bf62237b,http://ufcstats.com/fighter-details/aed06011bf62237b,Dongi Yang,70,185,73,Southpaw,1984-12-07
 aee885b8ca29ab4f,http://ufcstats.com/fighter-details/aee885b8ca29ab4f,Andrey Koreshkov,72,170,NA,NA,1990-08-23
 aee8eecfc4bfb1e7,http://ufcstats.com/fighter-details/aee8eecfc4bfb1e7,Bobby Southworth,74,205,NA,Orthodox,1969-12-16
+aeeba48b683a05f1,http://ufcstats.com/fighter-details/aeeba48b683a05f1,Aline Silva Pereira,NA,135,NA,NA,1990-10-06
 af1e5c64b8663aa0,http://ufcstats.com/fighter-details/af1e5c64b8663aa0,Sergio Gomez,66,155,NA,Orthodox,1982-04-29
 af49a6c491ca22a3,http://ufcstats.com/fighter-details/af49a6c491ca22a3,Kristian Rothaermel,72,205,NA,Open Stance,1972-01-31
 af5b208e97f5d382,http://ufcstats.com/fighter-details/af5b208e97f5d382,Wilson Gouveia,73,185,76,Orthodox,1978-10-03
@@ -3114,6 +3191,7 @@ afaad7d6a581e307,http://ufcstats.com/fighter-details/afaad7d6a581e307,Bobby Hoff
 afc2a7ce0c763bd5,http://ufcstats.com/fighter-details/afc2a7ce0c763bd5,Yoislandy Izquierdo,71,155,NA,Southpaw,1984-01-09
 afdb76fbd86f6d11,http://ufcstats.com/fighter-details/afdb76fbd86f6d11,Edilberto de Oliveira,72,170,NA,Orthodox,1982-11-22
 afe8d5b39ff7fca2,http://ufcstats.com/fighter-details/afe8d5b39ff7fca2,Louis Cosce,69,170,71,Orthodox,1995-08-27
+b01a5e0dcd9f231d,http://ufcstats.com/fighter-details/b01a5e0dcd9f231d,Muhammad Saidov,74,205,73,Orthodox,1996-01-10
 b034747dc1d15491,http://ufcstats.com/fighter-details/b034747dc1d15491,Kazuhiro Nakamura,71,205,70,Orthodox,1979-07-16
 b0353e7f5038dd09,http://ufcstats.com/fighter-details/b0353e7f5038dd09,Bailey Schoenfelder,75,265,76,Orthodox,1997-09-22
 b03a0c78ca45facf,http://ufcstats.com/fighter-details/b03a0c78ca45facf,Liam Anderson,75,185,75,Orthodox,1995-01-13
@@ -3167,6 +3245,7 @@ b2efa582adf73604,http://ufcstats.com/fighter-details/b2efa582adf73604,Agulali,69
 b2f743746e8dcfa2,http://ufcstats.com/fighter-details/b2f743746e8dcfa2,Jason Black,68,155,NA,Orthodox,1972-07-15
 b2f88c04c4dd43ce,http://ufcstats.com/fighter-details/b2f88c04c4dd43ce,Jason Miller,73,185,NA,Orthodox,1980-12-24
 b301292b1bc92bdb,http://ufcstats.com/fighter-details/b301292b1bc92bdb,Roshan Mainam,NA,135,NA,NA,NA
+b34976c022b24568,http://ufcstats.com/fighter-details/b34976c022b24568,Anthony Wint,71,231,78,Orthodox,1995-09-14
 b35a159f525764eb,http://ufcstats.com/fighter-details/b35a159f525764eb,Chris Saunders,68,155,NA,NA,1986-03-11
 b35ba64b6a2bbcb3,http://ufcstats.com/fighter-details/b35ba64b6a2bbcb3,Jose Maria,65,125,NA,Orthodox,1982-01-04
 b35d1650c78c2948,http://ufcstats.com/fighter-details/b35d1650c78c2948,Bu-Kyung Jung,67,154,NA,Orthodox,1978-05-26
@@ -3177,7 +3256,9 @@ b37321c0bb9e8570,http://ufcstats.com/fighter-details/b37321c0bb9e8570,Azamat Nuf
 b39f7a6c2be17ee8,http://ufcstats.com/fighter-details/b39f7a6c2be17ee8,Charlie Campbell,72,155,72,Orthodox,1995-07-03
 b3b6e80b7d5f8f0d,http://ufcstats.com/fighter-details/b3b6e80b7d5f8f0d,Jeremiah Billington,69,205,NA,Orthodox,1977-11-14
 b3bbe88fecd6a0d2,http://ufcstats.com/fighter-details/b3bbe88fecd6a0d2,Dave Berry,NA,NA,NA,NA,NA
+b3cb9dfccff3be76,http://ufcstats.com/fighter-details/b3cb9dfccff3be76,Salahdine Parnasse,NA,155,NA,Southpaw,1997-12-04
 b3d21b2610dcfaeb,http://ufcstats.com/fighter-details/b3d21b2610dcfaeb,Emily Whitmire,65,125,63,Orthodox,1991-05-24
+b3db81defb03d7af,http://ufcstats.com/fighter-details/b3db81defb03d7af,Severino Apollo Gomes,NA,145,NA,NA,2000-07-10
 b3e5a460b6851080,http://ufcstats.com/fighter-details/b3e5a460b6851080,John Richard,NA,205,NA,NA,1982-05-22
 b3fb8d2293e17a59,http://ufcstats.com/fighter-details/b3fb8d2293e17a59,Achmed Labasanov,75,215,NA,Orthodox,1978-04-24
 b406da701c479076,http://ufcstats.com/fighter-details/b406da701c479076,Ernest Chavez,68,145,70,Orthodox,1983-06-27
@@ -3192,12 +3273,15 @@ b45d6b73f4ca4467,http://ufcstats.com/fighter-details/b45d6b73f4ca4467,Andre Winn
 b47c9ea5f2895d6e,http://ufcstats.com/fighter-details/b47c9ea5f2895d6e,Cam Teague,70,145,69,Orthodox,1998-02-13
 b4880ef2f838d4e1,http://ufcstats.com/fighter-details/b4880ef2f838d4e1,Silvana Gomez Juarez,63,115,65,Orthodox,1984-12-06
 b490def93478ae29,http://ufcstats.com/fighter-details/b490def93478ae29,Kyle Kurtz,NA,170,NA,NA,NA
+b4a7816e47bd2c26,http://ufcstats.com/fighter-details/b4a7816e47bd2c26,Mateus Soares,NA,135,NA,NA,NA
 b4ad3a06ee4d660c,http://ufcstats.com/fighter-details/b4ad3a06ee4d660c,Alistair Overeem,76,265,80,Orthodox,1980-05-17
 b4b496ec2197ee3e,http://ufcstats.com/fighter-details/b4b496ec2197ee3e,Navajo Stirling,76,205,79,Orthodox,1997-11-07
 b4bc2e3353a770b5,http://ufcstats.com/fighter-details/b4bc2e3353a770b5,Ian Freeman,71,225,NA,Orthodox,1966-11-10
 b4c57a8c2b773e82,http://ufcstats.com/fighter-details/b4c57a8c2b773e82,Michal Figlak,70,155,70,Orthodox,1996-08-15
 b4c6c904a9ffc5e8,http://ufcstats.com/fighter-details/b4c6c904a9ffc5e8,Ashley Yoder,67,115,69,Southpaw,1987-10-20
 b4c96c3d9139bf0e,http://ufcstats.com/fighter-details/b4c96c3d9139bf0e,Patrick Walsh,71,185,NA,NA,1988-11-28
+b4ce04f082391b54,http://ufcstats.com/fighter-details/b4ce04f082391b54,Logan Paxton,68,155,70,Orthodox,1995-08-04
+b4e8867d60ef0e69,http://ufcstats.com/fighter-details/b4e8867d60ef0e69,Piero Guaylupo,NA,155,NA,NA,2004-10-29
 b4ebc1539a08054b,http://ufcstats.com/fighter-details/b4ebc1539a08054b,Roque Conceicao,64,125,67,Orthodox,1999-10-27
 b4eeac608fc82f88,http://ufcstats.com/fighter-details/b4eeac608fc82f88,Yves Jabouin,67,135,68,Orthodox,1979-05-30
 b4f7a2d8ecc5e0c3,http://ufcstats.com/fighter-details/b4f7a2d8ecc5e0c3,Ralph Dillon,74,205,NA,Orthodox,NA
@@ -3230,6 +3314,7 @@ b67d6bacc68d4c92,http://ufcstats.com/fighter-details/b67d6bacc68d4c92,Daniel San
 b6850671a008bf9a,http://ufcstats.com/fighter-details/b6850671a008bf9a,Felice Herrig,64,115,65,Orthodox,1984-09-18
 b69f24c500d783e7,http://ufcstats.com/fighter-details/b69f24c500d783e7,Francimar Barroso,73,205,75,Orthodox,1980-02-28
 b6a73e6f11a8835c,http://ufcstats.com/fighter-details/b6a73e6f11a8835c,Ramazan Kuramagomedov,73,170,73,Orthodox,1996-08-23
+b6a871a01c66438a,http://ufcstats.com/fighter-details/b6a871a01c66438a,Smilla Sundell,NA,135,NA,NA,2004-11-12
 b6b12014698cc345,http://ufcstats.com/fighter-details/b6b12014698cc345,John Marsh,72,265,NA,Orthodox,1970-09-15
 b6c37948cb226e8c,http://ufcstats.com/fighter-details/b6c37948cb226e8c,Benardo Sopaj,66,135,66,Orthodox,2000-09-25
 b6c4451cb13c9303,http://ufcstats.com/fighter-details/b6c4451cb13c9303,Andy Ogle,68,145,69,Orthodox,1989-02-16
@@ -3258,6 +3343,7 @@ b7ffa72aa148599a,http://ufcstats.com/fighter-details/b7ffa72aa148599a,KJ Noons,7
 b807814d977682eb,http://ufcstats.com/fighter-details/b807814d977682eb,Royler Gracie,68,150,NA,Southpaw,1965-12-06
 b80ea4880f25c187,http://ufcstats.com/fighter-details/b80ea4880f25c187,Tim Caron,73,185,NA,Orthodox,1987-07-24
 b84f34b425dfd24b,http://ufcstats.com/fighter-details/b84f34b425dfd24b,Ron Keslar,NA,185,NA,NA,1980-04-17
+b852ad2b35354fcb,http://ufcstats.com/fighter-details/b852ad2b35354fcb,Ezra Elliott,69,145,72,Orthodox,2000-05-18
 b8592b4a383696cd,http://ufcstats.com/fighter-details/b8592b4a383696cd,Mitch Gagnon,65,135,65,Southpaw,1984-10-10
 b87c3f460709f74c,http://ufcstats.com/fighter-details/b87c3f460709f74c,Jeremy Wallace,69,NA,NA,NA,1987-02-13
 b8980dd7e8fc5976,http://ufcstats.com/fighter-details/b8980dd7e8fc5976,Lionel Lanham,NA,205,NA,NA,1980-08-31
@@ -3378,17 +3464,20 @@ bf2c8e01b07d3eb1,http://ufcstats.com/fighter-details/bf2c8e01b07d3eb1,Myktybek O
 bf41b5131545da12,http://ufcstats.com/fighter-details/bf41b5131545da12,Crafton Wallace,72,185,NA,Orthodox,1975-11-10
 bf43fed8f29e1671,http://ufcstats.com/fighter-details/bf43fed8f29e1671,Marcin Held,69,155,71,Orthodox,1992-01-18
 bf5183e1c1afc3b2,http://ufcstats.com/fighter-details/bf5183e1c1afc3b2,Trenell Young,66,145,NA,Orthodox,1976-06-19
+bf60dd3256801649,http://ufcstats.com/fighter-details/bf60dd3256801649,Nilson Rojas,66,125,63,Orthodox,1999-04-21
 bf7a64d9ae343e86,http://ufcstats.com/fighter-details/bf7a64d9ae343e86,Ahmad Hassanzada,73,155,75,Orthodox,1996-11-20
 bf7ad5628363eec9,http://ufcstats.com/fighter-details/bf7ad5628363eec9,Cody Stamann,66,135,64,Orthodox,1989-11-09
 bf97ad31eae89429,http://ufcstats.com/fighter-details/bf97ad31eae89429,Deshaun Johnson,NA,167,NA,NA,1970-11-15
 bf9bc96336922271,http://ufcstats.com/fighter-details/bf9bc96336922271,Alex Ricci,71,155,NA,Orthodox,1982-07-21
 bfa8f263815cfa2e,http://ufcstats.com/fighter-details/bfa8f263815cfa2e,Adrian Diaz,70,145,NA,Southpaw,1988-04-26
 bfaf4c87936b4fae,http://ufcstats.com/fighter-details/bfaf4c87936b4fae,Humberto DeLeon,NA,135,NA,NA,1989-11-12
+bfb58d214212127b,http://ufcstats.com/fighter-details/bfb58d214212127b,William Rentz,NA,170,NA,NA,1999-03-19
 bfc2fc38a0e20211,http://ufcstats.com/fighter-details/bfc2fc38a0e20211,Matt Grice,68,145,70,Orthodox,1981-07-29
 bfd4d50591033a1f,http://ufcstats.com/fighter-details/bfd4d50591033a1f,Eli Tamez,67,135,NA,NA,1985-08-22
 bfe95ec546692b13,http://ufcstats.com/fighter-details/bfe95ec546692b13,Yan Pellerin,71,205,NA,Orthodox,1980-03-20
 bffeb123b21c9aad,http://ufcstats.com/fighter-details/bffeb123b21c9aad,Darrell Montague,66,125,67,Southpaw,1987-11-03
 c0231720fe516994,http://ufcstats.com/fighter-details/c0231720fe516994,Larry Parker,71,205,NA,Orthodox,1963-08-15
+c02862a5f6d3fbd0,http://ufcstats.com/fighter-details/c02862a5f6d3fbd0,Sean Clancy Jr.,73,170,72,Orthodox,2002-11-25
 c0342805a1948cbb,http://ufcstats.com/fighter-details/c0342805a1948cbb,Lee Kwan Bum,74,286,NA,Orthodox,1986-10-12
 c03520b5c88ed6b4,http://ufcstats.com/fighter-details/c03520b5c88ed6b4,Merab Dvalishvili,66,135,68,Orthodox,1991-01-10
 c0386644627a7ee5,http://ufcstats.com/fighter-details/c0386644627a7ee5,Mana Martinez,70,135,70,Orthodox,1996-03-25
@@ -3439,6 +3528,7 @@ c2a670b22d2e196f,http://ufcstats.com/fighter-details/c2a670b22d2e196f,Aleksa Cam
 c2a7623f398d9bd7,http://ufcstats.com/fighter-details/c2a7623f398d9bd7,David Dodd,74,200,NA,Orthodox,1973-09-22
 c2c4052f58f54988,http://ufcstats.com/fighter-details/c2c4052f58f54988,Anthony Drilich,65,125,65,Southpaw,1994-03-17
 c2e3e67b5911bfb7,http://ufcstats.com/fighter-details/c2e3e67b5911bfb7,Diego Brandao,67,145,64,Orthodox,1987-05-27
+c3217a727e43b0cd,http://ufcstats.com/fighter-details/c3217a727e43b0cd,Hunter Smith,NA,155,NA,Orthodox,1998-10-27
 c3218c810959d279,http://ufcstats.com/fighter-details/c3218c810959d279,Khadis Ibragimov,75,205,78,Orthodox,1995-05-21
 c32aeb1a59e6272d,http://ufcstats.com/fighter-details/c32aeb1a59e6272d,Michael Morales,72,170,79,Orthodox,1999-06-24
 c32eab6c2119e989,http://ufcstats.com/fighter-details/c32eab6c2119e989,Jose Barreto,NA,185,NA,Southpaw,NA
@@ -3546,6 +3636,7 @@ c9885b1b7c7055a0,http://ufcstats.com/fighter-details/c9885b1b7c7055a0,Tomoya Miy
 c9a94278df042f46,http://ufcstats.com/fighter-details/c9a94278df042f46,Alan Baudot,75,243,79,Orthodox,1988-02-01
 c9bbf1a0285a8076,http://ufcstats.com/fighter-details/c9bbf1a0285a8076,Jeff Cox,70,155,NA,Orthodox,1968-08-02
 c9cf753cfdf77fc2,http://ufcstats.com/fighter-details/c9cf753cfdf77fc2,Marcin Tybura,75,246,78,Orthodox,1985-11-09
+c9ef8dcc299f4f75,http://ufcstats.com/fighter-details/c9ef8dcc299f4f75,Summer Onley,NA,135,NA,NA,NA
 c9f6385af6df66d7,http://ufcstats.com/fighter-details/c9f6385af6df66d7,Papy Abedi,71,185,NA,Southpaw,1978-06-30
 ca28cdf526d6b6e9,http://ufcstats.com/fighter-details/ca28cdf526d6b6e9,Nurullo Aliev,70,155,72,Orthodox,2000-12-08
 ca2efc9d7d523c43,http://ufcstats.com/fighter-details/ca2efc9d7d523c43,Shawn Jordan,72,260,75,Southpaw,1984-10-21
@@ -3612,6 +3703,7 @@ ccd58ff71e260ed5,http://ufcstats.com/fighter-details/ccd58ff71e260ed5,Keisuke Fu
 ccdcb20370be62a3,http://ufcstats.com/fighter-details/ccdcb20370be62a3,Aaron Jeffery,74,185,73,Orthodox,1992-11-14
 ccdd90bd1fc7dab6,http://ufcstats.com/fighter-details/ccdd90bd1fc7dab6,Vladimir Matyushenko,72,205,74,Orthodox,1971-01-04
 cce79e827569f26e,http://ufcstats.com/fighter-details/cce79e827569f26e,Ronys Torres,67,155,NA,Orthodox,1975-08-13
+ccf25f81fcdaecb4,http://ufcstats.com/fighter-details/ccf25f81fcdaecb4,Alexander Trujillo,NA,125,NA,NA,2000-10-01
 ccf5dc41417e9daf,http://ufcstats.com/fighter-details/ccf5dc41417e9daf,Juan Espino,75,255,80,Orthodox,1980-10-09
 cd01f0b768a32475,http://ufcstats.com/fighter-details/cd01f0b768a32475,Jonathan Wilson,74,205,75,Southpaw,1987-07-17
 cd039ff136d89ded,http://ufcstats.com/fighter-details/cd039ff136d89ded,Jesse Juarez,73,170,NA,Orthodox,1981-05-08
@@ -3663,6 +3755,7 @@ d023ae89a2a4a41e,http://ufcstats.com/fighter-details/d023ae89a2a4a41e,Matthew Ri
 d024ed963e8bf7ea,http://ufcstats.com/fighter-details/d024ed963e8bf7ea,Damien Brown,70,155,68,Orthodox,1984-12-25
 d027fff39a34a9df,http://ufcstats.com/fighter-details/d027fff39a34a9df,Zhou Kun,NA,125,NA,NA,NA
 d0314416a7f26527,http://ufcstats.com/fighter-details/d0314416a7f26527,Michael McDonald,69,135,70,Orthodox,1991-01-15
+d0359429b6adb404,http://ufcstats.com/fighter-details/d0359429b6adb404,Ozzy Martin,NA,170,NA,NA,2002-09-18
 d05412b513b19621,http://ufcstats.com/fighter-details/d05412b513b19621,Guido Cannetti,66,135,68,Southpaw,1979-12-19
 d05cb1e8d1b885d8,http://ufcstats.com/fighter-details/d05cb1e8d1b885d8,Jinh Yu Frey,63,115,65,Southpaw,1985-05-20
 d060014a5a039829,http://ufcstats.com/fighter-details/d060014a5a039829,Thomas Campbell,NA,NA,NA,NA,NA
@@ -3677,6 +3770,7 @@ d0e1b42d41dab603,http://ufcstats.com/fighter-details/d0e1b42d41dab603,Julian Mar
 d0e50a3d1b250708,http://ufcstats.com/fighter-details/d0e50a3d1b250708,Andre Soukhamthath,69,135,70,Orthodox,1988-10-23
 d0f3959b4a9747e6,http://ufcstats.com/fighter-details/d0f3959b4a9747e6,Jose Aldo,67,135,70,Orthodox,1986-09-09
 d0fd0d9ee560dae7,http://ufcstats.com/fighter-details/d0fd0d9ee560dae7,Brando Pericic,77,245,79,Orthodox,1994-08-03
+d1026588fa65693f,http://ufcstats.com/fighter-details/d1026588fa65693f,Jessie Rosas,67,135,68,Southpaw,2002-12-04
 d1053e55f00e53fe,http://ufcstats.com/fighter-details/d1053e55f00e53fe,AJ Cunningham,70,135,71,Orthodox,1994-09-07
 d10b35152277cf98,http://ufcstats.com/fighter-details/d10b35152277cf98,James Toney,69,220,NA,Orthodox,1968-08-24
 d1152823307d7e7c,http://ufcstats.com/fighter-details/d1152823307d7e7c,Rameau Thierry Sokoudjou,70,205,78,Orthodox,1984-04-18
@@ -3688,6 +3782,7 @@ d16373b3568678d4,http://ufcstats.com/fighter-details/d16373b3568678d4,Raimond Ma
 d1759b2b7be9be56,http://ufcstats.com/fighter-details/d1759b2b7be9be56,Hector Ramirez,72,205,NA,Orthodox,1976-03-28
 d181689653115b6a,http://ufcstats.com/fighter-details/d181689653115b6a,Steve White,71,175,NA,NA,NA
 d188a3b817860ec6,http://ufcstats.com/fighter-details/d188a3b817860ec6,Steven Siler,71,145,70,Orthodox,1987-02-15
+d189880f25580bcf,http://ufcstats.com/fighter-details/d189880f25580bcf,Ilias Bulaid,NA,145,NA,NA,1995-01-05
 d18dbcb0f8e2b55d,http://ufcstats.com/fighter-details/d18dbcb0f8e2b55d,Alex Soto,68,135,NA,Southpaw,1984-02-15
 d1941565abf50b16,http://ufcstats.com/fighter-details/d1941565abf50b16,Jim Miller,68,155,71,Southpaw,1983-08-30
 d1a1314976c50bef,http://ufcstats.com/fighter-details/d1a1314976c50bef,Josh Neer,71,170,72,Orthodox,1983-03-24
@@ -3706,6 +3801,7 @@ d227958e8a0c1466,http://ufcstats.com/fighter-details/d227958e8a0c1466,Kotetsu Bo
 d238217e0f8ea8e1,http://ufcstats.com/fighter-details/d238217e0f8ea8e1,Alex Enlund,70,145,NA,Orthodox,1987-05-27
 d23ccf4a6c221284,http://ufcstats.com/fighter-details/d23ccf4a6c221284,Karlos Vemola,72,185,75,Orthodox,1985-07-03
 d23d5960ac5e117c,http://ufcstats.com/fighter-details/d23d5960ac5e117c,Alejandro Flores,70,145,73,Orthodox,1991-08-06
+d245202d8ace5b1a,http://ufcstats.com/fighter-details/d245202d8ace5b1a,Luis Francischinelli,NA,170,NA,NA,1996-03-16
 d247691a6c0e9034,http://ufcstats.com/fighter-details/d247691a6c0e9034,Cub Swanson,68,145,70,Orthodox,1983-11-02
 d25240135aee03e5,http://ufcstats.com/fighter-details/d25240135aee03e5,Tabatha Ricci,61,115,61,Orthodox,1995-02-21
 d25b93992f285953,http://ufcstats.com/fighter-details/d25b93992f285953,TJ O'Brien,74,155,NA,Orthodox,1987-01-01
@@ -3740,6 +3836,7 @@ d35f734c56a89103,http://ufcstats.com/fighter-details/d35f734c56a89103,Karl Willi
 d365ee924f5cc3fc,http://ufcstats.com/fighter-details/d365ee924f5cc3fc,Bao Quach,63,145,NA,Orthodox,1979-09-04
 d3711d3784b76255,http://ufcstats.com/fighter-details/d3711d3784b76255,Zane Frazier,77,250,NA,Orthodox,NA
 d38e8c6ae2dfc051,http://ufcstats.com/fighter-details/d38e8c6ae2dfc051,Nazareno Malegarie,68,155,NA,NA,1986-05-16
+d399b2bfa2c27d9e,http://ufcstats.com/fighter-details/d399b2bfa2c27d9e,Douglas Da Lapa,NA,185,NA,NA,1999-07-02
 d3b5ad3b15a64a18,http://ufcstats.com/fighter-details/d3b5ad3b15a64a18,Francesco Maturi,NA,NA,NA,NA,NA
 d3c554d6e11fc9d6,http://ufcstats.com/fighter-details/d3c554d6e11fc9d6,Jianping Yang,67,145,NA,Orthodox,1988-11-27
 d3d1ff3f3dfa0931,http://ufcstats.com/fighter-details/d3d1ff3f3dfa0931,Sean Loeffler,75,185,NA,Orthodox,1982-05-23
@@ -3755,6 +3852,7 @@ d436f5d55156a521,http://ufcstats.com/fighter-details/d436f5d55156a521,Murtazali 
 d43a048a880efdff,http://ufcstats.com/fighter-details/d43a048a880efdff,Chris Leben,71,185,73,Southpaw,1980-07-21
 d44a84409bf0da64,http://ufcstats.com/fighter-details/d44a84409bf0da64,Stephanie Webber,66,135,NA,NA,NA
 d450769115a193c2,http://ufcstats.com/fighter-details/d450769115a193c2,Marcos Conrado Jr.,74,220,NA,Orthodox,1982-03-14
+d458266c796643e2,http://ufcstats.com/fighter-details/d458266c796643e2,Alexis Miranda,73,170,74,Orthodox,1999-01-03
 d468288756ae3982,http://ufcstats.com/fighter-details/d468288756ae3982,Renato Sobral,73,205,75,Orthodox,1975-09-07
 d4691518d012b9e7,http://ufcstats.com/fighter-details/d4691518d012b9e7,Aspen Ladd,66,135,66,Orthodox,1995-03-01
 d4a12dfa4067742f,http://ufcstats.com/fighter-details/d4a12dfa4067742f,Murad Chunkaiev,71,185,NA,Orthodox,NA
@@ -3839,6 +3937,7 @@ d90b630e0561818b,http://ufcstats.com/fighter-details/d90b630e0561818b,Gan McGee,
 d910665038efc639,http://ufcstats.com/fighter-details/d910665038efc639,Carla Esparza,61,115,63,Orthodox,1987-10-10
 d92e6e17f637fe4d,http://ufcstats.com/fighter-details/d92e6e17f637fe4d,Joe Ray,NA,170,NA,NA,1984-12-17
 d945aae53e3e54e6,http://ufcstats.com/fighter-details/d945aae53e3e54e6,Thiago Moises,69,155,70,Orthodox,1995-03-23
+d958ed9e5a08c849,http://ufcstats.com/fighter-details/d958ed9e5a08c849,Ryan Kuse,68,145,71,Orthodox,1994-06-24
 d964a59c48381cb6,http://ufcstats.com/fighter-details/d964a59c48381cb6,Danny Silva,71,145,70,Switch,1997-01-30
 d967f0128c323de6,http://ufcstats.com/fighter-details/d967f0128c323de6,Daniel Cormier,71,235,72,Orthodox,1979-03-20
 d9a56ecb6e94f02e,http://ufcstats.com/fighter-details/d9a56ecb6e94f02e,Evan Elder,70,155,72,Switch,1997-04-11
@@ -3849,6 +3948,7 @@ da0995f19b749cfa,http://ufcstats.com/fighter-details/da0995f19b749cfa,Mark Madse
 da0f33e4255f99eb,http://ufcstats.com/fighter-details/da0f33e4255f99eb,Chris Guillen,72,240,NA,Orthodox,1972-12-09
 da1d8d76404bb6b5,http://ufcstats.com/fighter-details/da1d8d76404bb6b5,Bruno Santos,69,185,NA,Orthodox,1987-07-17
 da22387a0407a2dc,http://ufcstats.com/fighter-details/da22387a0407a2dc,Da'Mon Blackshear,70,135,72,Switch,1994-08-12
+da27d061bad0f341,http://ufcstats.com/fighter-details/da27d061bad0f341,Zevan Hunt,NA,170,NA,NA,1998-12-08
 da4628f173337902,http://ufcstats.com/fighter-details/da4628f173337902,Don Shainis,66,145,67,Orthodox,1990-09-16
 da603332ad41f165,http://ufcstats.com/fighter-details/da603332ad41f165,Saad Awad,71,155,NA,NA,1983-06-07
 da6dfd09cca1d705,http://ufcstats.com/fighter-details/da6dfd09cca1d705,Wallid Ismail,67,205,NA,Orthodox,1968-02-23
@@ -3926,11 +4026,13 @@ dee294e9717012c2,http://ufcstats.com/fighter-details/dee294e9717012c2,Malcolm Go
 def8166ff24bd237,http://ufcstats.com/fighter-details/def8166ff24bd237,Brian Ortega,68,155,69,Switch,1991-02-21
 df05aa15b2d66f57,http://ufcstats.com/fighter-details/df05aa15b2d66f57,Chris Tuchscherer,74,258,76,Orthodox,1975-09-08
 df0a1c1e11ad199b,http://ufcstats.com/fighter-details/df0a1c1e11ad199b,Kerry Vera,67,135,NA,Orthodox,NA
+df1e855932897f45,http://ufcstats.com/fighter-details/df1e855932897f45,Yilizhati Maimaitijiang,76,185,77,Orthodox,1999-09-30
 df1eb4354d18a906,http://ufcstats.com/fighter-details/df1eb4354d18a906,Scott Holtzman,69,155,69,Orthodox,1983-09-30
 df2bf09c99594848,http://ufcstats.com/fighter-details/df2bf09c99594848,Mario Miranda,75,185,74,Orthodox,1979-07-12
 df2cf66d8c0123db,http://ufcstats.com/fighter-details/df2cf66d8c0123db,Noe Hernandez,NA,NA,NA,Orthodox,NA
 df3c39573d01f55b,http://ufcstats.com/fighter-details/df3c39573d01f55b,Mike Bronzoulis,72,155,NA,NA,1979-01-05
 df5a77121ba84a5d,http://ufcstats.com/fighter-details/df5a77121ba84a5d,Alex Stiebling,74,205,NA,Southpaw,1976-12-26
+df619b9a86ce0a9a,http://ufcstats.com/fighter-details/df619b9a86ce0a9a,Damien Anderson,68,145,69,Southpaw,1997-01-04
 df7d386a54e07446,http://ufcstats.com/fighter-details/df7d386a54e07446,Nick Piedmont,70,145,NA,NA,NA
 df85d6ec3493d120,http://ufcstats.com/fighter-details/df85d6ec3493d120,Joe Moreira,71,195,NA,Southpaw,1961-07-03
 df9e9c1f65805d29,http://ufcstats.com/fighter-details/df9e9c1f65805d29,Sergey Ignatov,69,210,NA,Orthodox,1971-10-13
@@ -3938,9 +4040,11 @@ dfae5da5676e4194,http://ufcstats.com/fighter-details/dfae5da5676e4194,Chris Demp
 dfb965c9824425db,http://ufcstats.com/fighter-details/dfb965c9824425db,Joe Camacho,69,155,NA,Orthodox,1972-03-10
 dfbb95ca0c143988,http://ufcstats.com/fighter-details/dfbb95ca0c143988,Shana Olsen,67,145,NA,NA,1980-12-17
 dfc7f0a2d91ad337,http://ufcstats.com/fighter-details/dfc7f0a2d91ad337,Willian Colorado,70,135,72,NA,1986-06-21
+dfcadfcbd3a3f097,http://ufcstats.com/fighter-details/dfcadfcbd3a3f097,Milos Janicic,71,155,71,Orthodox,1997-05-03
 dfdd0c5dd0d4bc23,http://ufcstats.com/fighter-details/dfdd0c5dd0d4bc23,Mike Bourke,72,275,NA,Orthodox,1968-11-25
 e00a3dee329a51f7,http://ufcstats.com/fighter-details/e00a3dee329a51f7,Jamall Emmers,70,145,74,Orthodox,1989-07-24
 e023fa2e648ea0f1,http://ufcstats.com/fighter-details/e023fa2e648ea0f1,Steve Bosse,71,205,72,Orthodox,1981-07-29
+e03187ec8b5b6abc,http://ufcstats.com/fighter-details/e03187ec8b5b6abc,RJ Harris,75,258,78,Orthodox,1998-10-01
 e047d3b541afd4a7,http://ufcstats.com/fighter-details/e047d3b541afd4a7,Tahir Abdullayev,NA,170,NA,Orthodox,1997-02-02
 e05f4ce199baca91,http://ufcstats.com/fighter-details/e05f4ce199baca91,Khadzhi Bestaev,78,185,76,NA,1988-07-16
 e065b4a42a6c2c79,http://ufcstats.com/fighter-details/e065b4a42a6c2c79,Top Noi Kiwram,65,125,67,Southpaw,1992-08-15
@@ -3997,8 +4101,10 @@ e3964ece586e0635,http://ufcstats.com/fighter-details/e3964ece586e0635,Jacqueline
 e3a6c6d6d0ac0815,http://ufcstats.com/fighter-details/e3a6c6d6d0ac0815,Ryuichi Murata,68,183,NA,Orthodox,1976-08-27
 e3b30b573e7f0d19,http://ufcstats.com/fighter-details/e3b30b573e7f0d19,Juan Adrian Martinetti,68,135,71,NA,1995-08-20
 e3f443e4cbc3da8f,http://ufcstats.com/fighter-details/e3f443e4cbc3da8f,Marius Enache,71,155,NA,NA,1975-10-16
+e3fc6c1fab298561,http://ufcstats.com/fighter-details/e3fc6c1fab298561,Gabriel Lorenco,NA,NA,NA,Orthodox,1999-09-30
 e415ea6f8d41c917,http://ufcstats.com/fighter-details/e415ea6f8d41c917,Xie Bin,70,145,72,Orthodox,1998-02-28
 e4277e87a789d687,http://ufcstats.com/fighter-details/e4277e87a789d687,Dustin Jacoby,75,205,76,Orthodox,1988-04-04
+e431ed30fc027c77,http://ufcstats.com/fighter-details/e431ed30fc027c77,Liam McCracken,NA,155,NA,Orthodox,2001-07-09
 e43eefb10d440cb0,http://ufcstats.com/fighter-details/e43eefb10d440cb0,Jimmy Lawson,72,265,77,Orthodox,1991-11-13
 e44c679c30403cba,http://ufcstats.com/fighter-details/e44c679c30403cba,Lacey Schuckman,63,125,NA,NA,1988-07-16
 e45cfa47f504033a,http://ufcstats.com/fighter-details/e45cfa47f504033a,Jason Gonzalez,74,155,74,Southpaw,1990-02-28
@@ -4120,6 +4226,7 @@ e9bc5748e6a76bb6,http://ufcstats.com/fighter-details/e9bc5748e6a76bb6,Ashkan Mok
 e9e1acc96536bb4f,http://ufcstats.com/fighter-details/e9e1acc96536bb4f,Ricardo Funch,70,170,74,Southpaw,1980-08-14
 e9e7e1c8ff289e1b,http://ufcstats.com/fighter-details/e9e7e1c8ff289e1b,Humberto Brown Morrison,70,145,NA,NA,1984-11-03
 e9ec08ebb3f92aa3,http://ufcstats.com/fighter-details/e9ec08ebb3f92aa3,James Reese,69,155,NA,NA,1980-12-21
+e9f9add1481fc11c,http://ufcstats.com/fighter-details/e9f9add1481fc11c,Javad Mahjoub,NA,NA,NA,NA,1992-05-26
 ea0ad155451ed1f5,http://ufcstats.com/fighter-details/ea0ad155451ed1f5,Ray Wizard,NA,NA,NA,NA,NA
 ea398c802d9998ee,http://ufcstats.com/fighter-details/ea398c802d9998ee,Thomas Ramirez,73,410,NA,Sideways,NA
 ea3dcc417c322064,http://ufcstats.com/fighter-details/ea3dcc417c322064,Martin Day,70,145,73,Orthodox,1988-11-10
@@ -4283,6 +4390,7 @@ f2b6fdb20675b11c,http://ufcstats.com/fighter-details/f2b6fdb20675b11c,Mike Perry
 f2c8ebbeafd45f2b,http://ufcstats.com/fighter-details/f2c8ebbeafd45f2b,Aaron Riley,68,155,69,Southpaw,1980-12-09
 f2c91b67f71bbeab,http://ufcstats.com/fighter-details/f2c91b67f71bbeab,Booker DeRousse,74,205,NA,NA,1981-03-23
 f2c934689243fe4e,http://ufcstats.com/fighter-details/f2c934689243fe4e,Eddy Millis,73,185,NA,NA,1967-08-04
+f2da98858f61ca78,http://ufcstats.com/fighter-details/f2da98858f61ca78,Alivia Bierley,NA,135,NA,NA,1996-09-20
 f2f140ce7532e327,http://ufcstats.com/fighter-details/f2f140ce7532e327,Gabriel Santos,69,145,70,Orthodox,1996-11-28
 f300763147320d12,http://ufcstats.com/fighter-details/f300763147320d12,Liliya Shakirova,64,125,65,Orthodox,1991-10-24
 f304aff405c4a8fa,http://ufcstats.com/fighter-details/f304aff405c4a8fa,Brian Rogers,71,185,NA,NA,1984-02-15
@@ -4293,6 +4401,7 @@ f341f9551ba744e2,http://ufcstats.com/fighter-details/f341f9551ba744e2,Paul Jones
 f34312c2ccfa0e00,http://ufcstats.com/fighter-details/f34312c2ccfa0e00,Spencer Fisher,67,155,68,Southpaw,1976-05-09
 f348d05403fad037,http://ufcstats.com/fighter-details/f348d05403fad037,Dan Bobish,74,345,NA,Southpaw,1970-01-26
 f354c50b8d63d9b3,http://ufcstats.com/fighter-details/f354c50b8d63d9b3,Matt Pedro,NA,NA,NA,NA,NA
+f36af23639501cdf,http://ufcstats.com/fighter-details/f36af23639501cdf,Namo Fazil,71,170,71,Orthodox,1996-10-29
 f372a848d250e006,http://ufcstats.com/fighter-details/f372a848d250e006,Collin Huckbody,75,185,76,Orthodox,1994-09-29
 f3743d8ef5dde970,http://ufcstats.com/fighter-details/f3743d8ef5dde970,Leiticia Pestova,66,135,NA,Orthodox,1984-01-15
 f37822d5b3e47517,http://ufcstats.com/fighter-details/f37822d5b3e47517,Giacomo Lemos,75,247,75,Orthodox,1989-06-23
@@ -4435,6 +4544,7 @@ fc169c387b4b465d,http://ufcstats.com/fighter-details/fc169c387b4b465d,Raquel Pen
 fc1868f56d3036eb,http://ufcstats.com/fighter-details/fc1868f56d3036eb,Egidijus Valavicius,72,200,NA,Orthodox,1978-12-23
 fc31f896cde2bc2e,http://ufcstats.com/fighter-details/fc31f896cde2bc2e,John Howard,67,170,72,Orthodox,1983-03-01
 fc36e2352dccf2a4,http://ufcstats.com/fighter-details/fc36e2352dccf2a4,Steve Kozola,NA,155,NA,NA,NA
+fc425affea8ca8cb,http://ufcstats.com/fighter-details/fc425affea8ca8cb,Jaden Ortega,NA,170,NA,NA,2002-09-18
 fc60ecf0671b9489,http://ufcstats.com/fighter-details/fc60ecf0671b9489,Chris Holdsworth,71,135,NA,NA,1987-10-24
 fc6e681bf6658faf,http://ufcstats.com/fighter-details/fc6e681bf6658faf,Ashlee Evans-Smith,68,135,67,Orthodox,1987-07-09
 fc8610cc15674ae2,http://ufcstats.com/fighter-details/fc8610cc15674ae2,Leslie Hernandez,63,115,64,Orthodox,1997-12-29
