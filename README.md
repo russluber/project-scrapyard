@@ -2,47 +2,46 @@
 
 In this project, I investigate two central questions about fighter performance in the [UFC](http://www.ufcstats.com/statistics/events/completed):
 
-1. Which in-fight performance differential metric is the most predictive of winning?
+1.  Which in-fight performance differential metric is the most predictive of winning?
 
-2. What is each fighter's *latent* probability of landing a significant strike, after accounting for gender, weight class, and fight-to-fight randomness?
+2.  What is each fighter's *latent* probability of landing a significant strike, after accounting for gender, weight class, and fight-to-fight randomness?
 
 ## Figure Gallery
 
 <p align="center">
-  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px;">
-    <img src="figs/n_fights_per_fighter_hist.png" width="300" />
-    <img src="figs/victory_bars.png" width="300" />
-    <img src="figs/top10_ci_plot.png" width="300" />
-    <img src="figs/latent_acc_dist.png" width="300" />
-  </div>
-</p>
 
+::: {style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px;"}
+```         
+<img src="figs/n_fights_per_fighter_hist.png" width="300" />
+<img src="figs/victory_bars.png" width="300" />
+<img src="figs/top10_ci_plot.png" width="300" />
+<img src="figs/latent_acc_dist.png" width="300" />
+```
+:::
+
+</p>
 
 ## Data Pipeline
 
-An incremental pipeline scrapes [UFCStats](http://ufcstats.com) and
-produces the cleaned fight and fighter datasets. Rerun it whenever new UFC
-events occur — the scrapers are cache-first and only fetch what's new.
+An incremental pipeline scrapes [UFCStats](http://ufcstats.com) and produces the cleaned fight and fighter datasets. Rerun it whenever new UFC events occur — the scrapers are cache-first and only fetch what's new.
 
-```r
+``` r
 # From the project root — refresh the data (scrape + clean):
 source("scripts/run_pipeline.R")
 ```
 
-```sh
+``` sh
 Rscript scripts/run_pipeline.R               # scrape + clean
 Rscript scripts/run_pipeline.R --no-scrape   # rebuild clean data from existing raw CSVs
 ```
 
-The research-question-specific steps (building model datasets and fitting
-the model) live under `scripts/striking_accuracy/` and are run directly,
-separate from the core data pipeline.
+The research-question-specific steps (building model datasets and fitting the model) live under `scripts/striking_accuracy/` and are run directly, separate from the core data pipeline.
 
 See [`scripts/README.md`](scripts/README.md) for full pipeline docs.
 
 ## Project Structure
 
-```
+```         
 root/
 ├── cache/                      # Raw scraped HTML (events/fights/fighters; git-ignored)
 │
@@ -76,4 +75,3 @@ root/
 ├── .gitignore
 └── README.md                   # Project overview (this file)
 ```
-
